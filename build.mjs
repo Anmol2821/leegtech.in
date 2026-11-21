@@ -134,7 +134,8 @@ ${pages.map(x => `  <url><loc>${site.url}${x.path}</loc><lastmod>${x.lastmod}</l
 </urlset>
 `);
 
-fs.writeFileSync(path.join(OUT, 'robots.txt'), `# Leegtech robots.txt
+if (process.env.SITE_PREVIEW) fs.writeFileSync(path.join(OUT, '_headers'), '/*\n  X-Robots-Tag: noindex, nofollow\n');
+fs.writeFileSync(path.join(OUT, 'robots.txt'), process.env.SITE_PREVIEW ? 'User-agent: *\nDisallow: /\n' : `# Leegtech robots.txt
 User-agent: *
 Allow: /
 Disallow: /thank-you/

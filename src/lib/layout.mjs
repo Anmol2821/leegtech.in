@@ -30,7 +30,7 @@ function head(p, assets) {
   const url = site.url + p.path;
   const title = p.fullTitle || (p.title ? `${p.title} | ${site.name}` : `${site.name} | ${site.tagline}`);
   const ogImg = site.url + (p.ogImage || '/og/default.jpg');
-  const robots = p.noindex ? 'noindex, follow' : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1';
+  const robots = (p.noindex || process.env.SITE_PREVIEW) ? 'noindex, follow' : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1';
   const v = [
     T.googleSiteVerification && `<meta name="google-site-verification" content="${esc(T.googleSiteVerification)}">`,
     T.bingSiteVerification && `<meta name="msvalidate.01" content="${esc(T.bingSiteVerification)}">`,

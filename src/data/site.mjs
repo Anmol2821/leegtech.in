@@ -13,20 +13,20 @@ export const site = {
   phoneDisplay: '+91 89823 46105',
   whatsapp: '918982346105',
   whatsappText: 'Hi Leegtech! I need help with IP/Legal services. Please get in touch.',
-  email: 'info.leegtech@gmail.com',
+  email: 'info@leegtech.in',
   address: {
-    street: 'Gincube Center, Moti Mahal',
+    street: 'Gincube Center, Smart City Office, Moti Mahal',
     city: 'Gwalior',
     region: 'Madhya Pradesh',
     postalCode: '474001',
     country: 'IN',
-    display: 'Gincube Center, Moti Mahal, Gwalior, Madhya Pradesh 474001'
+    display: 'Gincube Center, Smart City Office, Moti Mahal, Gwalior, Madhya Pradesh 474001'
   },
   registeredAddress: '97 Tansen Nagar, Gwalior, Madhya Pradesh 474003, India',
   areaServed: 'India',
   // Office hours: fill both to show them on the site and in structured data, e.g. 'Mo-Sa 10:00-19:00'.
   hours: '',
-  hoursDisplay: '',
+  hoursDisplay: '10:00 AM – 6:30 PM',
   // Add your public profiles here (used in structured data "sameAs" and the footer).
   social: {
     linkedin: '',
