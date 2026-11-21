@@ -48,6 +48,11 @@ const posts = fs.readdirSync(blogDir).filter(f => f.endsWith('.html')).map(f => 
   let html = m[2].trim();
   // Wrap tables & add ids to h2 for deep links
   html = html.replace(/<h2>([^<]+)<\/h2>/g, (x, t) => `<h2 id="${t.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}">${t}</h2>`);
+  // Responsive tables: copy header labels onto each cell for stacked mobile layout
+  html = html.replace(/<table>([\s\S]*?)<\/table>/g, (t) => {
+    const heads = [...t.matchAll(/<th>([\s\S]*?)<\/th>/g)].map(m => stripTags(m[1]));
+    return t.replace(/<tr>([\s\S]*?)<\/tr>/g, (row, inner) => { let i = 0; return '<tr>' + inner.replace(/<td>/g, () => `<td data-label="${heads[i++] || ''}">`) + '</tr>'; });
+  });
   const words = stripTags(html).split(' ').length;
   return { ...meta, html, words, readMins: Math.max(1, Math.round(words / 220)) };
 }).sort((a, b) => b.date.localeCompare(a.date) || a.title.localeCompare(b.title));
@@ -124,6 +129,7 @@ render(P.faqPage(), { priority: 0.6 });
 render(P.blogIndex(posts), { priority: 0.6 });
 for (const post of posts) render(P.blogPost(post, posts), { priority: 0.7, lastmod: post.updated });
 for (const d of policyDocs) render(P.policyPage(d), { priority: 0.2 });
+render(P.disclaimer(), { priority: 0.2 });
 render(P.thankYou());
 render(P.notFound());
 
@@ -186,6 +192,7 @@ ${posts.map(x => `- [${x.title}](${site.url}/blog/${x.slug}/): ${x.description}`
 - [Privacy Policy](${site.url}/privacy-policy/)
 - [Terms & Conditions](${site.url}/terms-and-conditions/)
 - [Refund Policy](${site.url}/refund-policy/)
+- [Disclaimer](${site.url}/disclaimer/): general information only; no guarantee of outcomes; not affiliated with any government office.
 
 ## Optional
 - [Full text of all service pages](${site.url}/llms-full.txt)

@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 420" role="img" aria-labelledby="t"><title id="t">Company building with a growing chart and a registration certificate</title>
+<style>
+.bar{transform-box:fill-box;transform-origin:bottom;animation:grow 5s ease-in-out infinite}.bar2{animation-delay:.25s}.bar3{animation-delay:.5s}.bar4{animation-delay:.75s}
+.line{stroke-dasharray:400;stroke-dashoffset:400;animation:draw 5s ease-in-out infinite}
+.cert{animation:float 5s ease-in-out infinite}.win{animation:blink 3s steps(1) infinite}.w2{animation-delay:-1s}.w3{animation-delay:-2s}
+@keyframes grow{0%{transform:scaleY(.15)}40%,90%{transform:scaleY(1)}100%{transform:scaleY(.15)}}
+@keyframes draw{0%,20%{stroke-dashoffset:400}60%,90%{stroke-dashoffset:0}100%{stroke-dashoffset:400}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes blink{0%{fill:#FEDDBE}50%{fill:#fff}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}.line{stroke-dashoffset:0}}
+</style>
+<circle cx="520" cy="70" r="120" fill="#FEF3EB"/><circle cx="70" cy="380" r="130" fill="#EFF8F3"/>
+<path d="M40 360h520" stroke="#e8e5e0" stroke-width="3"/>
+<rect x="80" y="130" width="150" height="230" rx="8" fill="#121212"/><rect x="100" y="100" width="110" height="34" rx="6" fill="#121212"/>
+<g fill="#fff"><rect class="win" x="100" y="152" width="30" height="26" rx="3"/><rect class="win w2" x="140" y="152" width="30" height="26" rx="3"/><rect class="win w3" x="180" y="152" width="30" height="26" rx="3"/>
+<rect class="win w3" x="100" y="192" width="30" height="26" rx="3"/><rect class="win" x="140" y="192" width="30" height="26" rx="3"/><rect class="win w2" x="180" y="192" width="30" height="26" rx="3"/>
+<rect class="win w2" x="100" y="232" width="30" height="26" rx="3"/><rect class="win w3" x="140" y="232" width="30" height="26" rx="3"/><rect class="win" x="180" y="232" width="30" height="26" rx="3"/></g>
+<rect x="135" y="300" width="40" height="60" rx="4" fill="#E86A1E"/>
+<rect class="bar" x="270" y="290" width="36" height="70" rx="6" fill="#B7E3CA"/><rect class="bar bar2" x="318" y="250" width="36" height="110" rx="6" fill="#4CAF7A"/>
+<rect class="bar bar3" x="366" y="200" width="36" height="160" rx="6" fill="#3D9B68"/><rect class="bar bar4" x="414" y="150" width="36" height="210" rx="6" fill="#E86A1E"/>
+<path class="line" d="M262 270l52-40 48-44 50-50 48-30" fill="none" stroke="#121212" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M450 96l20 8-12 16" fill="none" stroke="#121212" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+<g class="cert"><g transform="translate(22 30)"><rect x="440" y="200" width="124" height="96" rx="10" fill="#fff" stroke="#e8e5e0" stroke-width="2"/><text x="456" y="226" font-family="Nunito,Arial,sans-serif" font-weight="900" font-size="12" fill="#121212" letter-spacing="1.5">CERTIFICATE</text>
+<path d="M456 242h70M456 258h88M456 274h50" stroke="#d9d4cc" stroke-width="6" stroke-linecap="round"/><circle cx="546" cy="276" r="12" fill="#4CAF7A"/><path d="M540 276l4 4 8-8" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"/></g></g>
+</svg>

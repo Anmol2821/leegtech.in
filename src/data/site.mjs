@@ -24,9 +24,9 @@ export const site = {
   },
   registeredAddress: '97 Tansen Nagar, Gwalior, Madhya Pradesh 474003, India',
   areaServed: 'India',
-  // Office hours: fill both to show them on the site and in structured data, e.g. 'Mo-Sa 10:00-19:00'.
-  hours: '',
-  hoursDisplay: '10:00 AM – 6:30 PM',
+  // Office hours (used on the site and in structured data).
+  hours: { days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'], opens: '10:00', closes: '18:30' },
+  hoursDisplay: 'Monday to Friday, 10:00 AM – 6:30 PM',
   // Add your public profiles here (used in structured data "sameAs" and the footer).
   social: {
     linkedin: '',

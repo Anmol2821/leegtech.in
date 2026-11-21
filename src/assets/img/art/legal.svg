@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 420" role="img" aria-labelledby="t"><title id="t">Agreement being signed with a pen, a seal and scales of balance</title>
+<style>
+.sig{stroke-dasharray:300;stroke-dashoffset:300;animation:sign 6s ease-in-out infinite}
+.pen{animation:pen 6s ease-in-out infinite}
+.seal{transform-origin:350px 320px;animation:stamp 6s ease-in-out infinite}
+.scale{transform-origin:480px 120px;animation:tilt 5s ease-in-out infinite}.doc2{animation:float 6s ease-in-out infinite}
+@keyframes sign{0%,10%{stroke-dashoffset:300}45%,90%{stroke-dashoffset:0}100%{stroke-dashoffset:300}}
+@keyframes pen{0%,10%{transform:translate(0,0)}45%{transform:translate(150px,-6px)}60%,100%{transform:translate(0,0)}}
+@keyframes stamp{0%,50%{transform:scale(1.6);opacity:0}58%{transform:scale(.95);opacity:1}64%,92%{transform:scale(1);opacity:1}100%{opacity:0}}
+@keyframes tilt{0%,100%{transform:rotate(-5deg)}50%{transform:rotate(5deg)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}.sig{stroke-dashoffset:0}.seal{opacity:1}}
+</style>
+<circle cx="80" cy="90" r="120" fill="#EFF8F3"/><circle cx="540" cy="380" r="130" fill="#FEF3EB"/>
+<g class="doc2"><rect x="60" y="80" width="240" height="300" rx="14" fill="#fff" stroke="#e8e5e0" stroke-width="2" transform="rotate(-6 180 230)"/></g>
+<rect x="120" y="60" width="260" height="320" rx="14" fill="#fff" stroke="#121212" stroke-width="4"/>
+<text x="146" y="104" font-family="Nunito,Arial,sans-serif" font-weight="900" font-size="18" fill="#121212" letter-spacing="2">AGREEMENT</text>
+<path d="M146 130h200M146 152h180M146 174h200M146 196h150M146 218h190M146 240h120" stroke="#d9d4cc" stroke-width="7" stroke-linecap="round"/>
+<path d="M146 300h130" stroke="#121212" stroke-width="2"/>
+<path class="sig" d="M150 290c10-24 20-24 22-6s8 14 18-6 14-18 18 2 10 10 22-4 16-6 20 4" fill="none" stroke="#E86A1E" stroke-width="4" stroke-linecap="round"/>
+<g class="pen"><g transform="translate(120 248) rotate(35)"><rect x="0" y="0" width="12" height="70" rx="5" fill="#121212"/><path d="M0 70l6 14 6-14z" fill="#E86A1E"/></g></g>
+<g class="seal"><circle cx="350" cy="320" r="34" fill="#E86A1E"/><circle cx="350" cy="320" r="26" fill="none" stroke="#fff" stroke-width="2" stroke-dasharray="4 4"/><path d="M338 320l8 8 16-16" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></g>
+<path d="M480 90v190M440 290h80" stroke="#121212" stroke-width="5" stroke-linecap="round"/><circle cx="480" cy="86" r="8" fill="#121212"/>
+<g class="scale"><path d="M410 120h140" stroke="#121212" stroke-width="5" stroke-linecap="round"/><path d="M420 120l-22 50h44zM540 120l-22 50h44z" fill="none" stroke="#3D9B68" stroke-width="3" stroke-linejoin="round"/>
+<path d="M396 170a24 10 0 0 0 48 0zM516 170a24 10 0 0 0 48 0z" fill="#4CAF7A"/></g>
+</svg>

@@ -10,8 +10,7 @@ import { orgNode, websiteNode, founderNode, crumbsNode, faqNode, pageNode, servi
 const img = (name, alt, { w, h, cls = '', eager = false, sizes = '(min-width: 900px) 50vw, 100vw', sm = true } = {}) =>
   `<img class="${cls}" src="/assets/img/${name}.webp"${sm ? ` srcset="/assets/img/${name}-sm.webp 600w, /assets/img/${name}.webp ${w}w" sizes="${sizes}"` : ''} alt="${esc(alt)}" width="${w}" height="${h}" ${eager ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async">`;
 
-const IMG = { 'spot-patent': [1200, 799], 'spot-tm': [1200, 800], 'spot-startup': [1200, 800], 'spot-legal': [680, 454], why: [464, 739], founder: [501, 516] };
-const catImg = (c, opts = {}) => img(c.image, c.imageAlt, { w: IMG[c.image][0], h: IMG[c.image][1], ...opts });
+const catImg = (c, { eager = false, cls = 'art' } = {}) => `<img class="${cls}" src="/assets/img/art/${c.image}.svg" alt="${esc(c.imageAlt)}" width="600" height="420" ${eager ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async">`;
 
 const SERVICE_COUNT = allServices.length;
 const base = () => [orgNode(), websiteNode()];
@@ -117,7 +116,7 @@ export function home(posts) {
   <div class="container stats-grid">
     <div><strong>${SERVICE_COUNT}+</strong><span>Services</span><small>IP, business &amp; legal</small></div>
     <div><strong>5</strong><span>Practice areas</span><small>Patent, design, TM, business, legal</small></div>
-    <div><strong>24 hrs</strong><span>Response time</span><small>To every enquiry</small></div>
+    <div><strong>1 day</strong><span>Response time</span><small>Within one working day</small></div>
     <div><strong>Pan-India</strong><span>Coverage</span><small>Plus international filings</small></div>
   </div>
 </section>
@@ -184,7 +183,7 @@ ${ctaBand()}`;
 export function category(c) {
   const path = `/${c.slug}/`;
   const crumbs = [{ name: 'Home', path: '/' }, { name: 'Services', path: '/services/' }, { name: c.name, path }];
-  const p = { path, title: c.metaTitle, description: c.metaDesc, section: c.slug, ogImage: `/og/${c.slug}.jpg`, primaryImage: `/assets/img/${c.image}.webp` };
+  const p = { path, title: c.metaTitle, description: c.metaDesc, section: c.slug, ogImage: `/og/${c.slug}.jpg`, primaryImage: `/assets/img/art/${c.image}.svg` };
   p.schema = graph(base(), pageNode({ ...p, title: c.h1 }, 'CollectionPage'), crumbsNode(crumbs), faqNode(c.faqs, path), {
     '@type': 'ItemList', name: `${c.name} services`,
     itemListElement: c.services.map((s, i) => ({ '@type': 'ListItem', position: i + 1, name: s.name, url: `${site.url}/${c.slug}/${s.slug}/` }))
@@ -236,7 +235,7 @@ export function category(c) {
   <div class="container consult-grid">
     <div>
       ${secHead('Free consultation', `Talk to a ${esc(c.name.toLowerCase())} expert`, 'Share your requirement and get a clear recommendation, process overview and fee quote. No obligation.', 'left')}
-      <ul class="checks"><li>${icon('check')} Response within 24 hours</li><li>${icon('check')} Fee transparency, no hidden costs</li><li>${icon('check')} Confidential handling of your information</li></ul>
+      <ul class="checks"><li>${icon('check')} Response within one working day</li><li>${icon('check')} Fee transparency, no hidden costs</li><li>${icon('check')} Confidential handling of your information</li></ul>
     </div>
     <div class="form-card">${leadForm({ id: 'cat-form' })}</div>
   </div>
@@ -279,6 +278,7 @@ export function service(s) {
       <li><a href="#process">Process</a></li><li><a href="#documents">Documents</a></li><li><a href="#faq">FAQs</a></li></ul></nav>
 
     <section id="overview" class="prose">
+      <figure class="svc-art">${catImg(c)}</figure>
       <h2>What is ${esc(s.name.replace(/\s*\(.*\)$/, ''))}?</h2>
       ${s.overview.map(t => `<p>${esc(t)}</p>`).join('')}
     </section>
@@ -432,7 +432,7 @@ export function contact() {
   <div class="container">
     ${breadcrumbs(crumbs)}
     <h1>Book Your Free Consultation</h1>
-    <p class="lead">Tell us about your idea, brand or business. We respond within 24 hours with a clear recommendation, process overview and fee quote.</p>
+    <p class="lead">Tell us about your idea, brand or business. We respond within one working day with a clear recommendation, process overview and fee quote.</p>
   </div>
 </section>
 <section class="section section-top0">
@@ -462,7 +462,7 @@ export function faqPage() {
   const path = '/faq/';
   const crumbs = [{ name: 'Home', path: '/' }, { name: 'FAQ', path }];
   const all = [...generalFaqs, ...categories.flatMap(c => c.faqs)];
-  const p = { path, title: 'FAQ: Patents, Trademarks & Business Registration', description: 'Answers to common questions about patents, trademarks, copyright, design registration, company registration, compliance and legal agreements in India.', section: 'faq' };
+  const p = { path, title: 'FAQ: Patents, Trademarks & Business Registration', description: 'Clear answers to common questions on patents, trademarks, copyright, design registration, company registration, GST, compliance and agreements in India.', section: 'faq' };
   p.schema = graph(base(), pageNode({ ...p, title: 'Frequently Asked Questions' }), crumbsNode(crumbs), faqNode(all, path));
   const body = `
 <section class="page-hero">
@@ -474,9 +474,11 @@ export function faqPage() {
 </section>
 <section class="section section-top0">
   <div class="container narrow">
-    <h2 class="faq-group">General</h2>
-    ${faqList(generalFaqs)}
-    ${categories.map(c => `<h2 class="faq-group"><a href="/${c.slug}/">${esc(c.name)}</a></h2>${faqList(c.faqs)}`).join('')}
+    <ul class="faq-toc"><li><a href="#general">General</a></li>${categories.map(c => `<li><a href="#${c.slug}-faqs">${esc(c.name)}</a></li>`).join('')}</ul>
+    <h2 class="faq-group" id="general">General questions</h2>
+    ${faqList(generalFaqs, 'h3', { ids: true })}
+    ${categories.map(c => `<h2 class="faq-group" id="${c.slug}-faqs">${esc(c.name)} questions</h2>${faqList(c.faqs, 'h3', { ids: true })}<p class="faq-more"><a class="link-arrow" href="/${c.slug}/">See ${esc(c.name.toLowerCase())} services ${icon('arrow')}</a></p>`).join('')}
+    <p class="disclaimer">These answers are general information, not legal advice, and do not guarantee any outcome. See our <a href="/disclaimer/">disclaimer</a>.</p>
   </div>
 </section>
 ${ctaBand('Have more questions?', 'Talk to our IP &amp; legal experts. Protect your ideas. Protect your brand. Protect your business.')}`;
@@ -562,14 +564,14 @@ export function policyPage(doc) {
 
 /* ---------------- THANK YOU / 404 ---------------- */
 export function thankYou() {
-  const p = { path: '/thank-you/', title: 'Thank You: We Have Received Your Enquiry', description: 'Thank you for contacting Leegtech. Our team will get back to you within 24 hours.', noindex: true, section: 'thanks', bodyClass: 'thanks' };
+  const p = { path: '/thank-you/', title: 'Thank You: We Have Received Your Enquiry', description: 'Thank you for contacting Leegtech. Our team will get back to you within one working day.', noindex: true, section: 'thanks', bodyClass: 'thanks' };
   p.schema = graph(base(), pageNode({ ...p }));
   const body = `
 <section class="section thanks-hero">
   <div class="container narrow center">
     <span class="big-check">${icon('check')}</span>
     <h1>Thank you! Your enquiry has been received.</h1>
-    <p class="lead">Our team will contact you within 24 hours. For a faster response, continue the conversation on WhatsApp.</p>
+    <p class="lead">Our team will contact you within one working day. For a faster response, continue the conversation on WhatsApp.</p>
     <div class="btn-row center-row">
       <a class="btn btn-wa btn-lg" id="ty-wa" href="${waLink(site)}" target="_blank" rel="noopener">${waIcon()} Continue on WhatsApp</a>
       <a class="btn btn-ghost btn-lg" href="/">Back to home</a>
@@ -595,6 +597,39 @@ export function notFound() {
     <h1>We couldn't find that page.</h1>
     <p class="lead">It may have moved. Try one of these instead:</p>
     <div class="btn-row center-row"><a class="btn btn-primary" href="/">Home</a><a class="btn btn-ghost" href="/services/">All services</a><a class="btn btn-ghost" href="/contact/">Contact us</a></div>
+  </div>
+</section>`;
+  return { p, body };
+}
+
+/* ---------------- DISCLAIMER ---------------- */
+export function disclaimer() {
+  const path = '/disclaimer/';
+  const crumbs = [{ name: 'Home', path: '/' }, { name: 'Disclaimer', path }];
+  const p = { path, title: 'Disclaimer', description: 'Leegtech website disclaimer: general information only, no guarantee of outcomes, no solicitation, and no affiliation with any government office.', section: 'legal-docs' };
+  p.schema = graph(base(), pageNode({ ...p }), crumbsNode(crumbs));
+  const sec = [
+    ['General information only', 'The content on this website, including service pages, FAQs and blog articles, is provided for general information. It is not legal, tax or professional advice and should not be relied on as a substitute for advice on your specific facts. Laws, rules, official fees and procedures change; always confirm the current position before acting.'],
+    ['No solicitation or advertisement', 'This website is not intended to solicit work or to advertise legal services. Nothing on it is an invitation to create a lawyer–client relationship. In keeping with the rules of the Bar Council of India, visitors access this website and contact Leegtech on their own initiative to obtain information about our services. Where a step in a matter must by law be carried out by an advocate or by a registered patent or trademark agent, it is carried out only by a person who is so qualified.'],
+    ['No lawyer–client relationship', 'Using this website, sending an email or WhatsApp message, or submitting an enquiry form does not create a lawyer–client or other professional relationship. An engagement begins only when the scope of work and fees are agreed in writing.'],
+    ['No guarantee of outcome', 'Leegtech does not guarantee that any patent, trademark, copyright, design, registration, licence, certificate or approval will be granted, registered or issued, or that it will be obtained within any particular time. Those decisions are made by the relevant government authorities and depend on the facts of each matter, objections, oppositions and applicable law. Timelines mentioned on this website are indicative only.'],
+    ['No government affiliation', 'Leegtech is a private company. We are not affiliated with, endorsed by or acting on behalf of any government department or office, including the Office of the Controller General of Patents, Designs and Trade Marks (IP India), the Copyright Office, the Ministry of Corporate Affairs, DPIIT, the Ministry of MSME, the GST authorities, the Income Tax Department or FSSAI. Many government registrations can be filed directly by applicants on official portals. Our fees are professional fees for our assistance and are separate from official government fees, which are charged at actuals.'],
+    ['Third-party names and logos', 'Names, trademarks and logos of clients, partners, institutions and government bodies shown or mentioned on this website belong to their respective owners. Their appearance does not imply endorsement.'],
+    ['External links', 'Links to external websites are provided for convenience. Leegtech is not responsible for the content, availability or privacy practices of those websites.'],
+    ['Limitation of liability', 'To the extent permitted by law, Leegtech is not liable for any loss arising from reliance on information on this website. Our obligations for paid services are set out in our Terms & Conditions and the written engagement for each matter.']
+  ];
+  const body = `
+<section class="page-hero">
+  <div class="container narrow">
+    ${breadcrumbs(crumbs)}
+    <h1>Disclaimer</h1>
+    <p class="post-meta">Last updated: ${fmtDate(site.lastReviewed)}</p>
+  </div>
+</section>
+<section class="section section-top0">
+  <div class="container narrow prose legal">
+    ${sec.map(([h, t]) => `<h2 id="${h.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-$/, '')}">${esc(h)}</h2><p>${esc(t)}</p>`).join('')}
+    <p>See also our <a href="/terms-and-conditions/">Terms &amp; Conditions</a>, <a href="/privacy-policy/">Privacy Policy</a> and <a href="/refund-policy/">Refund Policy</a>. Questions: <a href="mailto:${site.email}">${site.email}</a>.</p>
   </div>
 </section>`;
   return { p, body };

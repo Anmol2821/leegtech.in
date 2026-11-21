@@ -40,7 +40,7 @@ export function orgNode(full = false) {
     '@type': 'OfferCatalog', name: 'IP, legal and business services',
     itemListElement: allServices.map(s => ({ '@type': 'Offer', itemOffered: { '@type': 'Service', name: s.name, url: site.url + s.url } }))
   };
-  if (site.hours) node.openingHours = site.hours;
+  if (site.hours) node.openingHoursSpecification = [{ '@type': 'OpeningHoursSpecification', dayOfWeek: site.hours.days, opens: site.hours.opens, closes: site.hours.closes }];
   if (sameAs.length) node.sameAs = sameAs;
   return node;
 }

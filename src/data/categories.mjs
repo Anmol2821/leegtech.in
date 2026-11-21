@@ -1,3 +1,4 @@
+import catFaqs from './category-faqs.mjs';
 import patent from './services-patent.mjs';
 import design from './services-design.mjs';
 import tm from './services-tm.mjs';
@@ -11,8 +12,8 @@ export const categories = [
     navName: 'Patent',
     label: 'PATENT',
     accent: 'orange',
-    image: 'spot-patent',
-    imageAlt: 'Illustration of a patented mechanical invention',
+    image: 'patent',
+    imageAlt: 'Illustration of an invention blueprint, a lightbulb idea and a patent certificate',
     h1: 'Patent Services in India & Abroad',
     metaTitle: 'Patent Registration & Filing Services in India',
     metaDesc: 'Patent search, provisional and complete patent filing, FER replies, hearings, oppositions, renewals and PCT, US and UK filings, handled end to end by Leegtech.',
@@ -25,12 +26,7 @@ export const categories = [
       ['Startup benefits', 'DPIIT-recognised startups and small entities get reduced official fees and can request expedited examination.']
     ],
     services: patent,
-    faqs: [
-      ['What can be patented in India?', 'An invention that is new, involves an inventive step and is capable of industrial application, and does not fall within the exclusions in Sections 3 and 4 of the Patents Act, 1970 (for example, mere discoveries, abstract theories, methods of medical treatment, and computer programmes per se).'],
-      ['How long does a patent last?', '20 years from the date of filing, provided renewal fees are paid on time.'],
-      ['Should I file a provisional or a complete application?', 'A provisional application is useful when the invention is still being developed or must be disclosed soon. If the invention is fully developed, filing a complete specification directly can save time.'],
-      ['Can I file a patent abroad directly from India?', 'Residents of India must file in India first (and wait six weeks) or obtain foreign filing permission under Section 39 before filing abroad. We handle this for you.']
-    ]
+    faqs: catFaqs['patent']
   },
   {
     slug: 'design',
@@ -38,8 +34,8 @@ export const categories = [
     navName: 'Design',
     label: 'DESIGN',
     accent: 'green',
-    image: 'why',
-    imageAlt: 'Overview of IP and business services offered by Leegtech',
+    image: 'design',
+    imageAlt: 'Illustration of a product design drawing with dimensions and colour swatches',
     h1: 'Design Registration Services',
     metaTitle: 'Design Registration in India, UK & Germany',
     metaDesc: 'Protect the look of your product with Indian design registration, UK registered designs and German utility models. Expert filing and prosecution.',
@@ -52,10 +48,7 @@ export const categories = [
       ['International reach', 'Claim priority within 6 months to protect the design abroad.']
     ],
     services: design,
-    faqs: [
-      ['What is the difference between design registration and copyright?', 'Design registration protects the appearance of an industrial article. Artistic works may be protected by copyright, but copyright in a design capable of registration can be lost once the article is industrially produced beyond a limit without registration. Registration is the safer route for products.'],
-      ['Can I register a design that is already on sale?', 'Generally no, because it is no longer new. File before any public disclosure.']
-    ]
+    faqs: catFaqs['design']
   },
   {
     slug: 'trademark-copyright',
@@ -63,8 +56,8 @@ export const categories = [
     navName: 'Trademark & Copyright',
     label: 'TM & COPYRIGHT',
     accent: 'orange',
-    image: 'spot-tm',
-    imageAlt: 'Trademark symbol representing brand protection',
+    image: 'trademark',
+    imageAlt: 'Illustration of a shield protecting a brand, with registered, copyright and trademark symbols',
     h1: 'Trademark & Copyright Services',
     metaTitle: 'Trademark Registration & Copyright Services in India',
     metaDesc: 'Trademark search, registration, objections, opposition, hearings, renewals, Madrid international filing, and copyright registration in India and Canada.',
@@ -77,11 +70,7 @@ export const categories = [
       ['Global protection', 'The Madrid Protocol lets you extend your Indian mark to 130+ countries.']
     ],
     services: tm,
-    faqs: [
-      ['Can I use ™ before registration?', 'Yes. ™ can be used once you claim a mark. The ® symbol may be used only after registration.'],
-      ['How many classes should I file in?', 'File in every class that covers the goods or services you offer now or plan to offer soon. We map your business to the right classes.'],
-      ['Is copyright registration compulsory?', 'No. Copyright exists automatically, but registration provides strong evidence in disputes and transactions.']
-    ]
+    faqs: catFaqs['trademark-copyright']
   },
   {
     slug: 'business-tax',
@@ -89,8 +78,8 @@ export const categories = [
     navName: 'Business & Tax',
     label: 'BUSINESS & TAX',
     accent: 'green',
-    image: 'spot-startup',
-    imageAlt: 'Startup founders planning business growth',
+    image: 'business',
+    imageAlt: 'Illustration of a company building, a growth chart and a registration certificate',
     h1: 'Business Registration, Tax & Compliance',
     metaTitle: 'Company Registration, GST, Startup India & Compliance',
     metaDesc: 'Private limited company, LLP, OPC, Section 8, Startup India, MSME, GST, FSSAI, ISO, income tax, TDS and annual ROC compliance services.',
@@ -103,10 +92,7 @@ export const categories = [
       ['IP and business together', 'Register your brand and patents alongside your company, with one team.']
     ],
     services: business,
-    faqs: [
-      ['Which business structure is best for a startup?', 'If you plan to raise equity investment or offer ESOPs, a Private Limited Company is usually the best fit. LLPs suit professional and owner-run businesses with lower compliance needs.'],
-      ['Do I need GST registration immediately?', 'Only if you cross the turnover threshold or fall into a compulsory category, such as inter-state supply of goods or most e-commerce sales. Voluntary registration is also possible.']
-    ]
+    faqs: catFaqs['business-tax']
   },
   {
     slug: 'legal',
@@ -114,8 +100,8 @@ export const categories = [
     navName: 'Legal',
     label: 'LEGAL',
     accent: 'orange',
-    image: 'spot-legal',
-    imageAlt: 'Agreements and contracts that protect a business',
+    image: 'legal',
+    imageAlt: 'Illustration of an agreement being signed, with a seal and scales of balance',
     h1: 'Legal Agreements & Drafting Services',
     metaTitle: 'Legal Agreement Drafting: NDA, Licensing & More',
     metaDesc: 'Professionally drafted NDAs, employment, licensing, franchise, vendor, merger and acquisition agreements, trademark coexistence agreements and legal notices.',
@@ -128,10 +114,7 @@ export const categories = [
       ['Monetise IP', 'License or franchise your brand and technology on strong terms.']
     ],
     services: legal,
-    faqs: [
-      ['Are online agreement templates enough?', 'Templates are a starting point but often miss business-specific risks, Indian law points and enforceability requirements such as stamping.'],
-      ['Can agreements be signed digitally?', 'Most commercial agreements can be signed electronically under the IT Act, 2000. Some documents are excluded, such as wills and certain property documents.']
-    ]
+    faqs: catFaqs['legal']
   }
 ];
 

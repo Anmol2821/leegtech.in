@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 420" role="img" aria-labelledby="t"><title id="t">Invention blueprint with a glowing idea and a patent certificate</title>
+<style>
+.gear{transform-origin:458px 118px;animation:spin 14s linear infinite}.gear2{transform-origin:506px 160px;animation:spin 10s linear infinite reverse}
+.glow{transform-origin:250px 170px;animation:pulse 3.2s ease-in-out infinite}.float{animation:float 5s ease-in-out infinite}
+.draw{stroke-dasharray:420;stroke-dashoffset:420;animation:draw 6s ease-in-out infinite}
+.seal{transform-origin:488px 340px;animation:pop 6s ease-in-out infinite}
+@keyframes spin{to{transform:rotate(360deg)}}@keyframes pulse{0%,100%{opacity:.35;transform:scale(.92)}50%{opacity:.8;transform:scale(1.06)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes draw{0%{stroke-dashoffset:420}45%,80%{stroke-dashoffset:0}100%{stroke-dashoffset:-420}}
+@keyframes pop{0%,55%{transform:scale(0);opacity:0}65%{transform:scale(1.12);opacity:1}72%,95%{transform:scale(1);opacity:1}100%{transform:scale(1);opacity:0}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}.draw{stroke-dashoffset:0}.seal{transform:none;opacity:1}}
+</style>
+<defs><pattern id="g" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M20 0H0v20" fill="none" stroke="#d6e6f5" stroke-width="1"/></pattern>
+<radialGradient id="b" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#FFC58F"/><stop offset="1" stop-color="#FFC58F" stop-opacity="0"/></radialGradient></defs>
+<circle cx="90" cy="70" r="120" fill="#FEF3EB"/><circle cx="540" cy="380" r="140" fill="#EFF8F3"/>
+<rect x="60" y="48" width="380" height="300" rx="18" fill="#f4f9ff" stroke="#cfe0f1"/><rect x="60" y="48" width="380" height="300" rx="18" fill="url(#g)"/>
+<path class="draw" d="M110 290h300M110 290v-60h70v-40h90v40h60v60M180 230h90" fill="none" stroke="#5b8fc7" stroke-width="2"/>
+<path class="draw" d="M110 310h60m-60-6v12m60-12v12" fill="none" stroke="#5b8fc7" stroke-width="1.5"/>
+<circle class="glow" cx="250" cy="170" r="78" fill="url(#b)"/>
+<g class="float"><path d="M250 112a50 50 0 0 0-30 90c6 5 9 12 9 19v8h42v-8c0-7 3-14 9-19a50 50 0 0 0-30-90z" fill="#FFF4E2" stroke="#121212" stroke-width="4"/>
+<path d="M233 240h34M236 252h28" stroke="#121212" stroke-width="4" stroke-linecap="round"/><path d="M238 206l12-24 12 24" fill="none" stroke="#E86A1E" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></g>
+<g class="gear"><path d="M458 84l8 0 3 12 10 4 10-7 6 6-7 10 4 10 12 3 0 8-12 3-4 10 7 10-6 6-10-7-10 4-3 12-8 0-3-12-10-4-10 7-6-6 7-10-4-10-12-3 0-8 12-3 4-10-7-10 6-6 10 7 10-4z" fill="#3D9B68"/><circle cx="462" cy="118" r="12" fill="#fff"/></g>
+<g class="gear2"><path d="M503 138h6l2 8 7 3 7-5 4 4-5 7 3 7 8 2v6l-8 2-3 7 5 7-4 4-7-5-7 3-2 8h-6l-2-8-7-3-7 5-4-4 5-7-3-7-8-2v-6l8-2 3-7-5-7 4-4 7 5 7-3z" fill="#E86A1E"/><circle cx="506" cy="160" r="8" fill="#fff"/></g>
+<g class="float" style="animation-delay:-2s"><rect x="330" y="228" width="200" height="150" rx="12" fill="#fff" stroke="#e8e5e0" stroke-width="2"/><rect x="330" y="228" width="200" height="34" rx="12" fill="#121212"/><rect x="330" y="248" width="200" height="14" fill="#121212"/>
+<text x="350" y="251" font-family="Nunito,Arial,sans-serif" font-weight="900" font-size="15" fill="#fff" letter-spacing="2">PATENT</text>
+<path d="M350 284h120M350 302h150M350 320h96M350 338h130" stroke="#d9d4cc" stroke-width="6" stroke-linecap="round"/>
+<g class="seal"><circle cx="488" cy="340" r="24" fill="#E86A1E"/><path d="M477 340l8 8 14-16" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></g></g>
+</svg>

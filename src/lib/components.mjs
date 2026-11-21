@@ -13,14 +13,28 @@ export const secHead = (eyebrow, title, sub = '', align = 'center') => `<div cla
   ${sub ? `<p class="sec-sub">${sub}</p>` : ''}
 </div>`;
 
-export const faqList = (faqs, headingTag = 'h3') => `<div class="faq-list">${faqs.map(([q, a]) => `
-  <details class="faq">
+export const faqId = (q) => 'q-' + q.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 70);
+export const faqList = (faqs, headingTag = 'h3', { open = false, ids = false } = {}) => `<div class="faq-list">${faqs.map(([q, a, link], i) => `
+  <details class="faq"${ids ? ` id="${faqId(q)}"` : ''}${open && i === 0 ? ' open' : ''}>
     <summary><${headingTag} class="faq-q">${esc(q)}</${headingTag}><span class="faq-ico" aria-hidden="true"></span></summary>
-    <div class="faq-a"><p>${esc(a)}</p></div>
+    <div class="faq-a"><p>${esc(a)}</p>${link ? `<p class="faq-more"><a href="${link}">Learn more ${icon('arrow')}</a></p>` : ''}</div>
   </details>`).join('')}</div>`;
 
+const SVC_ICON = {
+  'patent-search': 'eye', 'provisional-patent-application': 'clock', 'patent-registration': 'bulb', 'fer-response': 'doc', 'patent-hearing': 'scale',
+  'patent-renewal': 'clock', 'patent-amendment': 'pen', 'pre-grant-opposition': 'scale', 'post-grant-opposition': 'scale', 'pct-application': 'globe',
+  'us-patent-application': 'globe', 'uk-patent-application': 'globe', 'design-registration': 'pen', 'uk-design-registration': 'globe', 'germany-utility-model': 'bulb',
+  'trademark-search': 'eye', 'trademark-registration': 'tag', 'trademark-objection-reply': 'doc', 'trademark-opposition': 'scale', 'trademark-hearing': 'scale',
+  'trademark-renewal': 'clock', 'international-trademark-registration': 'globe', 'copyright-registration': 'file', 'canada-copyright-registration': 'globe',
+  'private-limited-company-registration': 'building', 'llp-registration': 'team', 'one-person-company-registration': 'briefcase', 'section-8-company-registration': 'shield',
+  'startup-india-registration': 'rocket', 'msme-udyam-registration': 'briefcase', 'gst-registration': 'file', 'income-tax-tds-return': 'doc',
+  'shop-and-establishment-registration': 'building', 'fssai-registration': 'check', 'iso-certification': 'star', 'annual-compliance': 'clock',
+  'non-disclosure-agreement': 'lock', 'employment-agreement': 'team', 'licensing-agreement': 'tag', 'franchise-agreement': 'briefcase', 'vendor-agreement': 'briefcase',
+  'contract-drafting': 'pen', 'merger-agreement': 'building', 'acquisition-agreement': 'briefcase', 'trademark-coexistence-agreement': 'shield', 'legal-notice': 'mail'
+};
+export const svcIcon = (slug) => SVC_ICON[slug] || 'shield';
 export const serviceCard = (s, catLabel, catSlug, accent) => `<a class="svc-card acc-${accent}" href="/${catSlug}/${s.slug}/">
-  <span class="svc-cat">${esc(catLabel)}</span>
+  <span class="svc-top"><span class="svc-ico">${icon(svcIcon(s.slug))}</span><span class="svc-cat">${esc(catLabel)}</span></span>
   <h3>${esc(s.name)}</h3>
   <p>${esc(s.short)}</p>
   <span class="svc-more">Learn more ${icon('arrow')}</span>
@@ -46,7 +60,7 @@ export const serviceOptions = (selected = '') => categories.map(c => `<optgroup 
 export const leadForm = ({ selected = '', id = 'lead', title = 'Book Your Free Consultation', compact = false } = {}) => `<form class="lead-form${compact ? ' compact' : ''}" name="consultation" method="POST" action="/thank-you/" data-netlify="true" netlify-honeypot="company_website" id="${id}" novalidate>
   <input type="hidden" name="form-name" value="consultation">
   <p class="hp" aria-hidden="true"><label>Leave this empty <input name="company_website" tabindex="-1" autocomplete="off"></label></p>
-  <div class="lf-head"><h2 class="lf-title">${esc(title)}</h2><p>We respond within 24 hours. No obligation.</p></div>
+  <div class="lf-head"><h2 class="lf-title">${esc(title)}</h2><p>We respond within one working day. No obligation.</p></div>
   <div class="lf-grid">
     <div class="field"><label for="${id}-name">Full name <span aria-hidden="true">*</span></label><input id="${id}-name" name="name" type="text" autocomplete="name" required placeholder="Your full name"><span class="err">Please enter your name</span></div>
     <div class="field"><label for="${id}-phone">Phone / WhatsApp <span aria-hidden="true">*</span></label><input id="${id}-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" required placeholder="+91 98765 43210" pattern="^[+]?[0-9 ()-]{10,16}$"><span class="err">Please enter a valid phone number</span></div>
@@ -60,7 +74,7 @@ export const leadForm = ({ selected = '', id = 'lead', title = 'Book Your Free C
   <label class="consent-check"><input type="checkbox" name="consent" value="yes" required> <span>I agree to be contacted by Leegtech by phone, WhatsApp or email about my enquiry, and I accept the <a href="/privacy-policy/" target="_blank">Privacy Policy</a>.</span></label>
   <span class="err err-consent">Please accept to continue</span>
   <button class="btn btn-primary btn-lg btn-block" type="submit">Submit &amp; Book Free Consultation ${icon('arrow')}</button>
-  <p class="lf-note">${icon('lock')} Your information is private and used only to respond to your enquiry.</p>
+  <p class="lf-note">${icon('lock')} Your information is private and used only to respond to your enquiry. Submitting this form does not create a lawyer–client relationship.</p>
 </form>`;
 
 export const steps = [
@@ -83,7 +97,7 @@ export const clientsStrip = (n = 27) => {
 export const usps = [
   ['shield', 'End-to-end IP services', 'From ideation to registration to enforcement, we handle the complete IP lifecycle of your innovation.'],
   ['globe', 'International filing capability', 'PCT applications, US and UK patents, and Madrid trademarks: global IP protection handled seamlessly.'],
-  ['team', 'Expert legal team', 'Qualified IP and legal professionals with deep domain expertise in patents, trademarks and business law.'],
+  ['team', 'Experienced team', 'Professionals experienced in patents, trademarks, copyright, company law and business compliance.'],
   ['briefcase', 'Complete business support', 'Beyond IP, we handle company formation, tax registrations, GST, FSSAI, ISO and annual compliance.'],
   ['clock', 'Fast turnaround', 'We respect deadlines. IP filings are time-critical, and we make sure your documents are filed right and on time.'],
   ['eye', 'Accessible & transparent', 'Clear communication, no hidden fees and direct access to your legal team. Serving clients across India.']

@@ -266,9 +266,9 @@ export default [
     slug: 'shop-and-establishment-registration',
     name: 'Shops & Establishment Registration',
     short: 'Register your shop, office or business establishment under state law.',
-    metaTitle: 'Shop and Establishment Registration (Gumasta Licence)',
+    metaTitle: 'Shop and Establishment Registration in India',
     metaDesc: 'Shops and Establishments registration under your state\'s law for shops, offices and commercial establishments. Often needed for bank accounts and GST.',
-    keywords: ['shop and establishment registration', 'gumasta licence', 'shop act licence'],
+    keywords: ['shop and establishment registration', 'shop act licence', 'establishment registration'],
     lead: 'Most states require shops, offices and commercial establishments to register under their Shops and Establishments law, usually soon after starting operations.',
     overview: [
       'Shops and Establishments Acts are state laws that regulate working hours, holidays, wages and conditions of employment in shops and commercial establishments. Registration requirements, timelines and exemptions differ from state to state, and many states now offer online registration.',

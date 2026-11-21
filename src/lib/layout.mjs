@@ -128,6 +128,7 @@ function footer() {
           <li><a href="tel:${site.phone}">${icon('phone')}${site.phoneDisplay}</a></li>
           <li><a href="mailto:${site.email}">${icon('mail')}${site.email}</a></li>
           <li><span>${icon('pin')}${esc(site.address.display)}</span></li>
+          ${site.hoursDisplay ? `<li><span>${icon('clock')}${esc(site.hoursDisplay)}</span></li>` : ''}
         </ul>
         ${socials.length ? `<ul class="ft-social">${socials.map(([n, u]) => `<li><a href="${esc(u)}" rel="noopener me" target="_blank">${n}</a></li>`).join('')}</ul>` : ''}
       </div>
@@ -147,11 +148,12 @@ function footer() {
         <li><a href="/privacy-policy/">Privacy Policy</a></li>
         <li><a href="/terms-and-conditions/">Terms &amp; Conditions</a></li>
         <li><a href="/refund-policy/">Refund Policy</a></li>
+        <li><a href="/disclaimer/">Disclaimer</a></li>
       </ul>
     </div>
     <div class="ft-bottom">
       <p>© ${year} ${esc(site.legalName)}. All rights reserved.</p>
-      <p class="ft-disclaimer">Information on this website is for general guidance only and is not legal advice. Official government fees are charged at actuals. Outcomes of applications depend on the relevant authorities.</p>
+      <p class="ft-disclaimer">Leegtech is a private company and is not affiliated with, or endorsed by, any government office, including the Indian Patent Office, the Trade Marks Registry, the Copyright Office or the Ministry of Corporate Affairs. Information on this website is general information, not legal advice, and is not a solicitation or advertisement of legal services. We do not guarantee the grant, registration or approval of any application; decisions rest with the relevant authorities. Official government fees are charged at actuals. <a href="/disclaimer/">Read the full disclaimer</a>.</p>
     </div>
   </div>
 </footer>
