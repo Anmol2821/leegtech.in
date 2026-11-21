@@ -72,6 +72,7 @@ Use `/thank-you/` as the conversion page for Google Ads and Meta.
 Legal facts were reviewed on the date in `site.lastReviewed`. Re-check statutory timelines and thresholds periodically (e.g. Patents Rules, GST thresholds, MSME limits) and update that date.
 
 ## Hosting
+- **Domain & DNS:** leegtech.in is registered at GoDaddy and uses GoDaddy DNS (ns67/ns68.domaincontrol.com). `A @ 46.202.161.99` points to the Hostinger server; `www` is a CNAME to `leegtech.in`. Email is Hostinger Business Email (MX mx1/mx2.hostinger.com, SPF, DKIM CNAMEs in GoDaddy DNS).
 - **Production:** Hostinger shared hosting, website `leegtech.in` (account `u784176160`), with Hostinger SSL, Force HTTPS and CDN.
   Deploy with `npm run deploy` (builds, checks, uploads `dist/` via the Hostinger API, purges the CDN).
   `src/static/.htaccess` holds redirects, security headers, caching and the 404 page for Hostinger.
