@@ -148,6 +148,7 @@ function footer() {
         <li><a href="/gwalior/">Gwalior Office</a></li>
         <li><a href="/services/">All Services</a></li>
         <li><a href="/blog/">Blog</a></li>
+        <li><a href="/tools/">Free Tools</a></li>
         <li><a href="/faq/">FAQ</a></li>
         <li><a href="/contact/">Contact</a></li>
         <li><a href="/privacy-policy/">Privacy Policy</a></li>

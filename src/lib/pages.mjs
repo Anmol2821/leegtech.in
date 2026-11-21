@@ -5,6 +5,7 @@ import { esc, icon, waIcon, waLink, fmtDate } from './util.mjs';
 import {
   breadcrumbs, secHead, faqList, serviceCard, ctaButtons, ctaBand, leadForm, stepsBlock, clientsStrip, usps
 } from './components.mjs';
+import { toolCards } from './tools.mjs';
 import { orgNode, websiteNode, founderNode, crumbsNode, faqNode, pageNode, serviceNode, articleNode, graph } from './schema.mjs';
 
 const img = (name, alt, { w, h, cls = '', eager = false, sizes = '(min-width: 900px) 50vw, 100vw', sm = true } = {}) =>
@@ -180,6 +181,13 @@ export function home(posts) {
   </div>
 </section>
 
+<section class="section">
+  <div class="container">
+    ${secHead('Free tools', 'Plan your filing in <span class="t-o">minutes.</span>')}
+    ${toolCards()}
+  </div>
+</section>
+
 ${posts.length ? `<section class="section section-soft">
   <div class="container">
     ${secHead('Insights', 'From the <span class="t-g">Leegtech Blog</span>')}
@@ -318,6 +326,8 @@ export function service(s, posts = []) {
     </section>
 
     ${guidesBlock(relatedPosts(posts, c.slug, s.url))}
+    ${c.slug === 'patent' ? `<a class="tool-callout" href="/tools/patent-deadline-calculator/">${icon('clock')} Free tool: calculate your patent deadlines ${icon('arrow')}</a>` : ''}
+    ${c.slug === 'trademark-copyright' && s.slug.startsWith('trademark') ? `<a class="tool-callout" href="/tools/trademark-class-finder/">${icon('tag')} Free tool: find your trademark class ${icon('arrow')}</a>` : ''}
     <section id="faq" class="block">
       <h2>Frequently asked questions</h2>
       ${faqList(s.faqs)}

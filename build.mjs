@@ -8,6 +8,7 @@ import { generalFaqs } from './src/data/faqs.mjs';
 import { layout } from './src/lib/layout.mjs';
 import { esc, stripTags } from './src/lib/util.mjs';
 import * as P from './src/lib/pages.mjs';
+import * as TOOLS from './src/lib/tools.mjs';
 
 const ROOT = path.dirname(new URL(import.meta.url).pathname);
 const SRC = path.join(ROOT, 'src');
@@ -125,6 +126,9 @@ for (const c of categories) render(P.category(c, posts), { priority: 0.9 });
 for (const s of allServices) render(P.service(s, posts), { priority: 0.8 });
 render(P.about(), { priority: 0.6 });
 render(P.gwalior(posts), { priority: 0.7 });
+render(TOOLS.toolsHub(), { priority: 0.7 });
+render(TOOLS.classFinder(), { priority: 0.8 });
+render(TOOLS.patentCalc(), { priority: 0.8 });
 render(P.contact(), { priority: 0.7 });
 render(P.faqPage(), { priority: 0.6 });
 render(P.blogIndex(posts), { priority: 0.6 });
@@ -182,6 +186,10 @@ ${categories.map(c => `- [${c.name}](${site.url}/${c.slug}/): ${c.tagline} ${c.s
 
 ## Services
 ${categories.map(c => `### ${c.name}\n${c.services.map(s => `- [${s.name}](${site.url}/${c.slug}/${s.slug}/): ${s.short}`).join('\n')}`).join('\n\n')}
+
+## Free tools
+- [Trademark Class Finder](${site.url}/tools/trademark-class-finder/): find which of the 45 Nice classes a product or service falls in.
+- [Patent Deadline Calculator](${site.url}/tools/patent-deadline-calculator/): Indian patent and PCT deadlines from a priority date.
 
 ## Guides
 ${posts.map(x => `- [${x.title}](${site.url}/blog/${x.slug}/): ${x.description}`).join('\n')}

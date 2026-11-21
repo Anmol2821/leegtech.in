@@ -27,6 +27,14 @@ Fix what you safely can, deploy with `npm run deploy` if anything in the repo ch
    report it (the daily task may be failing). Keep at least 20 unpublished topics in the backlog; add new,
    relevant topics with real search demand if it runs low.
 
+9. **Link building:** read `docs/seo/backlinks.md`. Research 3–5 new, genuine opportunities (Gwalior/MP
+   institutions, incubators, startup communities, directories, journalist requests relevant to Indian IP and
+   business registration). Verify each exists before adding it. Add them to the tracker with an angle and the
+   matching template from `docs/seo/outreach-templates.md`, and list them in the report so the owner can send
+   them. Never buy links or add the site to spammy directories.
+10. **Tools:** check `/tools/trademark-class-finder/` returns sensible classes for "tea", "software", "clothing" and
+    that `/tools/patent-deadline-calculator/` shows dates for a sample priority date.
+
 ## Monthly content review (1st of each month)
 Purpose: keep legal and statutory information current. Follow CLAUDE.md ground rules.
 
