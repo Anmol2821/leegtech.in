@@ -60,7 +60,7 @@ export const serviceOptions = (selected = '') => categories.map(c => `<optgroup 
 export const leadForm = ({ selected = '', id = 'lead', title = 'Book Your Free Consultation', compact = false } = {}) => `<form class="lead-form${compact ? ' compact' : ''}" name="consultation" method="POST" action="/thank-you/" data-netlify="true" netlify-honeypot="company_website" id="${id}" novalidate>
   <input type="hidden" name="form-name" value="consultation">
   <p class="hp" aria-hidden="true"><label>Leave this empty <input name="company_website" tabindex="-1" autocomplete="off"></label></p>
-  <div class="lf-head"><h2 class="lf-title">${esc(title)}</h2><p>We respond within one working day. No obligation.</p></div>
+  <div class="lf-head"><h2 class="lf-title">${esc(title)}</h2><p>Your enquiry is sent to us on WhatsApp. No obligation.</p></div>
   <div class="lf-grid">
     <div class="field"><label for="${id}-name">Full name <span aria-hidden="true">*</span></label><input id="${id}-name" name="name" type="text" autocomplete="name" required placeholder="Your full name"><span class="err">Please enter your name</span></div>
     <div class="field"><label for="${id}-phone">Phone / WhatsApp <span aria-hidden="true">*</span></label><input id="${id}-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" required placeholder="+91 98765 43210" pattern="^[+]?[0-9 ()-]{10,16}$"><span class="err">Please enter a valid phone number</span></div>
@@ -71,9 +71,9 @@ export const leadForm = ({ selected = '', id = 'lead', title = 'Book Your Free C
     <div class="field field-full"><label for="${id}-msg">Tell us about your requirement <span class="opt">(optional)</span></label><textarea id="${id}-msg" name="message" rows="3" placeholder="Describe your invention, brand, business or legal need briefly..."></textarea></div>
   </div>
   <input type="hidden" name="utm_source"><input type="hidden" name="utm_medium"><input type="hidden" name="utm_campaign"><input type="hidden" name="utm_term"><input type="hidden" name="utm_content"><input type="hidden" name="gclid"><input type="hidden" name="fbclid"><input type="hidden" name="landing_page"><input type="hidden" name="referrer"><input type="hidden" name="page">
-  <label class="consent-check"><input type="checkbox" name="consent" value="yes" required> <span>I agree to be contacted by Leegtech by phone, WhatsApp or email about my enquiry, and I accept the <a href="/privacy-policy/" target="_blank">Privacy Policy</a>.</span></label>
+  <label class="consent-check"><input type="checkbox" name="consent" value="yes" required> <span>I agree to be contacted by Leegtech on WhatsApp, phone or email about my enquiry, and I accept the <a href="/privacy-policy/" target="_blank">Privacy Policy</a>.</span></label>
   <span class="err err-consent">Please accept to continue</span>
-  <button class="btn btn-primary btn-lg btn-block" type="submit">Submit &amp; Book Free Consultation ${icon('arrow')}</button>
+  <button class="btn btn-wa btn-lg btn-block" type="submit">${waIcon()} Send Enquiry on WhatsApp</button>
   <p class="lf-note">${icon('lock')} Your information is private and used only to respond to your enquiry. Submitting this form does not create a lawyer–client relationship.</p>
 </form>`;
 

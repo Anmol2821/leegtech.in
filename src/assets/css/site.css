@@ -485,3 +485,4 @@ h1,h2,h3,.crumbs li{overflow-wrap:break-word;hyphens:auto}
 @media (max-width:900px){.ph-media .art{max-width:420px;margin:0 auto}}
 @media (max-width:380px){.mobile-bar a{font-size:.84rem;gap:4px;padding:11px 4px}.mobile-bar .ico{width:1em;height:1em}}
 .ft-disclaimer a{text-decoration:underline;color:#fff}
+.ty-status{font-weight:800;color:var(--green)}

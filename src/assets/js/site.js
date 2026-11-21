@@ -102,25 +102,21 @@
       btn.disabled = true; btn.textContent = 'Sending…';
       var data = new FormData(form);
       var body = new URLSearchParams(data).toString();
+      var g = function (k) { return (data.get(k) || '').toString().trim(); };
       var lead = {
-        name: (data.get('name') || '').toString(), email: (data.get('email') || '').toString().trim().toLowerCase(),
-        phone: (data.get('phone') || '').toString().replace(/[^\d+]/g, ''), service: (data.get('service') || '').toString(),
+        name: g('name'), email: g('email').toLowerCase(), phone: g('phone').replace(/[^\d+]/g, ''), service: g('service'),
+        stage: g('startup_status'), city: g('city'), message: g('message').slice(0, 600), page: location.pathname,
         id: Date.now() + '-' + Math.random().toString(36).slice(2, 8)
       };
-      fetch('/', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: body })
-        .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); })
-        .then(function () {
-          ss.set('lt_lead', JSON.stringify(lead));
-          push({ event: 'generate_lead_submit', form_id: form.id, service: lead.service });
-          location.href = '/thank-you/';
-        })
-        .catch(function () {
-          btn.disabled = false; btn.innerHTML = label;
-          var st = form.querySelector('.form-status');
-          if (!st) { st = document.createElement('p'); st.className = 'form-status bad'; st.setAttribute('role', 'alert'); btn.insertAdjacentElement('afterend', st); }
-          var wa = 'https://wa.me/' + (LT.wa || '') + '?text=' + encodeURIComponent('Hi Leegtech! I am ' + lead.name + '. I need help with ' + (lead.service || 'IP/legal services') + '. Phone: ' + lead.phone);
-          st.innerHTML = 'Sorry, something went wrong. Please try again, or <a href="' + wa + '" target="_blank" rel="noopener">message us on WhatsApp</a>.';
-        });
+      var go = function () {
+        ss.set('lt_lead', JSON.stringify(lead));
+        push({ event: 'generate_lead_submit', form_id: form.id, service: lead.service });
+        location.href = '/thank-you/';
+      };
+      // Keep a backup copy in Netlify Forms, but never block the WhatsApp hand-off on it.
+      var done = false; var finish = function () { if (!done) { done = true; go(); } };
+      setTimeout(finish, 3500);
+      fetch('/', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: body }).then(finish, finish);
     });
   });
 
@@ -141,10 +137,18 @@
         if (LT.ads) window.gtag('event', 'conversion', { send_to: LT.ads, transaction_id: lead.id });
       }
       fbq('track', 'Lead', { content_name: lead.service || 'Consultation' }, { eventID: lead.id });
+      var lines = ['Hi Leegtech! I would like a free consultation.', '', 'Name: ' + lead.name, 'Phone: ' + lead.phone, 'Email: ' + lead.email];
+      if (lead.service) lines.push('Service: ' + lead.service);
+      if (lead.stage) lines.push('Startup status: ' + lead.stage);
+      if (lead.city) lines.push('City: ' + lead.city);
+      if (lead.message) lines.push('Requirement: ' + lead.message);
+      lines.push('', '(Sent from leegtech.in' + (lead.page ? ' ' + lead.page : '') + ')');
+      var waUrl = 'https://wa.me/' + (LT.wa || '') + '?text=' + encodeURIComponent(lines.join('\n'));
       var wa = document.getElementById('ty-wa');
-      if (wa && lead.name) {
-        wa.href = 'https://wa.me/' + (LT.wa || '') + '?text=' + encodeURIComponent('Hi Leegtech! I just submitted an enquiry. Name: ' + lead.name + (lead.service ? '. Service: ' + lead.service : '') + '.');
-      }
+      if (wa) wa.href = waUrl;
+      var note = document.getElementById('ty-status');
+      if (note) note.hidden = false;
+      setTimeout(function () { location.href = waUrl; }, 1200);
     }
   }
 

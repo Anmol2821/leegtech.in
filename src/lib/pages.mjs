@@ -564,16 +564,17 @@ export function policyPage(doc) {
 
 /* ---------------- THANK YOU / 404 ---------------- */
 export function thankYou() {
-  const p = { path: '/thank-you/', title: 'Thank You: We Have Received Your Enquiry', description: 'Thank you for contacting Leegtech. Our team will get back to you within one working day.', noindex: true, section: 'thanks', bodyClass: 'thanks' };
+  const p = { path: '/thank-you/', title: 'Thank You: Send Your Enquiry on WhatsApp', description: 'Thank you for contacting Leegtech. Send your enquiry on WhatsApp and our team will reply there.', noindex: true, section: 'thanks', bodyClass: 'thanks' };
   p.schema = graph(base(), pageNode({ ...p }));
   const body = `
 <section class="section thanks-hero">
   <div class="container narrow center">
     <span class="big-check">${icon('check')}</span>
-    <h1>Thank you! Your enquiry has been received.</h1>
-    <p class="lead">Our team will contact you within one working day. For a faster response, continue the conversation on WhatsApp.</p>
+    <h1>Thank you! One last step on WhatsApp.</h1>
+    <p class="lead">We're opening WhatsApp with your details filled in. <strong>Tap Send</strong> to share your enquiry with our team, and we'll reply on WhatsApp.</p>
+    <p class="ty-status" id="ty-status" hidden role="status">Opening WhatsApp…</p>
     <div class="btn-row center-row">
-      <a class="btn btn-wa btn-lg" id="ty-wa" href="${waLink(site)}" target="_blank" rel="noopener">${waIcon()} Continue on WhatsApp</a>
+      <a class="btn btn-wa btn-lg" id="ty-wa" href="${waLink(site)}">${waIcon()} Open WhatsApp</a>
       <a class="btn btn-ghost btn-lg" href="/">Back to home</a>
     </div>
     <p class="muted mt">You can also call us on <a href="tel:${site.phone}">${site.phoneDisplay}</a> or email <a href="mailto:${site.email}">${site.email}</a>.</p>
