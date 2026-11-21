@@ -1,5 +1,7 @@
 import { site } from '../data/site.mjs';
 import { niceClasses } from '../data/nice-classes.mjs';
+import { officialFees as F } from '../data/official-fees.mjs';
+import { fmtDate } from './util.mjs';
 import { esc, icon } from './util.mjs';
 import { breadcrumbs, secHead, faqList, ctaBand } from './components.mjs';
 import { orgNode, websiteNode, crumbsNode, faqNode, pageNode, graph } from './schema.mjs';
@@ -12,6 +14,7 @@ const appNode = (name, path, description) => ({
 
 export const tools = [
   { slug: 'trademark-class-finder', name: 'Trademark Class Finder', icon: 'tag', short: 'Type your product or service and see which of the 45 trademark classes it is likely to fall in.' },
+  { slug: 'official-fee-calculator', name: 'Official Fee Calculator', icon: 'file', short: 'Estimate official government fees for Indian patent, trademark and design filings, by applicant type, from the official fee schedules.' },
   { slug: 'patent-deadline-calculator', name: 'Patent Deadline Calculator', icon: 'clock', short: 'Enter your priority date and see key Indian patent and PCT deadlines: 12, 18 and 31 months, FER reply, renewals and term.' }
 ];
 
@@ -185,6 +188,123 @@ ${ctaBand('Never miss a patent deadline', 'We docket every statutory date and ha
     out.innerHTML='<div class="table-wrap"><table class="pd-table"><thead><tr><th>Deadline</th><th>Date</th><th>Note</th></tr></thead><tbody>'+r+'</tbody></table></div><p class="tool-res-f">Want these dates tracked for you? <a href="/contact/">Talk to us on WhatsApp</a>.</p>';
     if(window.dataLayer)dataLayer.push({event:'tool_use',tool:'patent_deadline_calculator'});
   });
+})();
+</script>`;
+  return { p, body };
+}
+
+/* ---------------- OFFICIAL FEE CALCULATOR ---------------- */
+const inr = (n) => '₹' + n.toLocaleString('en-IN');
+export function feeCalc() {
+  const path = '/tools/official-fee-calculator/';
+  const crumbs = [{ name: 'Home', path: '/' }, { name: 'Free tools', path: '/tools/' }, { name: 'Official Fee Calculator', path }];
+  const P = F.patents, T = F.trademarks, D = F.designs;
+  const renewTotal = (k) => P.renewal.reduce((a, b) => a + (b.years[1] - b.years[0] + 1) * b[k], 0);
+  const faqs = [
+    ['What is the official fee for a trademark application in India?', `For e-filing, the official fee is ${inr(T.application.lower)} per class for individuals, startups and small enterprises, and ${inr(T.application.others)} per class for all other applicants (Form TM-A).`, '/trademark-copyright/trademark-registration/'],
+    ['What is the official fee for filing a patent application in India?', `For e-filing, the application fee (Form 1) is ${inr(P.application.lower)} for natural persons, startups, small entities and educational institutions, and ${inr(P.application.others)} for others, for up to 30 sheets and 10 claims. The request for examination (Form 18) is ${inr(P.examination.lower)} or ${inr(P.examination.others)}.`, '/patent/patent-registration/'],
+    ['Who qualifies for the lower official fees?', 'Natural persons, DPIIT-recognised startups and small entities (and, for patents, educational institutions) pay the lower fees; for trademarks, individuals, startups and small enterprises. Eligibility must be supported with the prescribed proof, otherwise the higher fee applies.', '/business-tax/startup-india-registration/'],
+    ['Do these amounts include professional fees?', 'No. This calculator shows official government fees only. Professional fees for drafting, filing and prosecution are separate and are quoted after a free consultation.', '/contact/']
+  ];
+  const p = { path, title: 'Official IP Fee Calculator: Patent, Trademark, Design', description: 'Free calculator for official government fees for Indian patent, trademark and design filings, by applicant type, based on the official IP India fee schedules.', section: 'tools' };
+  p.schema = graph(orgNode(), websiteNode(), pageNode({ ...p, title: 'Official Fee Calculator' }), crumbsNode(crumbs), appNode('Official Fee Calculator', path, p.description), faqNode(faqs, path));
+  const row = (label, a, b) => `<tr><td>${label}</td><td>${typeof a === 'number' ? inr(a) : a}</td><td>${typeof b === 'number' ? inr(b) : b}</td></tr>`;
+  const body = `
+<section class="page-hero">
+  <div class="container narrow">
+    ${breadcrumbs(crumbs)}
+    <p class="eyebrow">Free tool</p>
+    <h1>Official Fee Calculator</h1>
+    <p class="lead">Estimate the official government fees for filing a patent, trademark or design in India. Amounts are e-filing fees from the official IP India fee schedules, verified on ${fmtDate(F.verifiedOn)}.</p>
+    <div class="tool-box">
+      <div class="seg" role="tablist" aria-label="Type of filing">
+        <button type="button" role="tab" class="seg-b is-on" data-t="tm" aria-selected="true">Trademark</button>
+        <button type="button" role="tab" class="seg-b" data-t="pt" aria-selected="false">Patent</button>
+        <button type="button" role="tab" class="seg-b" data-t="ds" aria-selected="false">Design</button>
+      </div>
+      <div class="field"><label for="fc-who">Applicant type</label>
+        <select id="fc-who"><option value="lower">Individual / DPIIT startup / small entity (MSME)</option><option value="others">Company, LLP, firm or other applicant</option></select></div>
+      <div class="fc-pane" data-p="tm">
+        <div class="tool-fields two"><div class="field"><label for="fc-tm-n">Number of classes</label><input id="fc-tm-n" type="number" min="1" max="45" value="1" inputmode="numeric"></div></div>
+        <label class="consent-check"><input type="checkbox" id="fc-tm-x"> <span>Expedited processing (TM-M)</span></label>
+      </div>
+      <div class="fc-pane" data-p="pt" hidden>
+        <div class="tool-fields two">
+          <div class="field"><label for="fc-pt-pg">Pages in specification</label><input id="fc-pt-pg" type="number" min="1" value="30" inputmode="numeric"></div>
+          <div class="field"><label for="fc-pt-cl">Number of claims</label><input id="fc-pt-cl" type="number" min="0" value="10" inputmode="numeric"></div>
+        </div>
+        <label class="consent-check"><input type="checkbox" id="fc-pt-ep"> <span>Request early publication (Form 9)</span></label>
+        <div class="field"><label for="fc-pt-ex">Examination</label><select id="fc-pt-ex"><option value="normal">Request for examination (Form 18)</option><option value="exp">Expedited examination (Form 18A), for eligible applicants</option><option value="none">Not yet</option></select></div>
+      </div>
+      <div class="fc-pane" data-p="ds" hidden>
+        <div class="tool-fields two"><div class="field"><label for="fc-ds-n">Number of design applications</label><input id="fc-ds-n" type="number" min="1" value="1" inputmode="numeric"></div></div>
+      </div>
+      <div id="fc-out" class="tool-out" aria-live="polite"></div>
+      <p class="tool-note">${icon('shield')} Official government fees only (e-filing; physical filing costs more). Professional fees are separate. Fees change from time to time, so always check the current schedule on the official IP India website before paying. Lower fees require proof of eligibility.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section section-top0">
+  <div class="container narrow prose">
+    <h2>Official fee schedule (e-filing)</h2>
+    <p class="muted small">Verified on ${fmtDate(F.verifiedOn)} from the official IP India schedules: <a href="${F.sources.patents}" rel="noopener" target="_blank">Patents</a>, <a href="${F.sources.trademarks}" rel="noopener" target="_blank">Trade Marks</a>, <a href="${F.sources.designs}" rel="noopener" target="_blank">Designs (Rules, as amended in 2021)</a>.</p>
+    <h3>Trademarks</h3>
+    <div class="table-wrap"><table><thead><tr><th>Item</th><th>Individual / startup / small enterprise</th><th>Others</th></tr></thead><tbody>
+      ${row('Application (TM-A), per class', T.application.lower, T.application.others)}
+      ${row('Expedited processing, per class', T.expedited.lower, T.expedited.others)}
+      ${row('Opposition or counter-statement (TM-O), per class', T.opposition.all, T.opposition.all)}
+      ${row('Renewal (TM-R), per class', T.renewal.all, T.renewal.all)}
+      ${row('Renewal surcharge (within 6 months after expiry), per class', T.renewalSurcharge.all + ' + renewal fee', T.renewalSurcharge.all + ' + renewal fee')}
+    </tbody></table></div>
+    <h3>Patents</h3>
+    <div class="table-wrap"><table><thead><tr><th>Item</th><th>Natural person / startup / small entity / educational institution</th><th>Others</th></tr></thead><tbody>
+      ${row('Application (Form 1), up to 30 sheets and 10 claims', P.application.lower, P.application.others)}
+      ${row('Each extra sheet beyond 30', P.extraSheet.lower, P.extraSheet.others)}
+      ${row('Each extra claim beyond 10', P.extraClaim.lower, P.extraClaim.others)}
+      ${row('Early publication (Form 9)', P.earlyPublication.lower, P.earlyPublication.others)}
+      ${row('Request for examination (Form 18)', P.examination.lower, P.examination.others)}
+      ${row('Expedited examination (Form 18A)', P.expeditedExamination.lower, P.expeditedExamination.others)}
+      ${row('Pre-grant opposition (Form 7A)', P.preGrantOpposition.lower, P.preGrantOpposition.others)}
+      ${row('Post-grant opposition (Form 7)', P.postGrantOpposition.lower, P.postGrantOpposition.others)}
+      ${P.renewal.map(r => row(`Renewal, each year from year ${r.years[0]} to ${r.years[1]}`, r.lower, r.others)).join('')}
+      ${row('<strong>Total renewals, years 3 to 20</strong>', `<strong>${inr(renewTotal('lower'))}</strong>`, `<strong>${inr(renewTotal('others'))}</strong>`)}
+    </tbody></table></div>
+    <h3>Designs</h3>
+    <div class="table-wrap"><table><thead><tr><th>Item</th><th>Natural person / startup / small entity</th><th>Others</th></tr></thead><tbody>
+      ${row('Application for registration (Form 1)', D.application.lower, D.application.others)}
+      ${row('Extension by 5 years (Form 3)', D.extension.lower, D.extension.others)}
+      ${row('Restoration of a lapsed design (Form 4), plus additional fee of the same amount', D.restoration.lower, D.restoration.others)}
+    </tbody></table></div>
+    <p>Copyright registration fees are set by the Copyright Rules, 2013 and are not included here; see the <a href="/trademark-copyright/copyright-registration/">copyright registration</a> page or ask us.</p>
+  </div>
+</section>
+
+<section class="section section-soft">
+  <div class="container narrow">
+    ${secHead('FAQ', 'Official fees: common questions')}
+    ${faqList(faqs)}
+  </div>
+</section>
+${ctaBand('Get an exact quote', 'We confirm your eligibility for lower fees and send a written quote with official and professional fees shown separately.')}
+<script>
+(function(){
+  var F=${JSON.stringify({ P, T, D })};
+  var t='tm',who=document.getElementById('fc-who'),out=document.getElementById('fc-out');
+  function v(id){var n=parseInt(document.getElementById(id).value,10);return isNaN(n)||n<0?0:n;}
+  function inr(n){return '₹'+n.toLocaleString('en-IN');}
+  function calc(){
+    var k=who.value,lines=[];
+    if(t==='tm'){var n=Math.max(1,Math.min(45,v('fc-tm-n')));lines.push(['Trademark application (TM-A) × '+n+' class'+(n>1?'es':''),F.T.application[k]*n]);if(document.getElementById('fc-tm-x').checked)lines.push(['Expedited processing × '+n,F.T.expedited[k]*n]);}
+    if(t==='pt'){lines.push(['Application (Form 1)',F.P.application[k]]);var pg=Math.max(0,v('fc-pt-pg')-30),cl=Math.max(0,v('fc-pt-cl')-10);if(pg)lines.push(['Extra sheets × '+pg,F.P.extraSheet[k]*pg]);if(cl)lines.push(['Extra claims × '+cl,F.P.extraClaim[k]*cl]);if(document.getElementById('fc-pt-ep').checked)lines.push(['Early publication (Form 9)',F.P.earlyPublication[k]]);var ex=document.getElementById('fc-pt-ex').value;if(ex==='normal')lines.push(['Request for examination (Form 18)',F.P.examination[k]]);if(ex==='exp')lines.push(['Expedited examination (Form 18A)',F.P.expeditedExamination[k]]);}
+    if(t==='ds'){var d=Math.max(1,v('fc-ds-n'));lines.push(['Design application (Form 1) × '+d,F.D.application[k]*d]);}
+    var tot=lines.reduce(function(a,b){return a+b[1];},0);
+    out.innerHTML='<div class="table-wrap"><table class="pd-table"><tbody>'+lines.map(function(l){return '<tr><td>'+l[0]+'</td><td>'+inr(l[1])+'</td></tr>';}).join('')+'<tr class="fc-total"><td>Estimated official fees</td><td>'+inr(tot)+'</td></tr></tbody></table></div>'+(t==='pt'?'<p class="tool-res-f">Renewal fees start from the 3rd year after grant. See the schedule below.</p>':'')+(t==='tm'?'<p class="tool-res-f">Renewal every 10 years: '+inr(F.T.renewal.all)+' per class.</p>':'');
+    if(window.dataLayer)dataLayer.push({event:'tool_use',tool:'official_fee_calculator',filing:t});
+  }
+  document.querySelectorAll('.seg-b').forEach(function(b){b.addEventListener('click',function(){t=b.dataset.t;document.querySelectorAll('.seg-b').forEach(function(x){var on=x===b;x.classList.toggle('is-on',on);x.setAttribute('aria-selected',on);});document.querySelectorAll('.fc-pane').forEach(function(p){p.hidden=p.dataset.p!==t;});calc();});});
+  document.querySelectorAll('.tool-box input,.tool-box select').forEach(function(el){el.addEventListener('input',calc);el.addEventListener('change',calc);});
+  calc();
 })();
 </script>`;
   return { p, body };

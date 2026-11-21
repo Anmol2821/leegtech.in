@@ -44,9 +44,12 @@ Purpose: keep legal and statutory information current. Follow CLAUDE.md ground r
    categories, the Income-tax Act, 2025, PCT and Madrid membership changes.
 2. Update affected text in `src/data/*.mjs`, FAQs and blog posts (set the post's `updated` date). Never add fee
    amounts, guarantees or unverifiable claims.
-3. If anything was reviewed, set `site.lastReviewed` to today. Run all checks, commit, `npm run deploy`,
+3. **Official fees:** open each source URL in `src/data/official-fees.mjs` (IP India patents schedule PDF, trade
+   marks fees page, Designs Rules) and compare every amount. Update any changed amount and set `verifiedOn` to
+   today. If a source cannot be reached, report it and leave the data unchanged (do not guess).
+4. If anything was reviewed, set `site.lastReviewed` to today. Run all checks, commit, `npm run deploy`,
    `npm run publish-live`.
-4. Report what changed, with sources, or "no changes needed".
+5. Report what changed, with sources, or "no changes needed".
 
 ## Owner-requested changes
 Content or design changes requested by the owner are made in a normal session following CLAUDE.md, checked
