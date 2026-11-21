@@ -3,6 +3,7 @@ import fs from 'node:fs'; import path from 'node:path';
 const D = process.argv[2] || 'dist'; const files = [];
 const walk = d => fs.readdirSync(d, { withFileTypes: true }).forEach(f => { const p = path.join(d, f.name); f.isDirectory() ? walk(p) : p.endsWith('.html') && files.push(p); });
 walk(D);
+for (let i = files.length - 1; i >= 0; i--) if (/[\/]google[0-9a-f]+\.html$/.test(files[i])) files.splice(i, 1); // search-console verification files
 const exists = (u) => { u = u.split('#')[0].split('?')[0]; if (!u) return true; const p = path.join(D, u); return fs.existsSync(p) && (fs.statSync(p).isFile() || fs.existsSync(path.join(p, 'index.html'))); };
 const problems = []; const titles = {}; const descs = {}; const ids = new Map();
 for (const f of files) {

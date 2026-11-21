@@ -11,6 +11,7 @@ flt = sys.argv[1] if len(sys.argv) > 1 else ''
 cnt = collections.Counter(); where = {}
 for f in glob.glob(D + '/**/*.html', recursive=True):
     if flt and flt not in f: continue
+    if re.search(r'google[0-9a-f]+\.html$', f): continue  # search-console verification file
     s = open(f).read()
     s = re.sub(r'<script[\s\S]*?</script>|<style[\s\S]*?</style>|<svg[\s\S]*?</svg>|<header class="site-header"[\s\S]*?</header>|<footer class="site-footer"[\s\S]*?</footer>', ' ', s)
     t = html.unescape(re.sub(r'<[^>]+>', ' ', s))
