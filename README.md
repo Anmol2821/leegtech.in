@@ -70,3 +70,10 @@ Use `/thank-you/` as the conversion page for Google Ads and Meta.
 
 ## Content review
 Legal facts were reviewed on the date in `site.lastReviewed`. Re-check statutory timelines and thresholds periodically (e.g. Patents Rules, GST thresholds, MSME limits) and update that date.
+
+## Hosting
+- **Review (current):** Netlify project `leegtech-preview` (site ID `3b668fd6-8bd5-4bcf-abd3-4bd3afd6f364`), https://leegtech-preview.netlify.app, behind Netlify team login.
+- **Production:** to be moved to Leegtech's own hosting at go-live; update this section and `docs/blog-workflow.md` then.
+
+## Daily blog automation
+A scheduled Claude task publishes 2 checked posts per day following `docs/blog-workflow.md`. Topics and the published log are in `docs/blog-topics.md`.
