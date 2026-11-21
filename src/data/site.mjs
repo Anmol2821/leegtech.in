@@ -39,7 +39,7 @@ export const site = {
   tracking: {
     gtmId: '',            // e.g. 'GTM-XXXXXXX' (recommended: manage GA4, Ads and Meta inside GTM)
     ga4Id: '',            // e.g. 'G-XXXXXXXXXX' (used only if gtmId is empty)
-    googleAdsId: '',      // e.g. 'AW-123456789' (used only if gtmId is empty)
+    googleAdsId: 'AW-5514145496', // used only if gtmId is empty
     googleAdsLeadLabel: '', // conversion label for the lead conversion
     metaPixelId: '581662101445392',
     googleSiteVerification: '',
