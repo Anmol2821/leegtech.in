@@ -75,7 +75,7 @@ export function home(posts) {
 
 <section class="section section-soft">
   <div class="container why-grid">
-    <div class="why-media">${img('why', 'Leegtech services: patent, design, trademark, copyright, business and agreements under one roof', { w: 464, h: 739, sm: false, sizes: '(min-width: 900px) 40vw, 100vw' })}</div>
+    <div class="why-media"><img src="/assets/img/art/hub.svg" alt="Leegtech brings patents, designs, trademarks, copyright, business and tax, and agreements together under one roof" width="520" height="660" loading="lazy" decoding="async"></div>
     <div>
       ${secHead('Why Leegtech', 'Your Ideas Deserve <span class="t-o">Expert Protection.</span>', '', 'left')}
       <div class="usp-grid">${usps.map(([ic, t, d]) => `<div class="usp"><span class="usp-ico">${icon(ic)}</span><div><h3>${esc(t)}</h3><p>${esc(d)}</p></div></div>`).join('')}</div>
