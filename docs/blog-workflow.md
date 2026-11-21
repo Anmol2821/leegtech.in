@@ -24,5 +24,5 @@ If any check fails and cannot be fixed with confidence, do not publish that post
 ## 4. Publish
 1. Append the published posts (date, title, URL) to the log in `docs/blog-topics.md` and mark the topics done.
 2. Commit to `main` with a clear message and push.
-3. Deploy: use the Netlify connector `deploy-site` for the current hosting project (see README "Hosting"). Until go-live this is the review project `leegtech-preview` (site ID `3b668fd6-8bd5-4bcf-abd3-4bd3afd6f364`).
+3. Deploy: `npm install` (once) then `npm run deploy`. It must end with `Deployed to https://leegtech.in`. Then run `npm run publish-live`. If deploy fails, report the error; the commit stays on `main` for the next run.
 4. Finish with a short summary: titles, URLs, sources used, and anything skipped and why.

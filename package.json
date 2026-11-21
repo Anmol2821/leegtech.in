@@ -4,13 +4,17 @@
   "description": "leegtech.in website",
   "scripts": {
     "build": "node build.mjs",
-    "preview": "python3 -m http.server 8080 -d dist"
+    "preview": "python3 -m http.server 8080 -d dist",
+    "deploy": "node scripts/deploy-hostinger.mjs",
+    "publish-live": "bash scripts/publish-live.sh"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@fontsource-variable/nunito": "^5.3.0",
+    "@modelcontextprotocol/sdk": "^1.32.2",
+    "hostinger-api-mcp": "^4.15.0",
     "marked": "^14.1.4"
   },
   "private": true
