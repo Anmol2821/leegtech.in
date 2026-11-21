@@ -1,0 +1,582 @@
+[
+ {
+  "state": "Andaman & Nicobar Islands",
+  "na": true,
+  "summary": "",
+  "basis": "",
+  "categories": [],
+  "links": []
+ },
+ {
+  "state": "Andhra Pradesh",
+  "na": false,
+  "summary": "",
+  "basis": "Schedule 1-A, Article no. 42, entry from (a) to (d) of the Stamp (Andhra Pradesh Amendment) Act, 1922.",
+  "categories": [
+   {
+    "label": "(a) Registration",
+    "scope": "Solely for registering or admitting execution of documents for a single transaction",
+    "duty": "₹20/-"
+   },
+   {
+    "label": "(b) Specific Act",
+    "scope": "Authorizing one or more persons for a single transaction (other than registration)",
+    "duty": "₹20/-"
+   },
+   {
+    "label": "(c) Joint/General (Small Group)",
+    "scope": "Authorizing up to 5 persons to act jointly/severally in multiple transactions or generally",
+    "duty": "₹50/-"
+   },
+   {
+    "label": "(d) Joint/General (Large Group)",
+    "scope": "Authorizing 6 to 10 persons to act jointly/severally in multiple transactions or generally",
+    "duty": "₹75/-"
+   }
+  ],
+  "links": [
+   "https://ipindia.gov.in/storage/uploads/reference/45DM70jW0RawZcZ32VSNqzACGEkqGtLWmNYo0kr5.pdf"
+  ]
+ },
+ {
+  "state": "Arunachal Pradesh",
+  "na": false,
+  "summary": "₹20/- Explanation - For the purposes of this Article more persons than one when belonging to the same firm shall be deemed to be one person.",
+  "basis": "Schedule-1, Article 48 of the Indian Stamp Act, 1899 (as applied to the State of Arunachal Pradesh) and its subsequent amendments (notably the 2007 and 2018 Amendment Acts).",
+  "categories": [],
+  "links": []
+ },
+ {
+  "state": "Assam",
+  "na": false,
+  "summary": "",
+  "basis": "Schedule-I, Article 48 (a) and (b) of the Indian Stamp (Assam Amendment) Act, 2021.",
+  "categories": [
+   {
+    "label": "Special Power of Attorney (SPA)",
+    "scope": "",
+    "duty": "₹500/-"
+   },
+   {
+    "label": "General Power of Attorney (GPA)",
+    "scope": "",
+    "duty": "₹1000/-"
+   }
+  ],
+  "links": [
+   "https://ipindia.gov.in/storage/uploads/reference/gvssih6OZNii52c9F5utrG4jh7kBNOrcvKNcJSxi.pdf",
+   "https://ipindia.gov.in/storage/uploads/reference/rBYDR1fnWUoEUla5AlYcWw6Q4YzQHcZhYqVtNiBS.pdf"
+  ]
+ },
+ {
+  "state": "Bihar",
+  "na": false,
+  "summary": "₹1000/- and Registration Fees - ₹250/- For the purpose other than authorizing to sale/transfer or convey of immovable property situated in the state of Bihar",
+  "basis": "Article 48(b)",
+  "categories": [],
+  "links": [
+   "https://ipindia.gov.in/storage/uploads/reference/OYdTPjsTRaa5g1isgYhZ0hksaTG1yF470aSwVohg.pdf"
+  ]
+ },
+ {
+  "state": "Chandigarh",
+  "na": false,
+  "summary": "",
+  "basis": "Stamp Duty Chart",
+  "categories": [
+   {
+    "label": "General Power of Attorney (GPA)",
+    "scope": "",
+    "duty": "₹75/-"
+   },
+   {
+    "label": "GPA by/for more than five persons",
+    "scope": "",
+    "duty": "₹150/-"
+   },
+   {
+    "label": "Special Power of Attorney (SPA)",
+    "scope": "",
+    "duty": "₹15/-"
+   }
+  ],
+  "links": [
+   "https://ipindia.gov.in/storage/uploads/reference/F6LePRZxb2u94rnNO1UwlWzTnY3BLoSz8N3b1bSF.pdf",
+   "https://revenue.chd.gov.in/StampDuty.aspx"
+  ]
+ },
+ {
+  "state": "Chhattisgarh",
+  "na": false,
+  "summary": "₹20/- Single Transaction: Authorizing one or more persons to act in a single transaction (other than registration) Explanation - For the purposes of this Article more persons than one when belonging to the same firm shall be deemed to be one person.",
+  "basis": "Schedule 1-A, Article 48 of the Indian Stamp Act, 1899 (as applied to the State of Chhattisgarh).",
+  "categories": [],
+  "links": [
+   "https://ipindia.gov.in/storage/uploads/reference/0n3KRsTkLySlDRnD5k0A5NMY4EMW6T9RHzXgFOE9.pdf"
+  ]
+ },
+ {
+  "state": "Dadra & Nagar Haveli and Daman & Diu",
+  "na": false,
+  "summary": "₹500 (for all types of PA) For the purposes of this Article more persons than one when belonging to the same firm shall be deemed to be one person. Explanation - For the purposes of this Article more persons than one when belonging to the same firm shall be deemed to be one person.",
+  "basis": "Schedule 1A, Article 49 of the Indian Stamp Dadra and Nagar Haveli and Daman and Diu (Amendment) Act, 1968 dated 20/04/2022",
+  "categories": [],
+  "links": [
+   "https://ipindia.gov.in/storage/uploads/reference/sGYJ6s2UaxrQsbXXCHMjVkpKgb26QIExQUhN70wf.pdf"
+  ]
+ },
+ {
+  "state": "Goa",
+  "na": false,
+  "summary": "",
+  "basis": "Schedule I-A, Article 48 of the Indian Stamp (Goa, Daman and Diu Amendment) Act, 1968.",
+  "categories": [
+   {
+    "label": "a",
+    "scope": "when executed for the sole purpose of procuring the registration of one or more documents in relation to a single transaction or for admitting execution of one or more such documents",
+    "duty": "₹100/-"
+   },
+   {
+    "label": "c",
+    "scope": "when authorising one person or more to act in a single transaction other than the case mentioned in clause (a)",
+    "duty": "₹100/-"
+   },
+   {
+    "label": "d",
+    "scope": "when authorising one person to act in more than one transaction or generally",
+    "duty": "₹100/-"
+   },
+   {
+    "label": "e",
+    "scope": "when authorising more than one person to act in single transaction or more than one transaction jointly or severally or generally",
+    "duty": "₹100/-"
+   }
+  ],
+  "links": [
+   "https://ipindia.gov.in/storage/uploads/reference/4M35Wfi5rn1rmFMveJQQkd3f3K80TF7DtkJQ3bUb.pdf"
+  ]
+ },
+ {
+  "state": "Gujarat",
+  "na": false,
+  "summary": "₹300/- (for all types of PA) Explanation - For the purposes of this Article more persons than one when belonging to the same firm shall be deemed to be one person. Explanation - For the purposes of this Article more persons than one when belonging to the same firm shall be deemed to be one person.",
+  "basis": "Schedule-I, Article 45 of the Gujarat Stamp Act, 1958 (1982 and 2019 Amendment Act).",
+  "categories": [],
+  "links": [
+   "https://ipindia.gov.in/storage/uploads/reference/Rj8JPjZKA4HitsawOK0W2ercOVwKHx1HiN1TKFAc.pdf",
+   "https://ipindia.gov.in/storage/1963Gujarat46.pdf"
+  ]
+ },
+ {
+  "state": "Haryana",
+  "na": false,
+  "summary": "₹300/- Single Transaction: Authorizing one or more persons to act in a single transaction (other than registration) Explanation - For the purposes of this Article more persons than one when belonging to the same firm shall be deemed to be one person.",
+  "basis": "Schedule-I Article 48 of the Indian Stamp Act, 1899 (Haryana Amendment 2006 and 2013).",
+  "categories": [],
+  "links": [
+   "https://ipindia.gov.in/storage/uploads/reference/X5eCXhAnz4e0PMOfkF78FrtRd5ikdq6QBv82PEj7.pdf",
+   "https://ipindia.gov.in/storage/uploads/reference/n5MahuRRyUH448mz0xmpien4s76pPkLQRk5skgRK.pdf"
+  ]
+ },
+ {
+  "state": "Himachal Pradesh",
+  "na": false,
+  "summary": "",
+  "basis": "Schedule 1-A, Article 48 (a), (b) and (c) of the Indian Stamp Act, 1899 as applicable in State of Himachal Pradesh (Amendment of 2023).",
+  "categories": [
+   {
+    "label": "a",
+    "scope": "when authorizing one or more persons to act jointly and severally in a single transaction for sole purpose (including suit or proceedings)",
+    "duty": "₹1000/-"
+   },
+   {
+    "label": "b",
+    "scope": "when authorizing one or more persons to act jointly and severally in more than one transaction or generally",
+    "duty": "₹1500/-"
+   },
+   {
+    "label": "c",
+    "scope": "In any other case",
+    "duty": "₹2000/-"
+   }
+  ],
+  "links": [
+   "https://ipindia.gov.in/storage/uploads/reference/ZTLu0cggGeXE23VedwknJUaxj7orCXY6XnCaoTgk.pdf",
+   "https://ipindia.gov.in/storage/uploads/reference/Sh7MKT43rxdkeFbrLfkImFMmldq31KFyJmgCco4X.pdf",
+   "https://grc.lawrbit.com/notification/eyJpdiI6IkNFS3k5ODVWVFZBRWNLWFFMNlh6MEE9PSIsInZhbHVlIjoicDlqQ25oRXpQNmpTR0d1clpCdThSZz09IiwibWFjIjoiY2EzMDgwZjc3NGViZjM0ZmE2NWQ4ZjgzNTBkOTM1Nzc0YTQ5MTY3MGU1MmQ3MzczMWU3ZTZlOTYxMTRkNWM0MiIsInRhZyI6IiJ9/eyJpdiI6Imw1TWlhbDZEVDlURTZWNDdlR3dzVFE9PSIsInZhbHVlIjoieEtOUVRiN3F0L0x1b2h6RFFDL2Y4eEIvQXRDWWg1eklrSjFNdHBsUW9TZz0iLCJtYWMiOiJmMDEyODdhMjNkZmJjOTFmNGE3ZGRiNjY0NGFiYjIyNjkxYWZhNWY1OTZiMzdiNmYzYjZmZGVkMGI4Yzk5YmJjIiwidGFnIjoiIn0"
+  ]
+ },
+ {
+  "state": "Jammu & Kashmir",
+  "na": false,
+  "summary": "₹100/- Single Transaction: Authorizing one or more persons to act in a single transaction Explanation - For the purposes of this Article more persons than one when belonging to the same firm shall be deemed to be one person.",
+  "basis": "Schedule I, Article 42 (a), (b) and (e) of the Stamp Act Samvat, 1977",
+  "categories": [],
+  "links": [
+   "https://ipindia.gov.in/storage/uploads/reference/Qv5shAWT1TycdO1jik0qhnRR9BBMOx8wJbstDKpW.pdf",
+   "https://igr.jk.gov.in/SerInf.html"
+  ]
+ },
+ {
+  "state": "Jharkhand",
+  "na": false,
+  "summary": "",
+  "basis": "-",
+  "categories": [
+   {
+    "label": "a",
+    "scope": "(a) When Executed for the sole purpose of procuring the registration of one or more documents in relation to a single transaction or for admitting execution of one or more such documents",
+    "duty": "Rs 1.60/-"
+   },
+   {
+    "label": "c",
+    "scope": "When authorizing one person or more to act in a single transaction other than the case mentioned in clause (a) –",
+    "duty": "Rs 3.15/-"
+   },
+   {
+    "label": "d",
+    "scope": "When authorising one person or more than five persons to act jointly and severally in more than one transaction or generally",
+    "duty": "Rs 15.75/-"
+   },
+   {
+    "label": "e",
+    "scope": "When authorising more than five but not more than ten persons to act jointly and severally in more than one transaction or generally",
+    "duty": "Rs 31.50/-"
+   }
+  ],
+  "links": [
+   "https://ipindia.gov.in/storage/uploads/reference/v4NHVI8ei48S8JRZKQll3tFNZzpxbp7pmKnj9QcB.pdf"
+  ]
+ },
+ {
+  "state": "Karnataka",
+  "na": false,
+  "summary": "₹100/- Single Transaction: Authorizing one or more persons to act in a single transaction (other than registration) Explanation - For the purposes of this Article more persons than one when belonging to the same firm shall be deemed to be one person.",
+  "basis": "Schedule, Article 41 (b), (c), (d) of the Karnataka Stamp Act, 1957.",
+  "categories": [],
+  "links": [
+   "https://ipindia.gov.in/storage/uploads/reference/34jbp2zX0TnSxkdes8Wy27lWucOEgA4Ys6vfk7ts.pdf"
+  ]
+ },
+ {
+  "state": "Kerala",
+  "na": false,
+  "summary": "₹100/- Single Transaction: Authorizing one or more persons to act in a single transaction (other than registration) Explanation - For the purposes of this Article more persons than one when belonging to the same firm shall be deemed to be one person.",
+  "basis": "Schedule, Sr. no. 44 (b), (c), (d) and (h) of the Kerala Stamp Act, 1959.",
+  "categories": [],
+  "links": [
+   "https://ipindia.gov.in/storage/uploads/reference/4AI7jlVZZmoBrIybq3BCZV3v5kbOGrbILd6G6At3.pdf"
+  ]
+ },
+ {
+  "state": "Ladakh",
+  "na": false,
+  "summary": "₹100/ Single Transaction: Authorizing one or more persons to act in a single transaction Explanation - For the purposes of this Article more persons than one when belonging to the same firm shall be deemed to be one person.",
+  "basis": "Schedule I, Article 42 (a), (b) and (e) of the Stamp Act Samvat, 1977 (Applicable as per J&K Reorganization (Adaptation of State Laws) Fifth Order, 2020",
+  "categories": [],
+  "links": []
+ },
+ {
+  "state": "Lakshadweep",
+  "na": false,
+  "summary": "₹200/- Single Transaction: Authorizing one or more persons to act in a single transaction or generally Explanation - For the purposes of this Article more persons than one when belonging to the same firm shall be deemed to be one person.",
+  "basis": "The Schedule, Article 47 (c), (d), (e) and (h) of the Lakshadweep (Indian Stamp Amendment) Regulation, 2025.",
+  "categories": [],
+  "links": [
+   "https://ipindia.gov.in/storage/uploads/reference/y6GJbHjW6gWi0p1UhMji9klF9xnqtfI7QiqsJzzm.pdf",
+   "https://lakshadweep.gov.in/document/notification-regarding-lakshadweep-registration-amendment-regulation-2026-and-lakshadweep-indian-stamp-amendment-regulation-2025-vol-lxi-no-57/"
+  ]
+ },
+ {
+  "state": "Madhya Pradesh",
+  "na": false,
+  "summary": "₹2000/- Single Transaction: Authorizing one or more persons to act in a single transaction (other than registration) Explanation - For the purposes of this Article more persons than one when belonging to the same firm shall be deemed to be one person.",
+  "basis": "Schedule 1-A, Article 50 (a), (b) and (f) of the Indian Stamp (Madhya Pradesh) Amendment Act 2014 and 2025.",
+  "categories": [],
+  "links": [
+   "https://ipindia.gov.in/storage/uploads/reference/m8AovoMFRb5AZyYjYaQmEuaxM44I85wnBOT6Tqgm.pdf",
+   "https://www.mpigr.gov.in/igrs_cms_api/api/upload-doc/download?documentId=587"
+  ]
+ },
+ {
+  "state": "Maharashtra",
+  "na": false,
+  "summary": "₹500 (for all types of PA) Explanation - For the purposes of this Article more persons than one when belonging to the same firm shall be deemed to be one person.",
+  "basis": "Schedule I Article 48 (c), (d), (e) and (h) of the Maharashtra Stamp Act, 1958.",
+  "categories": [],
+  "links": [
+   "https://ipindia.gov.in/storage/uploads/reference/AN5hvWq67hNPCYJHoo0pRTK5Y65qVagMexZo726B.pdf"
+  ]
+ },
+ {
+  "state": "Manipur",
+  "na": false,
+  "summary": "₹3.60/- Single Transaction: Authorizing one or more persons to act in a single transaction (other than registration) Explanation - For the purposes of this Article more persons than one when belonging to the same firm shall be deemed to be one person.",
+  "basis": "Manipur amendment act 1979",
+  "categories": [],
+  "links": [
+   "https://ipindia.gov.in/storage/uploads/reference/MJMJ9GQSKYAXbbKB3QKmjFoz8PVv4RLuEx1bEyzf.pdf",
+   "https://assembly.mn.gov.in/acts/acts-enacted-through-bills"
+  ]
+ },
+ {
+  "state": "Meghalaya",
+  "na": false,
+  "summary": "₹7/- Single Transaction: Authorizing one or more persons to act in a single transaction (other than registration) Explanation - For the purposes of this Article more persons than one when belonging to the same firm shall be deemed to be one person.",
+  "basis": "Schedule I, Article 48 (c), (d), (e) and (g) of the Indian Stamp (Meghalaya Amendment) Act, 1993",
+  "categories": [],
+  "links": [
+   "https://ipindia.gov.in/storage/uploads/reference/3EMIzw6y3k5TDC8U2aS6zs4bj2UfhmrIOAaN5GKT.pdf"
+  ]
+ },
+ {
+  "state": "Mizoram",
+  "na": false,
+  "summary": "₹50/- General/Multiple Transactions: Authorizing not more than five persons to act in jointly and severally in more than one transaction, or generally Explanation - For the purposes of this Article more persons than one when belonging to the same firm shall be deemed to be one person.",
+  "basis": "Schedule I, Article 48 (d), (e) and (g) of the Indian Stamp (Mizoram Amendment) Act, 1996.",
+  "categories": [],
+  "links": [
+   "https://www.commonlii.org/in/legis/mz/act/isaa1996anxo1997411/"
+  ]
+ },
+ {
+  "state": "Nagaland",
+  "na": false,
+  "summary": "₹10/- Single Transaction: Authorizing one or more persons to act in a single transaction (other than registration) Explanation - For the purposes of this Article more persons than one when belonging to the same firm shall be deemed to be one person.",
+  "basis": "Schedule 1, Article 48 (c), (d), (e) and (g) of the Indian Stamp Duty (Nagaland Amendment) Act,1989 XXXX (there are 3 amendments 1989, 1999 and 2004, but the change could not be traced)",
+  "categories": [],
+  "links": [
+   "https://ipindia.gov.in/storage/uploads/reference/NktZwMgiNcTVQSiQoIxnzAQQbIg9In6xIWxvtwk1.pdf"
+  ]
+ },
+ {
+  "state": "NCT of Delhi",
+  "na": false,
+  "summary": "",
+  "basis": "Schedule I-A, Article 48 (c), (d), (e) and (g) of the Indian Stamp (Delhi Amendment) Act, 2001.",
+  "categories": [
+   {
+    "label": "a",
+    "scope": "When executed for sole purpose of procuring the registration of one or more documents in relation to a single transaction or for admitting execution of one or more such documents",
+    "duty": "₹20/-"
+   },
+   {
+    "label": "c",
+    "scope": "When authorizing one person or more to act in a single transaction other than the case mentioned in clause (a)",
+    "duty": "₹50/-"
+   },
+   {
+    "label": "d",
+    "scope": "When authorizing not more than five persons to act jointly and severally in",
+    "duty": "₹50/-"
+   },
+   {
+    "label": "e",
+    "scope": "When authorizing more than five but not more than ten persons to act jointly and severally in more than one transaction or generally",
+    "duty": "₹50/-"
+   }
+  ],
+  "links": [
+   "https://ipindia.gov.in/storage/uploads/reference/CRpoLeogu5zNsWxrcVmmYuJs0X0ToCITnJSHvsW2.pdf",
+   "https://ipindia.gov.in/storage/uploads/reference/SCYIrJT0koLmXEWj0nN0Y07ibJtGR3xbV0p4Z4xE.pdf"
+  ]
+ },
+ {
+  "state": "Odisha",
+  "na": false,
+  "summary": "₹50/- Single Transaction: Authorizing one or more persons to act in a single transaction (other than registration) Explanation - For the purposes of this Article more persons than one when belonging to the same firm shall be deemed to be one person.",
+  "basis": "Schedule 1A, Article 48 (c), (d), (e) and (g) of the Indian Stamp (Orissa Amendment) Act, 1986, 2001 and 2014",
+  "categories": [],
+  "links": [
+   "https://ipindia.gov.in/storage/uploads/reference/pqZ3gZTFP6xyBJ2QJHV33PPb6N72nkLSoxRiM1u9.pdf",
+   "https://ipindia.gov.in/storage/uploads/reference/3YJUnKDzrXP4TDGwhcrMiKmUsZyJhnvbUhJZ8rhG.pdf",
+   "https://ipindia.gov.in/storage/uploads/reference/tYK5YenCDEWF3cdNALfdBAmSL4tbaOi2ZQRFGweU.pdf"
+  ]
+ },
+ {
+  "state": "Puducherry",
+  "na": true,
+  "summary": "",
+  "basis": "",
+  "categories": [],
+  "links": []
+ },
+ {
+  "state": "Punjab",
+  "na": false,
+  "summary": "",
+  "basis": "Schedule 1A, Article 48 (c), (d), (e) and (g) of the Indian Stamp (Punjab Amendment) Act, 1998, 2009 and 2019.",
+  "categories": [
+   {
+    "label": "a",
+    "scope": "when executed for the sole purpose of procuring the registration of one or more documents in relation to a single transaction or for admitting execution of one or more such documents",
+    "duty": "₹1000/-"
+   },
+   {
+    "label": "c",
+    "scope": "when authorising one person or more to act in a single transaction other than the case mentioned in clause (a)",
+    "duty": "₹2000/-"
+   },
+   {
+    "label": "d",
+    "scope": "when authorising not more than five persons to act jointly and severally in more than one transaction or generally",
+    "duty": "₹2000/-"
+   },
+   {
+    "label": "e",
+    "scope": "when authorising more than five but not more than ten persons to act jointly and severally",
+    "duty": "₹4000/-"
+   }
+  ],
+  "links": [
+   "https://ipindia.gov.in/storage/uploads/reference/i1B18dW6tfOoDK2OWOuzqzMqybUequlee22W4cLz.pdf",
+   "https://ipindia.gov.in/storage/uploads/reference/PyvMYi4HNfj4thdp9IozGzpWYdLq45mkwJvQI8nj.pdf",
+   "https://ipindia.gov.in/storage/uploads/reference/hZNXB3lODHb03dC6ZGKmCBEAtZqE5iFvcncOlyXd.pdf"
+  ]
+ },
+ {
+  "state": "Rajasthan",
+  "na": false,
+  "summary": "",
+  "basis": "Art. 48 Appendix D-6 Page no 2533 of the K. Krishnamurthy, Title named “ The Indian Stamp Act” Thirteenth Edition. Author S.K. Kataria. Pub. LexisNexis. Year of Publication 2025. ( Ref.by Rajasthan Finance Act 2018 (Act no 7 of 2018) w.e.f. 12.02.2018 and Rajasthan Finance Act 2015 (Act no 6 of 2015) w.e.f. 09.03.2015)",
+  "categories": [
+   {
+    "label": "a",
+    "scope": "When executed for the sole purpose of the procuring the registration of one or more documents to relation to single transaction of for admitting execution of one or more such documents –",
+    "duty": "Rs 100/-"
+   },
+   {
+    "label": "b",
+    "scope": "When authorising one person or more to act in single transaction other than the case mentioned in clause (a)",
+    "duty": "Rs 100/-"
+   },
+   {
+    "label": "c",
+    "scope": "When authorising not more than five persons to act jointly and severally to more than one transaction or generally",
+    "duty": "Rs 200/-"
+   },
+   {
+    "label": "d",
+    "scope": "When authorising more than five persons but not more than ten persons to act jointly and severally in more than one transaction or generally.",
+    "duty": "Rs 200/-"
+   }
+  ],
+  "links": []
+ },
+ {
+  "state": "Sikkim",
+  "na": true,
+  "summary": "",
+  "basis": "",
+  "categories": [],
+  "links": []
+ },
+ {
+  "state": "Tamil Nadu",
+  "na": false,
+  "summary": "₹500/- Single Transaction: Authorizing one or more persons to act in a single transaction (other than registration) Explanation - For the purposes of this Article more persons than one when belonging to the same firm shall be deemed to be one person.",
+  "basis": "Schedule I, Article 48 (b), (c), (d) and (h) of the Indian Stamp (Tamil Nadu Amendment) Act, 1975 and 2023.",
+  "categories": [],
+  "links": [
+   "https://ipindia.gov.in/storage/uploads/reference/uilMpoIoCArmFWWg0S8P6ATJNdquaoQdFQeWRM3l.pdf"
+  ]
+ },
+ {
+  "state": "Telangana",
+  "na": false,
+  "summary": "",
+  "basis": "",
+  "categories": [
+   {
+    "label": "a",
+    "scope": "when executed for the sole purpose of procuring the registration of one or more documents in relation to a single transaction or for admitting execution of one or more such documents",
+    "duty": "₹20/-"
+   },
+   {
+    "label": "b",
+    "scope": "when authorising one person or more to act in a single transaction other than the case mentioned in Clause (a);",
+    "duty": "₹20/-"
+   },
+   {
+    "label": "c",
+    "scope": "when authorising not more than five persons to act jointly and severally in more than one transaction or generally;",
+    "duty": "₹50/-"
+   },
+   {
+    "label": "d",
+    "scope": "when authorising more than five but not more than ten persons to act jointly and severally in more than one transaction or generally",
+    "duty": "₹75/-"
+   },
+   {
+    "label": "e",
+    "scope": "SPA",
+    "duty": "₹20/-"
+   }
+  ],
+  "links": [
+   "https://ipindia.gov.in/storage/uploads/reference/fHwfisgmThc88Ul88JBvUg5o5weUVkzu5a9zu42x.pdf",
+   "https://registration.telangana.gov.in/readyReckoner.htm"
+  ]
+ },
+ {
+  "state": "Tripura",
+  "na": false,
+  "summary": "₹300/- Single Transaction: Authorizing one or more persons to act in a single transaction (other than registration) Explanation - For the purposes of this Article more persons than one when belonging to the same firm shall be deemed to be one person.",
+  "basis": "Schedule I, Article 48(c), (d), (e) and (g) of the Indian Stamp (Tripura Fifth Amendment) Act, 2020.",
+  "categories": [],
+  "links": [
+   "https://ipindia.gov.in/storage/uploads/reference/z4ULmnxDkt6qYyCpByzirbhWMHgXBlayimXCrFxB.pdf"
+  ]
+ },
+ {
+  "state": "Uttar Pradesh",
+  "na": false,
+  "summary": "₹50/- Single Transaction: Authorizing one person or more to act in a single transaction otherwise than to sell or transfer immovable property. Explanation - For the purposes of this Article more persons than one when belonging to the same firm shall be deemed to be one person.",
+  "basis": "Schedule 1-B, Article 48 (f) and (h) of the Uttar Pradesh Stamp Act, 2008.",
+  "categories": [],
+  "links": [
+   "https://ipindia.gov.in/storage/uploads/reference/VgAKyyyTN9Bq5MzW2S6qsmYi3vcXEyHd0LKpnNBE.pdf",
+   "https://indiankanoon.org/doc/12978108/"
+  ]
+ },
+ {
+  "state": "Uttarakhand",
+  "na": false,
+  "summary": "₹20/- Single Transaction: Authorizing one or more persons to act in a single transaction (other than registration) Explanation - For the purposes of this Article more persons than one when belonging to the same firm shall be deemed to be one person.",
+  "basis": "Schedule 1B, Article 48 (b), (c), (d) and (f) of the Indian Stamp (Uttarakhand Amendment) Act",
+  "categories": [],
+  "links": [
+   "https://registration.uk.gov.in/document-category/schedule-1-b/",
+   "https://cdnbbsr.s3waas.gov.in/s32d579dc29360d8bbfbb4aa541de5afa9/uploads/2025/02/"
+  ]
+ },
+ {
+  "state": "West Bengal",
+  "na": false,
+  "summary": "",
+  "basis": "Art. 48 Page no 1463 of the K. Krishnamurthy, Title named “ The Indian Stamp Act” Thirteenth Edition. Author S.K. Kataria. Pub. LexisNexis. Year of Publication 2025. ( Ref. Act XXXII of 1977)",
+  "categories": [
+   {
+    "label": "a",
+    "scope": "(a) When Executed for the sole purpose of procuring the registration of one or more documents in relation to a single transaction or for admitting execution of one or more such documents –",
+    "duty": "Rs 5/-"
+   },
+   {
+    "label": "c",
+    "scope": "When authorizing one person or more to act in a single transaction other than the case mentioned in clause (a) –",
+    "duty": "Rs 6/-"
+   },
+   {
+    "label": "d",
+    "scope": "When authorising one person or more than five persons to act jointly and severally in more than one transaction or generally",
+    "duty": "Rs 50/-"
+   },
+   {
+    "label": "e",
+    "scope": "When authorising more than five but not more than ten persons to act jointly and severally in more than one transaction or generally",
+    "duty": "Rs 100/-"
+   }
+  ],
+  "links": []
+ }
+]

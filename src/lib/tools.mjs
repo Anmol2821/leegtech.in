@@ -2,6 +2,10 @@ import { site } from '../data/site.mjs';
 import { niceClasses } from '../data/nice-classes.mjs';
 import { officialFees as F } from '../data/official-fees.mjs';
 import { fmtDate } from './util.mjs';
+import fs from 'node:fs';
+const POA = JSON.parse(fs.readFileSync(new URL('../data/poa-stamp-duty.json', import.meta.url), 'utf8'));
+const POA_SOURCE = 'https://ipindia.gov.in/stamp-duty-for-POA';
+const POA_PUBLISHED = '2026-04-22';
 import { esc, icon } from './util.mjs';
 import { breadcrumbs, secHead, faqList, ctaBand } from './components.mjs';
 import { orgNode, websiteNode, crumbsNode, faqNode, pageNode, graph } from './schema.mjs';
@@ -15,6 +19,7 @@ const appNode = (name, path, description) => ({
 export const tools = [
   { slug: 'trademark-class-finder', name: 'Trademark Class Finder', icon: 'tag', short: 'Type your product or service and see which of the 45 trademark classes it is likely to fall in.' },
   { slug: 'official-fee-calculator', name: 'Official Fee Calculator', icon: 'file', short: 'Estimate official government fees for Indian patent, trademark and design filings, by applicant type, from the official fee schedules.' },
+  { slug: 'stamp-duty-power-of-attorney', name: 'Stamp Duty Calculator: Power of Attorney', icon: 'doc', short: 'Check the stamp duty on a Power of Attorney (for patent and trademark filings) in every Indian state and UT, as published by IP India.' },
   { slug: 'patent-deadline-calculator', name: 'Patent Deadline Calculator', icon: 'clock', short: 'Enter your priority date and see key Indian patent and PCT deadlines: 12, 18 and 31 months, FER reply, renewals and term.' }
 ];
 
@@ -305,6 +310,73 @@ ${ctaBand('Get an exact quote', 'We confirm your eligibility for lower fees and 
   document.querySelectorAll('.seg-b').forEach(function(b){b.addEventListener('click',function(){t=b.dataset.t;document.querySelectorAll('.seg-b').forEach(function(x){var on=x===b;x.classList.toggle('is-on',on);x.setAttribute('aria-selected',on);});document.querySelectorAll('.fc-pane').forEach(function(p){p.hidden=p.dataset.p!==t;});calc();});});
   document.querySelectorAll('.tool-box input,.tool-box select').forEach(function(el){el.addEventListener('input',calc);el.addEventListener('change',calc);});
   calc();
+})();
+</script>`;
+  return { p, body };
+}
+
+/* ---------------- STAMP DUTY: POWER OF ATTORNEY ---------------- */
+export function stampDuty() {
+  const path = '/tools/stamp-duty-power-of-attorney/';
+  const crumbs = [{ name: 'Home', path: '/' }, { name: 'Free tools', path: '/tools/' }, { name: 'Stamp Duty: Power of Attorney', path }];
+  const mp = POA.find(x => x.state === 'Madhya Pradesh');
+  const faqs = [
+    ['Why do I need a Power of Attorney for a patent or trademark filing?', 'When an agent files or prosecutes an application on your behalf, the Patent Office or Trade Marks Registry needs your authorisation (Form 26 for patents, TM-48 for trade marks). That authorisation is a power of attorney and generally needs to be stamped as per the applicable state stamp law.', '/patent/patent-registration/'],
+    ['What is the stamp duty on a Power of Attorney in Madhya Pradesh?', mp && mp.summary ? `As listed by IP India: ${mp.summary.replace(/\s*Explanation -.*$/, '')}. Check the linked state law for your situation.` : 'See the table on this page.', '/gwalior/'],
+    ['Does stamp duty depend on the state?', 'Yes. Stamp duty is a state subject, so the amount differs from state to state and can depend on the type of power of attorney (for example, for a single transaction or general). Always check the current state law before execution.', '/legal/contract-drafting/']
+  ];
+  const p = { path, title: 'Stamp Duty on Power of Attorney: State-wise (India)', description: 'Check state-wise stamp duty on a Power of Attorney for patent and trademark filings in India, as published by IP India, with the legal basis for each state.', section: 'tools' };
+  p.schema = graph(orgNode(), websiteNode(), pageNode({ ...p, title: 'Stamp Duty Calculator: Power of Attorney' }), crumbsNode(crumbs), appNode('Stamp Duty Calculator: Power of Attorney', path, p.description), faqNode(faqs, path));
+  const short = (t) => esc(t.replace(/\s*Explanation -.*$/, '').replace(/\s*For the purposes of this Article.*$/, ''));
+  const body = `
+<section class="page-hero">
+  <div class="container narrow">
+    ${breadcrumbs(crumbs)}
+    <p class="eyebrow">Free tool</p>
+    <h1>Stamp Duty Calculator: Power of Attorney</h1>
+    <p class="lead">Select your state to see the stamp duty on a Power of Attorney, such as the authorisation you give an agent for patent (Form 26) or trademark (TM-48) filings. Based on the state-wise list published by IP India (published ${fmtDate(POA_PUBLISHED)}).</p>
+    <div class="tool-box">
+      <div class="field"><label for="sd-state">State / Union Territory</label>
+        <select id="sd-state">${POA.map((x, i) => `<option value="${i}"${x.state === 'Madhya Pradesh' ? ' selected' : ''}>${esc(x.state)}</option>`).join('')}</select></div>
+      <div id="sd-out" class="tool-out" aria-live="polite"></div>
+      <p class="tool-note">${icon('shield')} Information as published by IP India; stamp duty is set by each state's law and can change. Confirm the current rate and the right category for your document before execution. Not legal advice.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section section-top0">
+  <div class="container narrow prose">
+    <h2>State-wise stamp duty on Power of Attorney</h2>
+    <p class="muted small">Source: <a href="${POA_SOURCE}" rel="noopener" target="_blank">IP India, Stamp Duty for Power of Attorney</a>. Where IP India lists categories, the duty depends on the type of power of attorney.</p>
+    <div class="table-wrap"><table><thead><tr><th>State / UT</th><th>Stamp duty</th></tr></thead><tbody>
+      ${POA.map(x => `<tr><td>${esc(x.state)}</td><td>${x.na ? 'Not available from official sources; check with the state authority' : x.categories.length ? x.categories.map(c => `${esc(c.label)}: <strong>${esc(c.duty)}</strong>`).join('<br>') : short(x.summary)}</td></tr>`).join('')}
+    </tbody></table></div>
+  </div>
+</section>
+
+<section class="section section-soft">
+  <div class="container narrow">
+    ${secHead('FAQ', 'Power of Attorney stamp duty: common questions')}
+    ${faqList(faqs)}
+  </div>
+</section>
+${ctaBand('Need the right authorisation?', 'We prepare the Power of Attorney for your patent or trademark filing and guide you on stamping and execution.')}
+<script>
+(function(){
+  var D=${JSON.stringify(POA)};
+  var sel=document.getElementById('sd-state'),out=document.getElementById('sd-out');
+  function e(t){return String(t).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+  function show(){
+    var x=D[+sel.value],h='';
+    if(x.na){h='<p><strong>Not available.</strong> IP India notes that authentic information for '+e(x.state)+' is not available from official sources. Please check with the state stamp authority.</p>';}
+    else if(x.categories.length){h='<div class="table-wrap"><table class="pd-table"><thead><tr><th>Type of Power of Attorney</th><th>Stamp duty</th></tr></thead><tbody>'+x.categories.map(function(c){return '<tr><td><strong>'+e(c.label)+'</strong>'+(c.scope?'<br><span class="muted small">'+e(c.scope)+'</span>':'')+'</td><td><strong>'+e(c.duty)+'</strong></td></tr>';}).join('')+'</tbody></table></div>';}
+    else{h='<p class="sd-amt">'+e(x.summary)+'</p>';}
+    if(x.basis&&x.basis!=='-')h+='<p class="tool-res-f"><strong>Legal basis:</strong> '+e(x.basis)+'</p>';
+    if(x.links.length)h+='<p class="tool-res-f">Official documents: '+x.links.map(function(l,i){return '<a href="'+e(l)+'" target="_blank" rel="noopener">source '+(i+1)+'</a>';}).join(' · ')+'</p>';
+    out.innerHTML=h;
+    if(window.dataLayer)dataLayer.push({event:'tool_use',tool:'stamp_duty_poa',state:x.state});
+  }
+  sel.addEventListener('change',show);show();
 })();
 </script>`;
   return { p, body };

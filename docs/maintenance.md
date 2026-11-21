@@ -47,6 +47,8 @@ Purpose: keep legal and statutory information current. Follow CLAUDE.md ground r
 3. **Official fees:** open each source URL in `src/data/official-fees.mjs` (IP India patents schedule PDF, trade
    marks fees page, Designs Rules) and compare every amount. Update any changed amount and set `verifiedOn` to
    today. If a source cannot be reached, report it and leave the data unchanged (do not guess).
+   Also re-check `src/data/poa-stamp-duty.json` against https://ipindia.gov.in/stamp-duty-for-POA (update the
+   data and `POA_PUBLISHED` in `src/lib/tools.mjs` if IP India publishes a newer version).
 4. If anything was reviewed, set `site.lastReviewed` to today. Run all checks, commit, `npm run deploy`,
    `npm run publish-live`.
 5. Report what changed, with sources, or "no changes needed".

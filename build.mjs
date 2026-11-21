@@ -130,6 +130,7 @@ render(TOOLS.toolsHub(), { priority: 0.7 });
 render(TOOLS.classFinder(), { priority: 0.8 });
 render(TOOLS.patentCalc(), { priority: 0.8 });
 render(TOOLS.feeCalc(), { priority: 0.8 });
+render(TOOLS.stampDuty(), { priority: 0.7 });
 render(P.contact(), { priority: 0.7 });
 render(P.faqPage(), { priority: 0.6 });
 render(P.blogIndex(posts), { priority: 0.6 });
@@ -191,6 +192,7 @@ ${categories.map(c => `### ${c.name}\n${c.services.map(s => `- [${s.name}](${sit
 ## Free tools
 - [Trademark Class Finder](${site.url}/tools/trademark-class-finder/): find which of the 45 Nice classes a product or service falls in.
 - [Patent Deadline Calculator](${site.url}/tools/patent-deadline-calculator/): Indian patent and PCT deadlines from a priority date.
+- [Stamp Duty on Power of Attorney](${site.url}/tools/stamp-duty-power-of-attorney/): state-wise stamp duty on a POA for IP filings, as published by IP India.
 - [Official Fee Calculator](${site.url}/tools/official-fee-calculator/): official IP India fees for patents, trademarks and designs by applicant type.
 
 ## Guides

@@ -535,3 +535,4 @@ h1,h2,h3,.crumbs li{overflow-wrap:break-word;hyphens:auto}
 .tool-box>.field{margin-bottom:6px}
 .tool-box .field select,.tool-box .field input{font:inherit;font-size:1rem;color:var(--ink);background:#fff;border:1.5px solid var(--rule);border-radius:12px;padding:12px 14px;width:100%;min-height:48px}
 .fc-total td{font-weight:900;color:var(--ink);background:var(--orange-l)}
+.sd-amt{font-size:1.05rem;color:var(--ink);background:var(--orange-l);padding:14px 16px;border-radius:12px}
