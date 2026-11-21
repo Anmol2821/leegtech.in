@@ -139,7 +139,7 @@ function footer() {
       ${categories.map(c => `<div class="ft-col">
         <h2 class="ft-h"><a href="/${c.slug}/">${esc(c.name)}</a></h2>
         <ul>${c.services.slice(0, 6).map(sv => `<li><a href="/${c.slug}/${sv.slug}/">${esc(sv.name.replace(/\s*\(.*\)$/, ''))}</a></li>`).join('')}
-        ${c.services.length > 6 ? `<li><a class="ft-more" href="/${c.slug}/">All ${esc(c.name)} services →</a></li>` : ''}</ul>
+        <li><a class="ft-more" href="/${c.slug}/">All ${esc(c.name)} services →</a></li></ul>
       </div>`).join('')}
     </div>
     <div class="ft-mid">
