@@ -41,7 +41,7 @@ export const site = {
     ga4Id: '',            // e.g. 'G-XXXXXXXXXX' (used only if gtmId is empty)
     googleAdsId: '',      // e.g. 'AW-123456789' (used only if gtmId is empty)
     googleAdsLeadLabel: '', // conversion label for the lead conversion
-    metaPixelId: '',      // e.g. '123456789012345'
+    metaPixelId: '581662101445392',
     googleSiteVerification: '',
     bingSiteVerification: '',
     facebookDomainVerification: ''
