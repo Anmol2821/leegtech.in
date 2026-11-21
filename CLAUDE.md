@@ -12,3 +12,5 @@ Static site for Leegtech (IP, business registration, compliance and legal docume
 
 ## Daily blog workflow
 Follow `docs/blog-workflow.md` exactly. Topic backlog and published log: `docs/blog-topics.md`.
+
+
