@@ -29,8 +29,8 @@ export const site = {
   hoursDisplay: 'Monday to Friday, 10:00 AM – 6:30 PM',
   // Add your public profiles here (used in structured data "sameAs" and the footer).
   social: {
-    linkedin: '',
-    instagram: '',
+    linkedin: 'https://www.linkedin.com/company/anm-research-solutions/',
+    instagram: 'https://www.instagram.com/leegtech/',
     facebook: '',
     youtube: '',
     x: '',

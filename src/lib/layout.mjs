@@ -3,6 +3,10 @@ import { categories } from '../data/categories.mjs';
 import { esc, icon, waIcon, waLink } from './util.mjs';
 
 const T = site.tracking;
+const SOCIAL_ICON = {
+  LinkedIn: '<svg class="ico" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg>',
+  Instagram: '<svg class="ico" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5.5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.6" cy="6.4" r="1.1" fill="currentColor" stroke="none"/></svg>'
+};
 const trackingOn = !!(T.gtmId || T.ga4Id || T.googleAdsId || T.metaPixelId);
 
 function trackingHead() {
@@ -130,7 +134,7 @@ function footer() {
           <li><span>${icon('pin')}${esc(site.address.display)}</span></li>
           ${site.hoursDisplay ? `<li><span>${icon('clock')}${esc(site.hoursDisplay)}</span></li>` : ''}
         </ul>
-        ${socials.length ? `<ul class="ft-social">${socials.map(([n, u]) => `<li><a href="${esc(u)}" rel="noopener me" target="_blank">${n}</a></li>`).join('')}</ul>` : ''}
+        ${socials.length ? `<ul class="ft-social">${socials.map(([n, u]) => `<li><a href="${esc(u)}" rel="noopener me" target="_blank" aria-label="Leegtech on ${n}">${SOCIAL_ICON[n] || ''}<span>${n}</span></a></li>`).join('')}</ul>` : ''}
       </div>
       ${categories.map(c => `<div class="ft-col">
         <h2 class="ft-h"><a href="/${c.slug}/">${esc(c.name)}</a></h2>
