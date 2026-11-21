@@ -28,7 +28,7 @@ export function orgNode(full = false) {
       postalCode: site.address.postalCode,
       addressCountry: site.address.country
     },
-    areaServed: { '@type': 'Country', name: 'India' },
+    areaServed: [{ '@type': 'Country', name: 'India' }, { '@type': 'City', name: 'Gwalior' }, { '@type': 'State', name: 'Madhya Pradesh' }],
     founder: { '@id': FOUNDER },
     contactPoint: [{
       '@type': 'ContactPoint', telephone: site.phone, email: site.email, contactType: 'customer service',

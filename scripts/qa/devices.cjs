@@ -7,8 +7,8 @@ const profiles = { 'iPhone SE': devices['iPhone SE'], 'iPhone 15 Pro Max': devic
   for (const [name, dev] of Object.entries(profiles)) {
     const ctx = await b.newContext({ ...dev }); const p = await ctx.newPage();
     p.on('pageerror', e => issues.push(`${name} JS ${p.url()} ${e.message}`));
-    p.on('console', m => { if (m.type() === 'error') issues.push(`${name} console ${p.url()} ${m.text()}`); });
-    p.on('response', r => { if (r.status() >= 400) issues.push(`${name} ${r.status()} ${r.url()}`); });
+    p.on('console', m => { if (m.type() === 'error' && !/ERR_TUNNEL_CONNECTION_FAILED|ERR_NAME_NOT_RESOLVED|ERR_CONNECTION/.test(m.text())) issues.push(`${name} console ${p.url()} ${m.text()}`); }); // third-party tags may be blocked in the sandbox
+    p.on('response', r => { if (r.status() >= 400 && r.url().startsWith('http://localhost')) issues.push(`${name} ${r.status()} ${r.url()}`); });
     for (const pg of pages) {
       await p.goto('http://localhost:8080' + pg, { waitUntil: 'load' });
       const r = await p.evaluate(() => {

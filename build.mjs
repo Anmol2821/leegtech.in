@@ -121,9 +121,10 @@ const render = ({ p, body }, opts = {}) => {
 
 render(P.home(posts), { priority: 1.0 });
 render(P.servicesHub(), { priority: 0.8 });
-for (const c of categories) render(P.category(c), { priority: 0.9 });
-for (const s of allServices) render(P.service(s), { priority: 0.8 });
+for (const c of categories) render(P.category(c, posts), { priority: 0.9 });
+for (const s of allServices) render(P.service(s, posts), { priority: 0.8 });
 render(P.about(), { priority: 0.6 });
+render(P.gwalior(posts), { priority: 0.7 });
 render(P.contact(), { priority: 0.7 });
 render(P.faqPage(), { priority: 0.6 });
 render(P.blogIndex(posts), { priority: 0.6 });
@@ -187,6 +188,7 @@ ${posts.map(x => `- [${x.title}](${site.url}/blog/${x.slug}/): ${x.description}`
 
 ## Company
 - [About](${site.url}/about/)
+- [Gwalior office](${site.url}/gwalior/)
 - [Contact / free consultation](${site.url}/contact/)
 - [FAQ](${site.url}/faq/)
 - [Privacy Policy](${site.url}/privacy-policy/)

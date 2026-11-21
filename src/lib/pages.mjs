@@ -12,6 +12,18 @@ const img = (name, alt, { w, h, cls = '', eager = false, sizes = '(min-width: 90
 
 const catImg = (c, { eager = false, cls = 'art' } = {}) => `<img class="${cls}" src="/assets/img/art/${c.image}.svg" alt="${esc(c.imageAlt)}" width="600" height="420" ${eager ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async">`;
 
+
+/* Related guides: posts that link to this page first, then posts in the same practice area */
+const relatedPosts = (posts, catSlug, url, n = 3) => {
+  const linked = posts.filter(x => url && x.html.includes(`href="${url}"`));
+  const sameCat = posts.filter(x => x.category === catSlug && !linked.includes(x));
+  return [...linked, ...sameCat].slice(0, n);
+};
+const guidesBlock = (list, title = 'Related guides') => list.length ? `<section class="block guides">
+      <h2>${title}</h2>
+      <ul class="guide-list">${list.map(x => `<li><a href="/blog/${x.slug}/"><strong>${esc(x.title)}</strong><span>${esc(x.description)}</span></a></li>`).join('')}</ul>
+    </section>` : '';
+
 const SERVICE_COUNT = allServices.length;
 const base = () => [orgNode(), websiteNode()];
 
@@ -180,7 +192,7 @@ ${ctaBand()}`;
 }
 
 /* ---------------- CATEGORY ---------------- */
-export function category(c) {
+export function category(c, posts = []) {
   const path = `/${c.slug}/`;
   const crumbs = [{ name: 'Home', path: '/' }, { name: 'Services', path: '/services/' }, { name: c.name, path }];
   const p = { path, title: c.metaTitle, description: c.metaDesc, section: c.slug, ogImage: `/og/${c.slug}.jpg`, primaryImage: `/assets/img/art/${c.image}.svg` };
@@ -209,6 +221,7 @@ export function category(c) {
     <div class="svc-grid">${c.services.map(s => serviceCard(s, c.label, c.slug, c.accent)).join('')}</div>
   </div>
 </section>
+${(() => { const g = relatedPosts(posts, c.slug, `/${c.slug}/`, 4); return g.length ? `<section class="section section-tight"><div class="container narrow">${guidesBlock(g, `${esc(c.name)} guides`)}</div></section>` : ''; })()}
 
 <section class="section section-soft">
   <div class="container">
@@ -245,7 +258,7 @@ ${ctaBand()}`;
 }
 
 /* ---------------- SERVICE ---------------- */
-export function service(s) {
+export function service(s, posts = []) {
   const c = categories.find(x => x.slug === s.cat);
   const path = s.url;
   const crumbs = [{ name: 'Home', path: '/' }, { name: c.name, path: `/${c.slug}/` }, { name: s.name, path }];
@@ -304,6 +317,7 @@ export function service(s) {
       <p class="muted small">The exact checklist depends on your facts. We confirm it during the free consultation.</p>
     </section>
 
+    ${guidesBlock(relatedPosts(posts, c.slug, s.url))}
     <section id="faq" class="block">
       <h2>Frequently asked questions</h2>
       ${faqList(s.faqs)}
@@ -445,6 +459,7 @@ export function contact() {
         <a class="cc-row" href="${waLink(site)}" target="_blank" rel="noopener">${waIcon()}<span><strong>WhatsApp</strong>Chat with our team</span></a>
         <a class="cc-row" href="mailto:${site.email}">${icon('mail')}<span><strong>Email</strong>${site.email}</span></a>
         <a class="cc-row" href="${maps}" target="_blank" rel="noopener">${icon('pin')}<span><strong>Office</strong>${esc(site.address.display)}</span></a>
+        <p class="cc-row">${icon('arrow')}<span><a href="/gwalior/">About our Gwalior office</a></span></p>
         ${site.hoursDisplay ? `<p class="cc-row">${icon('clock')}<span><strong>Hours</strong>${esc(site.hoursDisplay)}</span></p>` : ''}
       </div>
       <div class="contact-card">
@@ -633,5 +648,69 @@ export function disclaimer() {
     <p>See also our <a href="/terms-and-conditions/">Terms &amp; Conditions</a>, <a href="/privacy-policy/">Privacy Policy</a> and <a href="/refund-policy/">Refund Policy</a>. Questions: <a href="mailto:${site.email}">${site.email}</a>.</p>
   </div>
 </section>`;
+  return { p, body };
+}
+
+/* ---------------- LOCAL: GWALIOR / MADHYA PRADESH ---------------- */
+export function gwalior(posts = []) {
+  const path = '/gwalior/';
+  const crumbs = [{ name: 'Home', path: '/' }, { name: 'Gwalior', path }];
+  const faqs = [
+    ['Where is Leegtech located in Gwalior?', `Our office is at ${site.address.display}. Most work is handled online, so you can also consult us by phone or WhatsApp.`, '/contact/'],
+    ['Which patent office handles applications from Madhya Pradesh?', 'Patent applications are filed with the appropriate office of the Indian Patent Office based on the applicant\'s place of residence or business. For applicants in Madhya Pradesh, that is the Mumbai Patent Office. Filing is done online.', '/patent/patent-registration/'],
+    ['Which Trade Marks Registry covers Madhya Pradesh?', 'For applicants whose principal place of business is in Madhya Pradesh, the appropriate office is the Trade Marks Registry, Mumbai. Applications are filed online.', '/trademark-copyright/trademark-registration/'],
+    ['Where are companies in Madhya Pradesh registered?', 'Companies and LLPs with a registered office in Madhya Pradesh fall under the Registrar of Companies, Gwalior. Incorporation and annual filings are made online on the MCA portal.', '/business-tax/private-limited-company-registration/'],
+    ['Do I need to visit any office in person?', 'Usually not. Patent, trademark, copyright, company, GST and most other filings are made online. We tell you if a particular matter needs anything in person.', '/contact/']
+  ];
+  const p = { path, title: 'Patent, Trademark & Company Registration in Gwalior', description: 'Patent, trademark, copyright, company and LLP registration, GST and agreements in Gwalior, Madhya Pradesh. Office at Moti Mahal. Free consultation.', section: 'gwalior' };
+  p.schema = graph(base(), pageNode({ ...p, title: 'Leegtech in Gwalior' }), crumbsNode(crumbs), faqNode(faqs, path));
+  const offices = [
+    ['Patents', 'Mumbai Patent Office (appropriate office for Madhya Pradesh)'],
+    ['Trademarks', 'Trade Marks Registry, Mumbai (appropriate office for Madhya Pradesh)'],
+    ['Designs', 'Design Wing of the Patent Office, Kolkata'],
+    ['Copyright', 'Copyright Office, New Delhi'],
+    ['Companies & LLPs', 'Registrar of Companies, Gwalior (covers Madhya Pradesh)'],
+    ['Shops & establishments', 'Madhya Pradesh Shops and Establishments Act, 1958'],
+    ['GST', 'GST portal; Madhya Pradesh State GST and Central GST jurisdictions']
+  ];
+  const body = `
+<section class="page-hero">
+  <div class="container ph-grid">
+    <div>
+      ${breadcrumbs(crumbs)}
+      <p class="eyebrow">Gwalior · Madhya Pradesh</p>
+      <h1>IP &amp; Business Registration Support in Gwalior</h1>
+      <p class="lead">Leegtech's office is in Gwalior, at ${esc(site.address.display)}. We help inventors, startups, MSMEs, institutions and businesses in Gwalior and across Madhya Pradesh protect their ideas and set up their businesses, with the same process we follow for clients across India.</p>
+      ${ctaButtons('gwalior')}
+      <ul class="trust trust-sm"><li>${icon('pin')} Moti Mahal, Gwalior</li><li>${icon('clock')} ${esc(site.hoursDisplay)}</li><li>${icon('check')} Free initial consultation</li></ul>
+    </div>
+    <div class="ph-media"><img class="art" src="/assets/img/art/hub.svg" alt="Patents, designs, trademarks, copyright, business and agreements under one roof" width="520" height="660" fetchpriority="high"></div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    ${secHead('Services', 'What we help with in Gwalior')}
+    <div class="cat-grid">${categories.map(c => `<a class="cat-card acc-${c.accent}" href="/${c.slug}/"><span class="cat-count">${c.services.length} services</span><h3>${esc(c.name)}</h3><p>${esc(c.tagline)}</p><span class="svc-more">Explore ${icon('arrow')}</span></a>`).join('')}</div>
+  </div>
+</section>
+
+<section class="section section-soft">
+  <div class="container narrow">
+    ${secHead('Good to know', 'Which offices handle filings from Madhya Pradesh?', 'Almost all of these filings are made online. This is where applications from Madhya Pradesh are processed.')}
+    <dl class="kv">${offices.map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join('')}</dl>
+    <p class="muted small mt">Leegtech is a private company and is not affiliated with any of these offices. Official fees are charged at actuals.</p>
+  </div>
+</section>
+
+${posts.length ? `<section class="section"><div class="container">${secHead('Guides', 'Popular guides')}<div class="post-grid">${posts.slice(0, 3).map(postCard).join('')}</div></div></section>` : ''}
+
+<section class="section section-soft">
+  <div class="container narrow">
+    ${secHead('FAQ', 'Questions from Gwalior clients')}
+    ${faqList(faqs)}
+  </div>
+</section>
+${ctaBand('Visit or WhatsApp us in Gwalior', `Free initial consultation. Office: ${esc(site.address.display)}.`)}`;
   return { p, body };
 }

@@ -486,3 +486,9 @@ h1,h2,h3,.crumbs li{overflow-wrap:break-word;hyphens:auto}
 @media (max-width:380px){.mobile-bar a{font-size:.84rem;gap:4px;padding:11px 4px}.mobile-bar .ico{width:1em;height:1em}}
 .ft-disclaimer a{text-decoration:underline;color:#fff}
 .ty-status{font-weight:800;color:var(--green)}
+.guide-list{list-style:none;display:grid;gap:12px}
+.guide-list a{display:flex;flex-direction:column;gap:4px;padding:16px 18px;border:1px solid var(--rule);border-radius:12px;background:#fff;text-decoration:none;transition:border-color .15s,box-shadow .15s}
+.guide-list a:hover{border-color:var(--orange-b);box-shadow:var(--shadow)}
+.guide-list strong{color:var(--ink);font-size:1.02rem}
+.guide-list span{color:var(--muted);font-size:.92rem}
+.guides h2{margin-bottom:16px}

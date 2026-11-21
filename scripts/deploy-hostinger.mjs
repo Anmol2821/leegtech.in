@@ -41,3 +41,16 @@ if (res.isError || !/"status":"deployed"/.test(text)) { console.error('Deploy fa
 const purge = execSync(`curl -s --max-time 60 -X DELETE -H "Authorization: Bearer ${TOKEN}" -H "Accept: application/json" https://developers.hostinger.com/api/hosting/v1/accounts/${USERNAME}/websites/${DOMAIN}/cdn/purge`).toString();
 console.log('CDN purge:', purge);
 console.log('Deployed to https://' + DOMAIN);
+
+// IndexNow: tell Bing/Yandex (and engines that use their index) about all URLs in the sitemap.
+try {
+  const keyFile = fs.readdirSync(path.join(ROOT, 'src/static')).find(f => /^[0-9a-f]{32}\.txt$/.test(f));
+  if (keyFile) {
+    const key = keyFile.replace('.txt', '');
+    const urls = [...fs.readFileSync(path.join(ROOT, 'dist/sitemap.xml'), 'utf8').matchAll(/<loc>([^<]+)<\/loc>/g)].map(m => m[1]);
+    const body = JSON.stringify({ host: DOMAIN, key, keyLocation: `https://${DOMAIN}/${keyFile}`, urlList: urls });
+    const bodyFile = path.join(os.tmpdir(), 'indexnow.json'); fs.writeFileSync(bodyFile, body);
+    const r = execSync(`curl -s -o /dev/null -w "%{http_code}" --max-time 60 -X POST -H "Content-Type: application/json; charset=utf-8" --data @${bodyFile} https://api.indexnow.org/indexnow`).toString();
+    console.log(`IndexNow: submitted ${urls.length} URLs, HTTP ${r} (200/202 = accepted)`);
+  }
+} catch (e) { console.log('IndexNow skipped:', e.message); }

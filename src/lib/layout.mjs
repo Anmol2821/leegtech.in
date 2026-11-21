@@ -141,6 +141,7 @@ function footer() {
     <div class="ft-mid">
       <ul class="ft-links">
         <li><a href="/about/">About Us</a></li>
+        <li><a href="/gwalior/">Gwalior Office</a></li>
         <li><a href="/services/">All Services</a></li>
         <li><a href="/blog/">Blog</a></li>
         <li><a href="/faq/">FAQ</a></li>
