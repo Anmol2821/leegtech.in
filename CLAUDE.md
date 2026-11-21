@@ -14,3 +14,6 @@ Static site for Leegtech (IP, business registration, compliance and legal docume
 Follow `docs/blog-workflow.md` exactly. Topic backlog and published log: `docs/blog-topics.md`.
 
 
+
+## Maintenance
+Weekly health check and monthly content review: `docs/maintenance.md`. Deploy with `npm run deploy` (Hostinger).
