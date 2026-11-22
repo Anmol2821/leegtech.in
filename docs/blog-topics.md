@@ -4,8 +4,8 @@ Mark a topic `[x]` when published and add it to the log below. Add new topics wi
 
 ## Backlog
 ### Patent
-- [ ] What is a provisional patent application and when should you file one?
-- [ ] Patentability criteria in India: novelty, inventive step and industrial applicability
+- [x] What is a provisional patent application and when should you file one?
+- [x] Patentability criteria in India: novelty, inventive step and industrial applicability
 - [ ] What is not patentable in India? Section 3 explained
 - [ ] How to respond to a First Examination Report (FER) in India
 - [ ] Expedited patent examination in India: who is eligible
@@ -61,3 +61,5 @@ Mark a topic `[x]` when published and add it to the log below. Add new topics wi
 | 2026-11-21 | Trademark Registration in India: The Complete Step-by-Step Process | /blog/trademark-registration-process-india/ |
 | 2026-11-21 | How to Choose the Right Trademark Class in India | /blog/how-to-choose-trademark-class-india/ |
 | 2026-11-21 | Private Limited Company vs LLP | /blog/private-limited-company-vs-llp/ |
+| 2026-11-22 | What Is a Provisional Patent Application and When Should You File One? | /blog/provisional-patent-application-india/ |
+| 2026-11-22 | Patentability Criteria in India: Novelty, Inventive Step and Industrial Applicability | /blog/patentability-criteria-india/ |

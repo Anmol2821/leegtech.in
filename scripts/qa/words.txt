@@ -130,3 +130,4 @@ Telangana
 Uttar
 Uttarakhand
 WORDS:
+provisionals
