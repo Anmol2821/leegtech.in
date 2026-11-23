@@ -6,9 +6,9 @@ Mark a topic `[x]` when published and add it to the log below. Add new topics wi
 ### Patent
 - [x] What is a provisional patent application and when should you file one?
 - [x] Patentability criteria in India: novelty, inventive step and industrial applicability
-- [ ] What is not patentable in India? Section 3 explained
-- [ ] How to respond to a First Examination Report (FER) in India
-- [ ] Expedited patent examination in India: who is eligible
+- [x] What is not patentable in India? Section 3 explained (merged into /blog/patentability-criteria-india/)
+- [x] How to respond to a First Examination Report (FER) in India
+- [x] Expedited patent examination in India: who is eligible
 - [ ] PCT application from India: timeline and national phase
 - [ ] Patent renewal in India: when renewal fees are due and what happens if you miss them
 - [ ] Pre-grant vs post-grant patent opposition in India
@@ -63,3 +63,5 @@ Mark a topic `[x]` when published and add it to the log below. Add new topics wi
 | 2026-11-21 | Private Limited Company vs LLP | /blog/private-limited-company-vs-llp/ |
 | 2026-11-22 | What Is a Provisional Patent Application and When Should You File One? | /blog/provisional-patent-application-india/ |
 | 2026-11-22 | Patentability Criteria in India: Novelty, Inventive Step and Industrial Applicability | /blog/patentability-criteria-india/ |
+| 2026-11-23 | How to Respond to a First Examination Report (FER) in India | /blog/fer-response-india/ |
+| 2026-11-23 | Expedited Patent Examination in India: Who Is Eligible? | /blog/expedited-patent-examination-india/ |
