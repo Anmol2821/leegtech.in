@@ -51,7 +51,16 @@ Templates for each outreach type: `docs/seo/outreach-templates.md`.
 | 26 | Startup media guest articles (e.g. contributor programmes of startup publications) | Expert articles on IP for startups | Check each site's contributor guidelines first; pitch a topic | ★ | todo | |
 | 27 | Free tools outreach | Tools are naturally linkable | Share the Trademark Class Finder and Patent Deadline Calculator with incubators, college E-cells and startup communities | ★★★ | todo | |
 
+## E. Added in weekly checks
+| # | Where | Angle | Action | Priority | Status | Live link |
+|---|---|---|---|---|---|---|
+| 28 | Jiwaji University Centre for Innovation & Incubator / IP Cell (jiwaji.edu) | Its start-up policy says the university will "create a network of attorneys" to help start-ups with IPR; its IP Cell has run "patent or publish" workshops | Use template 1: offer an IPR awareness session and ask to be considered for the start-up IPR resource network (only as a registered agent/advocate where the role needs it) | ★★★ | todo | |
+| 29 | Amity Innovation Incubator, Amity University Madhya Pradesh, Gwalior (amity.edu/gwalior/amity_innovation_incubator.aspx) | Campus incubator in Gwalior | Template 1: free IP basics workshop for incubatees; ask for event page or resource mention | ★★ | todo | |
+| 30 | MP Startup Centre / Startup MP portal (startup.mp.gov.in/support) | State start-up support platform; MP policy includes patent assistance for start-ups | Check whether the portal lists service providers or mentors; if so apply with the standard NAP. Template 2 | ★★ | todo | |
+| 31 | Apparel Incubation Centre, Gwalior (MP Government via IIDC with NIFT, announced 2026) | Fashion and apparel start-ups need trademarks and design registration | Once operational, use template 1 to offer a trademark and design session; ask for a resource mention | ★ | todo | |
+
 ## Log
 | Date | Item | Note |
 |---|---|---|
 | 2026-11-21 | Tracker created | 27 opportunities researched |
+| 2026-11-23 | Weekly check | Added 28–31 (Jiwaji CII/IP Cell, Amity incubator, MP Startup portal, Apparel Incubation Centre). Note for #14: ABV-IIITM runs IPR FDPs (Jan 2025), a natural fit for an IP clinic offer |
