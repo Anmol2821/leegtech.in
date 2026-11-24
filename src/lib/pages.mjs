@@ -554,7 +554,7 @@ export function blogPost(post, posts) {
     <div class="container narrow">
       ${breadcrumbs(crumbs)}
       <h1>${esc(post.title)}</h1>
-      <p class="post-meta">By ${esc(site.name)} · Published ${fmtDate(post.date)}${post.updated !== post.date ? ` · Updated ${fmtDate(post.updated)}` : ''} · ${post.readMins} min read</p>
+      <p class="post-meta">By <a href="/about/">${esc(site.founder.name)}</a>, ${esc(site.founder.role)}, ${esc(site.name)} · Published ${fmtDate(post.date)}${post.updated !== post.date ? ` · Updated ${fmtDate(post.updated)}` : ''} · ${post.readMins} min read</p>
     </div>
   </header>
   <div class="container post-layout">

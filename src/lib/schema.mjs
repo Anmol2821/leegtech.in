@@ -80,7 +80,7 @@ export const serviceNode = (s, cat) => ({
 export const articleNode = (post) => ({
   '@type': 'BlogPosting', '@id': `${site.url}/blog/${post.slug}/#article`, headline: post.title, description: post.description,
   datePublished: post.date, dateModified: post.updated, inLanguage: 'en-IN', url: `${site.url}/blog/${post.slug}/`,
-  mainEntityOfPage: { '@id': `${site.url}/blog/${post.slug}/#webpage` }, author: { '@id': ORG }, publisher: { '@id': ORG },
+  mainEntityOfPage: { '@id': `${site.url}/blog/${post.slug}/#webpage` }, author: { '@type': 'Person', '@id': FOUNDER, name: site.founder.name, jobTitle: site.founder.role, url: `${site.url}/about/`, worksFor: { '@id': ORG } }, publisher: { '@id': ORG },
   image: `${site.url}/og/default.jpg`, wordCount: post.words
 });
 
