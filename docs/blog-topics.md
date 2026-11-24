@@ -9,8 +9,8 @@ Mark a topic `[x]` when published and add it to the log below. Add new topics wi
 - [x] What is not patentable in India? Section 3 explained (merged into /blog/patentability-criteria-india/)
 - [x] How to respond to a First Examination Report (FER) in India
 - [x] Expedited patent examination in India: who is eligible
-- [ ] PCT application from India: timeline and national phase
-- [ ] Patent renewal in India: when renewal fees are due and what happens if you miss them
+- [x] PCT application from India: timeline and national phase
+- [x] Patent renewal in India: when renewal fees are due and what happens if you miss them
 - [ ] Pre-grant vs post-grant patent opposition in India
 - [ ] Can software be patented in India?
 - [ ] Foreign filing permission under Section 39: filing abroad from India
@@ -65,3 +65,5 @@ Mark a topic `[x]` when published and add it to the log below. Add new topics wi
 | 2026-11-22 | Patentability Criteria in India: Novelty, Inventive Step and Industrial Applicability | /blog/patentability-criteria-india/ |
 | 2026-11-23 | How to Respond to a First Examination Report (FER) in India | /blog/fer-response-india/ |
 | 2026-11-23 | Expedited Patent Examination in India: Who Is Eligible? | /blog/expedited-patent-examination-india/ |
+| 2026-11-24 | PCT Application from India: Timeline and National Phase Explained | /blog/pct-application-from-india/ |
+| 2026-11-24 | Patent Renewal in India: When Fees Are Due and What If You Miss Them | /blog/patent-renewal-india/ |
