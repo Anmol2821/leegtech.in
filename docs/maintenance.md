@@ -9,6 +9,8 @@ Fix what you safely can, deploy with `npm run deploy` if anything in the repo ch
 
 1. **Uptime:** fetch every URL in `https://leegtech.in/sitemap.xml` and expect 200. The environment's proxy
    occasionally drops a request (HTTP 000/502); retry a URL up to 5 times before treating it as down.
+   Also confirm `https://leegtech.in/google049db8a1006dc535.html` returns 200: it keeps Google Search Console
+   verified (source: `src/static/`). Never delete it.
 2. **Redirects and errors:** `https://www.leegtech.in/` → 301 to apex; `/privacy` → `/privacy-policy/`;
    `/no-such-page/` → 404; `/wp-admin/` → 410.
 3. **SSL:** certificate for leegtech.in valid for more than 14 days (Hostinger renews it automatically; if not,
@@ -52,6 +54,12 @@ Purpose: keep legal and statutory information current. Follow CLAUDE.md ground r
 4. If anything was reviewed, set `site.lastReviewed` to today. Run all checks, commit, `npm run deploy`,
    `npm run publish-live`.
 5. Report what changed, with sources, or "no changes needed".
+
+## Search Console
+The owner verified leegtech.in in Google Search Console (URL prefix, HTML file) on 2026-11-25. There is no API access;
+the owner sends a Performance export (CSV zip) or screenshots each month. Use it in the monthly review to find
+queries ranking on pages 2–3, pages with many impressions but few clicks, and pages not indexed; turn findings
+into title/description improvements and new topics in `docs/blog-topics.md`.
 
 ## Owner-requested changes
 Content or design changes requested by the owner are made in a normal session following CLAUDE.md, checked
