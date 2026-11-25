@@ -11,8 +11,8 @@ Mark a topic `[x]` when published and add it to the log below. Add new topics wi
 - [x] Expedited patent examination in India: who is eligible
 - [x] PCT application from India: timeline and national phase
 - [x] Patent renewal in India: when renewal fees are due and what happens if you miss them
-- [ ] Pre-grant vs post-grant patent opposition in India
-- [ ] Can software be patented in India?
+- [x] Pre-grant vs post-grant patent opposition in India
+- [x] Can software be patented in India?
 - [ ] Foreign filing permission under Section 39: filing abroad from India
 - [ ] Patent search: how to check if your invention is new
 - [ ] Statement of working of patents (Form 27) explained
@@ -67,3 +67,5 @@ Mark a topic `[x]` when published and add it to the log below. Add new topics wi
 | 2026-11-23 | Expedited Patent Examination in India: Who Is Eligible? | /blog/expedited-patent-examination-india/ |
 | 2026-11-24 | PCT Application from India: Timeline and National Phase Explained | /blog/pct-application-from-india/ |
 | 2026-11-24 | Patent Renewal in India: When Fees Are Due and What If You Miss Them | /blog/patent-renewal-india/ |
+| 2026-11-25 | Pre-grant vs Post-grant Patent Opposition in India | /blog/pre-grant-vs-post-grant-opposition-india/ |
+| 2026-11-25 | Can Software Be Patented in India? Section 3(k) and the CRI Guidelines 2025 | /blog/software-patent-india/ |
