@@ -9,7 +9,7 @@ Fix what you safely can, deploy with `npm run deploy` if anything in the repo ch
 
 1. **Uptime:** fetch every URL in `https://leegtech.in/sitemap.xml` and expect 200. The environment's proxy
    occasionally drops a request (HTTP 000/502); retry a URL up to 5 times before treating it as down.
-   Also confirm `https://leegtech.in/google049db8a1006dc535.html` returns 200: it keeps Google Search Console
+   Also confirm `https://leegtech.in/google049db8a1006dc535.html` and `/google8c276c0552068377.html` return 200: it keeps Google Search Console
    verified (source: `src/static/`). Never delete it.
 2. **Redirects and errors:** `https://www.leegtech.in/` → 301 to apex; `/privacy` → `/privacy-policy/`;
    `/no-such-page/` → 404; `/wp-admin/` → 410.
