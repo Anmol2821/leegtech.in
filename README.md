@@ -76,7 +76,8 @@ Add an object to the right `src/data/services-*.mjs` file. A page is generated a
   (name, email, own password; passwords must be unique because sign-in is by password only). Leads, matters, individual
   deadlines and tasks can be assigned (one at a time or "Assign all shown"); the person is emailed. By default team members
   see only their own work, never amounts/payments, and cannot delete, import, export, assign or change settings. The owner can
-  tick extra powers per member (`PERMS` in team.php, checked with `can()` on every action): all clients & leads, fees &
+  tick extra powers per member (`PERMS` in team.php, checked with `can()` on every action): all leads, all clients &
+  applications, fees &
   payments, assign work, import & download, client portal, delete. Team and settings stay owner-only. A deadline without
   its own assignee belongs to whoever handles its matter. Notes record who wrote them. Switching a member off signs them out.
 - **Client portal** (`src/static/portal/`, shared code `admin/_inc/portal_lib.php`): the owner switches it on per client

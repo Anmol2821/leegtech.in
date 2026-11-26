@@ -58,7 +58,7 @@ function app_card(array $m): string {
       <div class="muted small">' . h(implode(' · ', array_filter([$m['app_no'] ? 'No. ' . $m['app_no'] : '', $m['filed_on'] ? 'Filed ' . nice_date($m['filed_on']) : '', $m['title']]))) . '</div>
       <div class="meta small">' . ($m['client_name'] && $m['client_name'] !== $who ? '<span>Contact: ' . h($m['client_name']) . '</span>' : '')
         . ($m['next_due'] ? '<span class="' . due_class($m['next_due']) . '">⏳ ' . h(nice_date($m['next_due'])) . '</span>' : '')
-        . (can('all') && $m['assigned_to'] ? '<span>👤 ' . h(person_name((int)$m['assigned_to'])) . '</span>' : '')
+        . (can('clients') && $m['assigned_to'] ? '<span>👤 ' . h(person_name((int)$m['assigned_to'])) . '</span>' : '')
         . ($m['office_status'] ? '<span class="clip">' . h(mb_strimwidth((string)$m['office_status'], 0, 90, '…')) . '</span>' : '') . '</div>
     </a></div>';
 }

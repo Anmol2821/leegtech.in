@@ -76,7 +76,7 @@ function deadline_card(array $d, bool $showClient = true): string {
       <div class="top"><strong>' . h($d['kind'] ?: 'Deadline') . '</strong><span class="' . due_class($d['due_on']) . ' small">' . h(nice_date($d['due_on'])) . '</span></div>
       <div class="muted small">' . ($showClient ? h($d['client_name']) . ' · ' : '') . h(trim(($d['service'] ?? '') . ($d['title'] ? ' – ' . $d['title'] : ''))) . ($d['app_no'] ? ' · ' . h($d['app_no']) : '') . '</div>
       <div class="meta small"><span class="' . due_class($d['due_on']) . '">⏳ ' . h($when) . '</span>' . ($d['applicant'] ? '<span>' . h($d['applicant']) . '</span>' : '') . ($d['note'] ? '<span>' . h($d['note']) . '</span>' : '')
-        . (can('all') && ($who = (int)($d['assigned_to'] ?: $d['matter_assigned'])) ? '<span>👤 ' . h(person_name($who)) . '</span>' : '') . '</div>
+        . (can('clients') && ($who = (int)($d['assigned_to'] ?: $d['matter_assigned'])) ? '<span>👤 ' . h(person_name($who)) . '</span>' : '') . '</div>
     </a><form method="post">' . $f . '<button class="btn sm" name="action" value="c_deadline_done">Done</button></form></div>';
 }
 
@@ -140,7 +140,7 @@ function clients_action(string $a): void {
     if ($a === 'c_new') {
         $name = post('name', 120);
         if ($name === '') redirect($self . '?p=newclient', 'Enter the client name.');
-        if (!can('all') && post('service', 160) === '') redirect($self . '?p=newclient', 'Choose the service (the first matter) so the client shows in your work.');
+        if (!can('clients') && post('service', 160) === '') redirect($self . '?p=newclient', 'Choose the service (the first matter) so the client shows in your work.');
         $existing = null;
         $key = phone_key(post('phone', 25));
         if (strlen($key) >= 8) { $st = $db->prepare('SELECT id FROM clients WHERE phone_key = ?'); $st->execute([$key]); $existing = $st->fetchColumn() ?: null; }
@@ -357,7 +357,7 @@ function clients_page(string $p): void {
             <div class="muted small">' . h(implode(' · ', array_filter([$m['applicant'], $m['title'], $m['app_no']]))) . '</div>
             <div class="meta small">' . ($m['next_due'] && !$m['closed'] ? '<span class="' . due_class($m['next_due']) . '">⏳ ' . h(nice_date($m['next_due'])) . '</span>' : '')
             . ($m['amount'] && show_money() ? '<span class="' . ($m['paid'] ? '' : 'late') . '">' . h(rupees((int)$m['amount'])) . ' · ' . h($m['payment_status'] ?: 'Pending') . '</span>' : '')
-            . ($m['filed_on'] ? '<span>Filed ' . h(nice_date($m['filed_on'])) . '</span>' : '') . (can('all') && $m['assigned_to'] ? '<span>👤 ' . h(person_name((int)$m['assigned_to'])) . '</span>' : '') . '</div></a></div>';
+            . ($m['filed_on'] ? '<span>Filed ' . h(nice_date($m['filed_on'])) . '</span>' : '') . (can('clients') && $m['assigned_to'] ? '<span>👤 ' . h(person_name((int)$m['assigned_to'])) . '</span>' : '') . '</div></a></div>';
         $lead = $c['lead_id'] ? find_lead((int)$c['lead_id']) : null;
         $f = csrf_field() . '<input type="hidden" name="client_id" value="' . $cid . '">';
         $contact = '<div class="actions">' . ($c['phone'] ? '<a class="btn wa" href="https://wa.me/' . h(wa_number((string)$c['phone'])) . '" target="_blank" rel="noopener">WhatsApp</a><a class="btn" href="tel:+' . h(wa_number((string)$c['phone'])) . '">Call</a>' : '')
@@ -493,15 +493,18 @@ function digest_build(?array $user = null): array {
     $notTest = 'COALESCE(is_test, 0) = 0';
     $open = "COALESCE(stage, 'New') IN ('" . implode("','", OPEN_STAGES) . "')";
     $uperms = $user ? perms_of($user['perms'] ?? '') : [];
-    $uid = $user && !in_array('all', $uperms, true) ? (int)$user['id'] : null;
+    // A member with "All leads" / "All clients & applications" gets that whole area; otherwise only their own items.
+    $leadUid = $user && !in_array('leads', $uperms, true) ? (int)$user['id'] : null;
+    $dlUid = $user && !in_array('clients', $uperms, true) ? (int)$user['id'] : null;
+    $uid = $leadUid || $dlUid ? (int)$user['id'] : null; // tasks: all only with both
     $money = !$user || in_array('money', $uperms, true);
-    $dls = open_deadlines(plus_days(DEADLINE_WINDOW), $uid ? 'COALESCE(d.assigned_to, m.assigned_to) = ' . $uid : '1=1');
-    $st = $db->prepare("SELECT * FROM leads WHERE $notTest AND $open AND follow_up IS NOT NULL AND follow_up <= ? " . ($uid ? "AND assigned_to = $uid " : '') . 'ORDER BY follow_up, id');
+    $dls = open_deadlines(plus_days(DEADLINE_WINDOW), $dlUid ? 'COALESCE(d.assigned_to, m.assigned_to) = ' . $dlUid : '1=1');
+    $st = $db->prepare("SELECT * FROM leads WHERE $notTest AND $open AND follow_up IS NOT NULL AND follow_up <= ? " . ($leadUid ? "AND assigned_to = $leadUid " : '') . 'ORDER BY follow_up, id');
     $st->execute([$t]); $fus = $st->fetchAll();
     $since = (new DateTime('yesterday 09:00'))->setTimezone(new DateTimeZone('UTC'))->format('Y-m-d\TH:i:s\Z');
-    $st = $db->prepare("SELECT * FROM leads WHERE $notTest AND created_at >= ? " . ($uid ? "AND assigned_to = $uid " : '') . 'ORDER BY id DESC'); $st->execute([$since]); $newLeads = $st->fetchAll();
-    $untouched = $uid ? 0 : (int)$db->query("SELECT COUNT(*) FROM leads WHERE $notTest AND COALESCE(stage, 'New') = 'New' AND (follow_up IS NULL OR follow_up = '')")->fetchColumn();
-    $pending = $uid || !$money ? 0 : (int)$db->query('SELECT COALESCE(SUM(MAX(amount - COALESCE(received, 0), 0)), 0) FROM matters WHERE paid = 0 AND amount > 0')->fetchColumn();
+    $st = $db->prepare("SELECT * FROM leads WHERE $notTest AND created_at >= ? " . ($leadUid ? "AND assigned_to = $leadUid " : '') . 'ORDER BY id DESC'); $st->execute([$since]); $newLeads = $st->fetchAll();
+    $untouched = $leadUid ? 0 : (int)$db->query("SELECT COUNT(*) FROM leads WHERE $notTest AND COALESCE(stage, 'New') = 'New' AND (follow_up IS NULL OR follow_up = '')")->fetchColumn();
+    $pending = $dlUid || !$money ? 0 : (int)$db->query('SELECT COALESCE(SUM(MAX(amount - COALESCE(received, 0), 0)), 0) FROM matters WHERE paid = 0 AND amount > 0')->fetchColumn();
     $st = $db->prepare('SELECT * FROM tasks WHERE done_at IS NULL AND (due_on IS NULL OR due_on <= ?) ' . ($uid ? "AND assigned_to = $uid " : '') . 'ORDER BY due_on IS NULL, due_on, id LIMIT 100');
     $st->execute([plus_days(1)]); $tasks = $st->fetchAll();
 
@@ -517,7 +520,7 @@ function digest_build(?array $user = null): array {
     $r = '';
     foreach ($dls as $d) {
         $late = $d['due_on'] < $t;
-        $who = !$uid && ($w = (int)($d['assigned_to'] ?: $d['matter_assigned'])) ? ' · ' . person_name($w) : '';
+        $who = !$dlUid && ($w = (int)($d['assigned_to'] ?: $d['matter_assigned'])) ? ' · ' . person_name($w) : '';
         $r .= $li($base . '?p=matter&id=' . $d['matter_id'], ($late ? 'OVERDUE ' : '') . h(nice_date($d['due_on'])) . ' – ' . h($d['kind']),
             h($d['client_name']) . ' · ' . h(trim(($d['service'] ?? '') . ($d['applicant'] ? ' – ' . $d['applicant'] : ($d['title'] ? ' – ' . $d['title'] : '')))) . ($d['app_no'] ? ' · ' . h($d['app_no']) : '') . h($who), $late || $d['due_on'] <= plus_days(3) ? '#c0262d' : '#1b1f24');
     }
@@ -531,7 +534,7 @@ function digest_build(?array $user = null): array {
     $html .= $sec('Tasks due today or tomorrow', $r, 'None.');
     $r = '';
     foreach ($newLeads as $l) $r .= $li($base . '?p=lead&id=' . $l['id'], h($l['name'] ?: 'No name'), h(($l['service'] ?: 'Service not set') . ' · ' . ($l['source'] ?: '') . ' · ' . ist($l['created_at'], 'j M, g:i a')));
-    $html .= $sec($uid ? 'New leads assigned to you' : 'New leads since yesterday 9am', $r, 'None.');
+    $html .= $sec($leadUid ? 'New leads assigned to you' : 'New leads since yesterday 9am', $r, 'None.');
     $extra = [];
     if ($untouched) $extra[] = $untouched . ' new lead' . ($untouched === 1 ? '' : 's') . ' without a follow-up date';
     if ($pending) $extra[] = 'Payment pending: ' . rupees($pending);

@@ -30,7 +30,8 @@ function team_migrate(PDO $db): void {
 
 /** Extra powers the owner can give a team member. Without any, a member sees only work assigned to them. */
 const PERMS = [
-    'all' => ['All clients & leads', 'See and work on every lead, client and application, not only their own'],
+    'leads' => ['All leads', 'See and work on every lead and follow-up, not only their own'],
+    'clients' => ['All clients & applications', 'See and work on every client, matter, deadline and the IP tabs, not only their own'],
     'money' => ['Fees & payments', 'See quotes, fees and balances, and record payments'],
     'assign' => ['Assign work', 'Assign leads, matters, deadlines and tasks to others'],
     'import' => ['Import & download', 'Import sheets and download the leads CSV'],
@@ -38,7 +39,14 @@ const PERMS = [
     'delete' => ['Delete', 'Delete leads, clients, matters, deadlines and documents'],
 ];
 
-function perms_of(?string $s): array { return array_values(array_intersect(array_keys(PERMS), explode(',', (string)$s))); }
+function perms_of(?string $s): array {
+    $p = explode(',', (string)$s);
+    if (in_array('all', $p, true)) array_push($p, 'leads', 'clients'); // earlier combined power
+    return array_values(array_intersect(array_keys(PERMS), $p));
+}
+
+/** Sees everything in at least one area (used for person filters and team views). */
+function sees_all_any(): bool { return can('leads') || can('clients'); }
 
 /** True for the owner, or a team member the owner gave this power. */
 function can(string $perm): bool {
@@ -116,32 +124,32 @@ function password_taken(string $password, ?int $exceptUser): bool {
 /* ---------------- What each person may see (SQL fragments; ids are integers) ---------------- */
 
 function lead_scope(string $a = 'leads'): string {
-    if (can('all')) return '1=1';
+    if (can('leads')) return '1=1';
     $u = my_id();
     return "($a.assigned_to = $u OR EXISTS (SELECT 1 FROM tasks tq WHERE tq.lead_id = $a.id AND tq.assigned_to = $u AND tq.done_at IS NULL))";
 }
 
 function matter_scope(string $a = 'm'): string {
-    if (can('all')) return '1=1';
+    if (can('clients')) return '1=1';
     $u = my_id();
     return "($a.assigned_to = $u OR EXISTS (SELECT 1 FROM deadlines dq WHERE dq.matter_id = $a.id AND dq.assigned_to = $u AND dq.done_at IS NULL)
         OR EXISTS (SELECT 1 FROM tasks tq WHERE tq.matter_id = $a.id AND tq.assigned_to = $u AND tq.done_at IS NULL))";
 }
 
 function client_scope(string $a = 'c'): string {
-    if (can('all')) return '1=1';
+    if (can('clients')) return '1=1';
     return "(EXISTS (SELECT 1 FROM matters mq WHERE mq.client_id = $a.id AND " . matter_scope('mq') . ")
         OR EXISTS (SELECT 1 FROM leads lq WHERE lq.client_id = $a.id AND " . lead_scope('lq') . '))';
 }
 
 /** Deadlines: own assignee, else the matter's. $alias d = deadlines, m = matters. */
 function deadline_scope(string $d = 'd', string $m = 'm'): string {
-    if (can('all')) return '1=1';
+    if (can('clients')) return '1=1';
     return "COALESCE($d.assigned_to, $m.assigned_to) = " . my_id();
 }
 
 function can_see(string $table, int $id): bool {
-    if (can('all')) return true;
+    if (can($table === 'leads' ? 'leads' : 'clients')) return true;
     $scope = ['leads' => lead_scope('x'), 'matters' => matter_scope('x'), 'clients' => client_scope('x')][$table] ?? '0';
     $st = db()->prepare("SELECT 1 FROM $table x WHERE x.id = ? AND $scope");
     $st->execute([$id]);
@@ -170,12 +178,12 @@ function who_filter(): string { $w = get('who', 12); return $w === 'none' || ($w
 
 function who_sql(string $col): string {
     $w = who_filter();
-    if (!can('all') || $w === '') return '1=1';
+    if (!sees_all_any() || $w === '') return '1=1';
     return $w === 'none' ? "$col IS NULL" : "$col = " . (int)$w;
 }
 
 function who_select(): string {
-    if (!can('all') || !team_names()) return '';
+    if (!sees_all_any() || !team_names()) return '';
     $w = who_filter();
     $o = '<select name="who" aria-label="Person"><option value="">Everyone</option><option value="none"' . ($w === 'none' ? ' selected' : '') . '>Not assigned</option>';
     foreach (team_names(true) as $id => $n) $o .= '<option value="' . (int)$id . '"' . ($w === (string)$id ? ' selected' : '') . '>' . h($n) . '</option>';
@@ -221,14 +229,14 @@ function task_card(array $t, bool $showWhere = true): string {
     if ($showWhere && $t['matter_id']) $where = '<a href="?p=matter&amp;id=' . (int)$t['matter_id'] . '">' . h(trim(($t['matter_label'] ?? '') ?: ('Matter #' . $t['matter_id']))) . '</a>';
     return '<div class="task' . ($done ? ' done' : '') . '"><div class="body"><strong>' . h($t['title']) . '</strong>
       <div class="meta small">' . ($t['due_on'] ? '<span class="' . ($done ? 'muted' : due_class($t['due_on'])) . '">⏰ ' . h(nice_date($t['due_on'])) . '</span>' : '')
-        . ($t['assigned_to'] && (can('all') || (int)$t['assigned_to'] !== my_id()) ? '<span>👤 ' . h(person_name((int)$t['assigned_to'])) . '</span>' : (is_owner() && !$t['assigned_to'] ? '<span>👤 you</span>' : ''))
+        . ($t['assigned_to'] && (sees_all_any() || (int)$t['assigned_to'] !== my_id()) ? '<span>👤 ' . h(person_name((int)$t['assigned_to'])) . '</span>' : (is_owner() && !$t['assigned_to'] ? '<span>👤 you</span>' : ''))
         . ($where ? '<span>' . $where . '</span>' : '') . ($t['note'] ? '<span>' . h($t['note']) . '</span>' : '') . '</div></div>
       <form method="post">' . $f . '<button class="btn sm' . ($done ? '' : ' primary') . '" name="action" value="' . ($done ? 't_undo' : 't_done') . '">' . ($done ? 'Undo' : 'Done') . '</button></form></div>';
 }
 
 /** Open tasks the signed-in person may see. */
 function open_tasks(string $extraWhere = '1=1', array $args = [], int $limit = 200): array {
-    $scope = can('all') ? '1=1' : 't.assigned_to = ' . my_id();
+    $scope = can('leads') && can('clients') ? '1=1' : '(t.assigned_to = ' . my_id() . (can('leads') ? ' OR t.lead_id IS NOT NULL' : '') . (can('clients') ? ' OR t.matter_id IS NOT NULL' : '') . ')';
     $st = db()->prepare("SELECT t.*, l.name lead_name, (m.service || CASE WHEN COALESCE(m.applicant, '') != '' THEN ' – ' || m.applicant ELSE '' END) matter_label
         FROM tasks t LEFT JOIN leads l ON l.id = t.lead_id LEFT JOIN matters m ON m.id = t.matter_id
         WHERE t.done_at IS NULL AND $scope AND $extraWhere ORDER BY t.due_on IS NULL, t.due_on, t.id LIMIT $limit");
@@ -238,7 +246,7 @@ function open_tasks(string $extraWhere = '1=1', array $args = [], int $limit = 2
 
 /** Tasks block for a lead or matter page, with an add form. */
 function tasks_section(string $field, int $id): string {
-    $st = db()->prepare("SELECT * FROM tasks WHERE $field = ? AND (done_at IS NULL OR done_at > ?) " . (can('all') ? '' : 'AND assigned_to = ' . my_id()) . ' ORDER BY done_at IS NOT NULL, due_on IS NULL, due_on, id');
+    $st = db()->prepare("SELECT * FROM tasks WHERE $field = ? AND (done_at IS NULL OR done_at > ?) " . (can($field === 'lead_id' ? 'leads' : 'clients') ? '' : 'AND assigned_to = ' . my_id()) . ' ORDER BY done_at IS NOT NULL, due_on IS NULL, due_on, id');
     $st->execute([$id, gmdate('Y-m-d\TH:i:s\Z', time() - 14 * 86400)]);
     $rows = $st->fetchAll();
     return '<section class="card"><h2>Tasks' . ($rows ? ' <span class="n">' . count(array_filter($rows, fn($t) => $t['done_at'] === null)) . '</span>' : '') . '</h2>
@@ -277,7 +285,8 @@ function task_action(string $a): void {
     }
     $t = find_row('tasks', (int)post('task_id', 12));
     if (!$t) redirect($back, 'Task not found.');
-    if (!can('all') && (int)$t['assigned_to'] !== my_id()) redirect('/admin/', 'That task is not yours.');
+    $mayTouch = (int)$t['assigned_to'] === my_id() || (can('leads') && can('clients')) || ($t['lead_id'] && can('leads')) || ($t['matter_id'] && can('clients'));
+    if (!$mayTouch) redirect('/admin/', 'That task is not yours.');
     $done = $a === 't_done';
     $db->prepare('UPDATE tasks SET done_at = ? WHERE id = ?')->execute([$done ? now_utc() : null, $t['id']]);
     $txt = ($done ? 'Task done: ' : 'Task reopened: ') . $t['title'];
@@ -288,7 +297,7 @@ function task_action(string $a): void {
 
 function tasks_page(): void {
     $w = who_filter();
-    $extra = can('all') && $w !== '' ? ($w === 'none' ? 't.assigned_to IS NULL' : 't.assigned_to = ' . (int)$w) : '1=1';
+    $extra = sees_all_any() && $w !== '' ? ($w === 'none' ? 't.assigned_to IS NULL' : 't.assigned_to = ' . (int)$w) : '1=1';
     $rows = open_tasks($extra, [], 500);
     page('Tasks', '<h1>Tasks</h1>' . (who_select() ? '<form class="search" method="get"><input type="hidden" name="p" value="tasks">' . who_select() . '<button class="btn">Show</button></form>' : '') . '
     <div class="list">' . (implode('', array_map('task_card', $rows)) ?: '<p class="muted">No open tasks.</p>') . '</div>
@@ -388,7 +397,7 @@ function team_settings_html(): string {
 
 /** Owner's Today: open work per person. */
 function team_summary_html(): string {
-    if (!can('all') || !team_names()) return '';
+    if (!sees_all_any() || !team_names()) return '';
     $db = cdb(); $t = today(); $soon = plus_days(DEADLINE_WINDOW);
     $rows = '';
     foreach (team_names() + ['none' => 'Not assigned'] as $id => $name) {

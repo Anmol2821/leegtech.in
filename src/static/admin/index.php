@@ -466,14 +466,14 @@ $tbl = function (array $rows, string $head) {
 page('Today', '<h1>Today <span class="muted small">' . h(date('D, j M')) . '</span></h1>
 <a class="btn primary big" href="?p=add">+ Add a lead</a>
 ' . team_summary_html() . today_deadlines_html() . '
-<section><h2>' . (can('all') && team_names() ? 'Your tasks' : 'Tasks') . ($myTasks ? ' <span class="n">' . count($myTasks) . '</span>' : '') . '</h2>
+<section><h2>' . (sees_all_any() && team_names() ? 'Your tasks' : 'Tasks') . ($myTasks ? ' <span class="n">' . count($myTasks) . '</span>' : '') . '</h2>
   <div class="list">' . (implode('', array_map('task_card', $myTasks)) ?: '<p class="muted">No tasks due in the next 3 days.</p>') . '</div>
   <p class="small"><a href="?p=tasks">All tasks</a> · <a href="?p=tasks&amp;new=1#new">+ New task</a></p></section>
 <section><h2>Follow up today' . ($due ? ' <span class="n">' . count($due) . '</span>' : '') . '</h2>
   <div class="list">' . (implode('', array_map('lead_card', $due)) ?: '<p class="muted">Nothing due. ' . ($soon ? $soon . ' follow-up(s) in the next 7 days.' : '') . '</p>') . '</div></section>
 <section><h2>New, not yet followed up' . ($fresh ? ' <span class="n">' . count($fresh) . '</span>' : '') . '</h2>
   <div class="list">' . (implode('', array_map('lead_card', $fresh)) ?: '<p class="muted">All new leads have a follow-up date.</p>') . '</div></section>
-' . (can('all') ? '<section class="card"><h2>This month</h2>
+' . (can('leads') ? '<section class="card"><h2>This month</h2>
   <div class="stats"><div><b>' . (int)$m['n'] . '</b><span>new leads</span></div><div><b>' . (int)$w['n'] . '</b><span>won</span></div>' . (show_money() ? '<div><b>' . h(rupees((int)$w['v'])) . '</b><span>won value</span></div>' : '') . '</div>
   ' . $tbl(array_map(fn($r) => ['Source' => $r['s'], 'n' => $r['n'], 'won' => $r['won']], $bySrc), 'Source') . $tbl(array_map(fn($r) => ['Line' => $r['l'], 'n' => $r['n'], 'won' => $r['won']], $byLine), 'WhatsApp number') . $tbl(array_map(fn($r) => ['Ad' => $r['a'], 'n' => $r['n'], 'won' => $r['won']], $byAd), 'Ad code') . '
 </section>' : ''));
@@ -509,7 +509,7 @@ function lead_card(array $r): string {
     return '<div class="lead"><a class="body" href="?p=lead&amp;id=' . (int)$r['id'] . '">
       <div class="top"><strong>' . h($r['name'] ?: 'No name') . '</strong><span class="badge st-' . strtolower($stage) . '">' . h($stage) . '</span></div>
       <div class="muted small">' . h($r['service'] ?: 'Service not set') . '</div>
-      <div class="meta small">' . $fuHtml . '<span>' . h($r['source'] ?: '') . ($r['ad_code'] ? ' · ' . h($r['ad_code']) : '') . (!empty($r['line']) ? ' · ' . h($r['line']) : '') . '</span><span>' . h(ist($r['created_at'], 'j M')) . '</span>' . (!empty($r['payment_status']) && $r['payment_status'] !== 'Pending' && show_money() ? '<span>₹ ' . h($r['payment_status']) . '</span>' : '') . (can('all') && !empty($r['assigned_to']) ? '<span>👤 ' . h(person_name((int)$r['assigned_to'])) . '</span>' : '') . (!empty($r['is_test']) ? '<span class="late">TEST</span>' : '') . '</div>
+      <div class="meta small">' . $fuHtml . '<span>' . h($r['source'] ?: '') . ($r['ad_code'] ? ' · ' . h($r['ad_code']) : '') . (!empty($r['line']) ? ' · ' . h($r['line']) : '') . '</span><span>' . h(ist($r['created_at'], 'j M')) . '</span>' . (!empty($r['payment_status']) && $r['payment_status'] !== 'Pending' && show_money() ? '<span>₹ ' . h($r['payment_status']) . '</span>' : '') . (can('leads') && !empty($r['assigned_to']) ? '<span>👤 ' . h(person_name((int)$r['assigned_to'])) . '</span>' : '') . (!empty($r['is_test']) ? '<span class="late">TEST</span>' : '') . '</div>
     </a>' . $wa . '</div>';
 }
 
