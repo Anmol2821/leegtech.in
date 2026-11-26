@@ -13,8 +13,8 @@ Mark a topic `[x]` when published and add it to the log below. Add new topics wi
 - [x] Patent renewal in India: when renewal fees are due and what happens if you miss them
 - [x] Pre-grant vs post-grant patent opposition in India
 - [x] Can software be patented in India?
-- [ ] Foreign filing permission under Section 39: filing abroad from India
-- [ ] Patent search: how to check if your invention is new
+- [x] Foreign filing permission under Section 39: filing abroad from India
+- [x] Patent search: how to check if your invention is new
 - [ ] Statement of working of patents (Form 27) explained
 ### Design
 - [ ] Design registration in India: process, term and documents
@@ -69,3 +69,5 @@ Mark a topic `[x]` when published and add it to the log below. Add new topics wi
 | 2026-11-24 | Patent Renewal in India: When Fees Are Due and What If You Miss Them | /blog/patent-renewal-india/ |
 | 2026-11-25 | Pre-grant vs Post-grant Patent Opposition in India | /blog/pre-grant-vs-post-grant-opposition-india/ |
 | 2026-11-25 | Can Software Be Patented in India? Section 3(k) and the CRI Guidelines 2025 | /blog/software-patent-india/ |
+| 2026-11-26 | Foreign Filing Permission under Section 39: Filing Abroad from India | /blog/foreign-filing-permission-section-39/ |
+| 2026-11-26 | Patent Search: How to Check If Your Invention Is New | /blog/patent-search-india/ |
