@@ -28,7 +28,7 @@ if (admin_config() === null) {
     $err = null;
     if ($method === 'POST' && post('action') === 'setup') {
         if (login_locked()) $err = 'Too many attempts. Wait 15 minutes and try again.';
-        elseif (!password_verify(strtoupper(post('code', 40)), SETUP_CODE_HASH)) { record_login_fail(); $err = 'That setup code is not right.'; }
+        elseif (!password_verify(implode('-', str_split(preg_replace('/[^A-Z0-9]/', '', strtoupper(post('code', 60))) ?? '', 5)), SETUP_CODE_HASH)) { record_login_fail(); $err = 'That setup code is not right.'; }
         elseif ($e = password_problem($_POST['password'] ?? '', $_POST['password2'] ?? '')) $err = $e;
         else { save_password((string)$_POST['password']); start_session(); redirect($self, 'Password saved. Welcome!'); }
     }
