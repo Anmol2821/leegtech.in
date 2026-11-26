@@ -61,6 +61,14 @@ Add an object to the right `src/data/services-*.mjs` file. A page is generated a
   - Password hash: `leads-data/admin.json`. Forgot it? Delete that file in hPanel → File Manager, generate a new
     one-time setup code, put its `password_hash()` in `admin/_inc/config.php`, deploy, and set up again at `/admin/`.
   - Never commit `leads-data/` or any lead data to this repository.
+- **Clients, matters and deadlines** (`admin/_inc/clients.php`): a won lead becomes a client ("Make client"); each client has
+  matters (one per filing/job) with application no., status, Vyapar invoice no., amount and paid flag, notes, and deadlines.
+  Deadlines are typed in from the official notice; the tracker never calculates statutory dates. Today shows overdue
+  deadlines and those due in the next 15 days.
+- **Daily summary email** (`admin/_inc/daily.php`, CLI only): an hourly Hostinger cron job runs
+  `/usr/bin/php /home/u784176160/domains/leegtech.in/public_html/admin/_inc/daily.php`; it sends one email a day after
+  9am IST (deadlines, follow-ups, new leads) to the address in Settings (default info@leegtech.in) via PHP `mail()`.
+  Preview without sending: `php daily.php --preview`.
 
 ## Ads & analytics
 Fill IDs in `src/data/site.mjs → tracking` and rebuild:

@@ -7,6 +7,7 @@
 declare(strict_types=1);
 define('LT_ADMIN', true);
 require __DIR__ . '/_inc/app.php';
+require __DIR__ . '/_inc/clients.php';
 
 header('X-Robots-Tag: noindex, nofollow');
 header('Cache-Control: no-store');
@@ -56,6 +57,8 @@ if (!current_session()) {
         <button class="btn primary">Sign in</button></form></div>', false);
 }
 
+cdb(); // make sure client/matter tables and columns exist
+
 /* ---------- Actions (all POST, signed in) ---------- */
 if ($method === 'POST') {
     check_csrf();
@@ -70,6 +73,18 @@ if ($method === 'POST') {
         if ($e = password_problem($_POST['password'] ?? '', $_POST['password2'] ?? '')) redirect($self . '?p=settings', $e);
         save_password((string)$_POST['password']);
         redirect($self . '?p=settings', 'Password changed.');
+    }
+
+    if (str_starts_with($a, 'c_')) clients_action($a);
+
+    if ($a === 'digest') {
+        $to = strtolower(post('digest_to', 160));
+        if (!filter_var($to, FILTER_VALIDATE_EMAIL)) redirect($self . '?p=settings', 'Enter a valid email address.');
+        save_digest_settings($to, post('digest_on', 1) === '1');
+        redirect($self . '?p=settings', 'Daily email settings saved.');
+    }
+    if ($a === 'digest_test') {
+        redirect($self . '?p=settings', digest_send() ? 'Test email sent to ' . digest_to() . '. Check the inbox (and spam) in a minute.' : 'The email could not be sent from the server.');
     }
 
     if ($a === 'lines') {
@@ -136,7 +151,7 @@ if ($method === 'POST') {
         $new = post('stage');
         $setStage($new);
         if (in_array($new, ['Won', 'Lost'], true)) $setFollowUp(null);
-        redirect($back, 'Stage: ' . $new);
+        redirect($back, $new === 'Won' && !$lead['client_id'] ? 'Won! Tap "Make client" to start tracking the work.' : 'Stage: ' . $new);
     }
     if ($a === 'followup') {
         $days = post('days', 3);
@@ -256,7 +271,7 @@ if ($p === 'lead') {
     $f = csrf_field() . '<input type="hidden" name="id" value="' . $id . '">';
     page($lead['name'] ?: 'Lead', '<p class="small"><a href="?p=leads">← All leads</a></p>
     <h1>' . h($lead['name'] ?: 'No name') . ' <span class="badge st-' . strtolower($stage) . '">' . h($stage) . '</span></h1>
-    <p class="muted">' . h($lead['service'] ?: 'Service not set') . ' · #' . $id . '</p>' . $contact . '
+    <p class="muted">' . h($lead['service'] ?: 'Service not set') . ' · #' . $id . '</p>' . $contact . convert_card($lead) . '
     <section class="card"><h2>Stage</h2><form method="post" class="chips">' . $f . '<input type="hidden" name="action" value="stage">' . $stageBtns . '</form></section>
     <section class="card"><h2>Next follow-up: ' . $fuText . '</h2>
       <form method="post" class="chips">' . $f . '<input type="hidden" name="action" value="followup">
@@ -289,6 +304,8 @@ if ($p === 'lead') {
         <label class="check"><input type="checkbox" name="confirm" value="yes" required> Yes, permanently delete this lead and its notes</label>
         <button class="btn danger">Delete</button></form></details>');
 }
+
+if (in_array($p, ['clients', 'client', 'matter', 'deadlines', 'newclient'], true)) clients_page($p);
 
 if ($p === 'leads') {
     $stageF = get('stage'); $q = get('q', 80); $srcF = get('source', 60); $lineF = get('line', 60); $tests = get('tests') === '1';
@@ -333,6 +350,12 @@ if ($p === 'leads') {
 if ($p === 'settings') {
     page('Settings', '<h1>Settings</h1>
     <section class="card"><h2>Download all leads</h2><p class="muted">A spreadsheet (CSV) of every lead, for backup or Excel.</p><a class="btn" href="?p=export">Download CSV</a></section>
+    <section class="card"><h2>Daily summary email</h2><p class="muted">Every morning after 9am: deadlines due in the next ' . DEADLINE_WINDOW . ' days, lead follow-ups due, and new leads.</p>
+      <form method="post" class="stack">' . csrf_field() . '<input type="hidden" name="action" value="digest">
+        <label>Send to<input name="digest_to" type="email" required maxlength="160" value="' . h(digest_to()) . '"></label>
+        <label class="check"><input type="checkbox" name="digest_on" value="1"' . (digest_enabled() ? ' checked' : '') . '> Send the daily email</label>
+        <button class="btn primary">Save</button></form>
+      <form method="post" class="mt">' . csrf_field() . '<button class="btn" name="action" value="digest_test">Send a test email now</button></form></section>
     <section class="card"><h2>Your WhatsApp numbers</h2><p class="muted">Name each number so you can record which one a lead messaged. Renaming keeps existing leads on that number. Leave a box empty to remove it.</p>
       <form method="post" class="stack">' . csrf_field() . '<input type="hidden" name="action" value="lines">' .
       implode('', array_map(fn($i) => '<label>Number ' . ($i + 1) . '<input name="lines[]" maxlength="60" value="' . h(wa_lines()[$i] ?? '') . '" placeholder="e.g. Business 89823 46105"></label>', range(0, count(wa_lines())))) . '
@@ -376,6 +399,7 @@ $tbl = function (array $rows, string $head) {
 
 page('Today', '<h1>Today <span class="muted small">' . h(date('D, j M')) . '</span></h1>
 <a class="btn primary big" href="?p=add">+ Add a lead</a>
+' . today_deadlines_html() . '
 <section><h2>Follow up today' . ($due ? ' <span class="n">' . count($due) . '</span>' : '') . '</h2>
   <div class="list">' . (implode('', array_map('lead_card', $due)) ?: '<p class="muted">Nothing due. ' . ($soon ? $soon . ' follow-up(s) in the next 7 days.' : '') . '</p>') . '</div></section>
 <section><h2>New, not yet followed up' . ($fresh ? ' <span class="n">' . count($fresh) . '</span>' : '') . '</h2>
@@ -400,6 +424,14 @@ function service_select(string $current): string {
     return $o . '</select>';
 }
 
+function convert_card(array $lead): string {
+    if ($lead['client_id'] && ($c = find_row('clients', (int)$lead['client_id']))) return '<p class="card">Client: <a href="?p=client&amp;id=' . (int)$c['id'] . '"><strong>' . h($c['name']) . '</strong></a></p>';
+    $won = ($lead['stage'] ?: 'New') === 'Won';
+    return '<form method="post" class="card' . ($won ? ' hl' : '') . '">' . csrf_field() . '<input type="hidden" name="id" value="' . (int)$lead['id'] . '">
+      ' . ($won ? '<p><strong>Won.</strong> Make this a client to track the filing, application number, deadlines and payment.</p>' : '<p class="small muted">Already working for them? Make this a client to track the filing and deadlines.</p>') . '
+      <button class="btn' . ($won ? ' primary' : '') . '" name="action" value="c_from_lead">Make client</button></form>';
+}
+
 function lead_card(array $r): string {
     $stage = $r['stage'] ?: 'New';
     $fu = $r['follow_up'];
@@ -418,10 +450,10 @@ function page(string $title, string $body, bool $nav = true): void {
     $tab = fn($k, $label) => '<a href="?p=' . $k . '"' . ($p === $k ? ' aria-current="page"' : '') . '>' . $label . '</a>';
     echo '<!doctype html><html lang="en-IN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow"><title>' . h($title) . ' · Leegtech leads</title>
-<link rel="stylesheet" href="/admin/admin.css?v=2"><link rel="icon" href="/favicon.ico"></head><body>'
+<link rel="stylesheet" href="/admin/admin.css?v=3"><link rel="icon" href="/favicon.ico"></head><body>'
     . ($nav ? '<header class="bar"><a href="?p=home" class="brand">Leegtech leads</a><a href="?p=settings" class="small">Settings</a></header>' : '')
     . '<main>' . ($msg ? '<p class="flash" role="status">' . h($msg) . '</p>' : '') . $body . '</main>'
-    . ($nav ? '<nav class="tabs">' . $tab('home', 'Today') . $tab('leads', 'Leads') . $tab('add', '+ Add') . '</nav>' : '')
+    . ($nav ? '<nav class="tabs">' . $tab('home', 'Today') . $tab('leads', 'Leads') . $tab('clients', 'Clients') . $tab('add', '+ Add') . '</nav>' : '')
     . '</body></html>';
     exit;
 }
