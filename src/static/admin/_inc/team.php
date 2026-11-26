@@ -24,6 +24,11 @@ function team_migrate(PDO $db): void {
         $have = array_column($db->query("PRAGMA table_info($table)")->fetchAll(), 'name');
         foreach ($cols as $c => $t) if (!in_array($c, $have, true)) $db->exec("ALTER TABLE $table ADD COLUMN $c $t");
     }
+    // Earlier combined power "all" becomes "clients" only (leads stay assigned-only until "All leads" is ticked).
+    foreach ($db->query("SELECT id, perms FROM users WHERE ',' || perms || ',' LIKE '%,all,%'")->fetchAll() as $u) {
+        $p = array_values(array_unique(array_map(fn($x) => $x === 'all' ? 'clients' : $x, explode(',', (string)$u['perms']))));
+        $db->prepare('UPDATE users SET perms = ? WHERE id = ?')->execute([implode(',', $p), $u['id']]);
+    }
 }
 
 /* ---------------- Who is signed in, and what they may do ---------------- */
@@ -41,7 +46,7 @@ const PERMS = [
 
 function perms_of(?string $s): array {
     $p = explode(',', (string)$s);
-    if (in_array('all', $p, true)) array_push($p, 'leads', 'clients'); // earlier combined power
+    if (in_array('all', $p, true)) $p[] = 'clients'; // the earlier combined power was given for clients; leads need "All leads" ticked
     return array_values(array_intersect(array_keys(PERMS), $p));
 }
 
@@ -123,10 +128,10 @@ function password_taken(string $password, ?int $exceptUser): bool {
 
 /* ---------------- What each person may see (SQL fragments; ids are integers) ---------------- */
 
+/** Leads: everyone's with "All leads", otherwise only leads assigned to this person. */
 function lead_scope(string $a = 'leads'): string {
     if (can('leads')) return '1=1';
-    $u = my_id();
-    return "($a.assigned_to = $u OR EXISTS (SELECT 1 FROM tasks tq WHERE tq.lead_id = $a.id AND tq.assigned_to = $u AND tq.done_at IS NULL))";
+    return "$a.assigned_to = " . my_id();
 }
 
 function matter_scope(string $a = 'm'): string {
@@ -225,7 +230,7 @@ function task_card(array $t, bool $showWhere = true): string {
     $f = csrf_field() . '<input type="hidden" name="task_id" value="' . (int)$t['id'] . '">';
     $done = $t['done_at'] !== null;
     $where = '';
-    if ($showWhere && $t['lead_id']) $where = '<a href="?p=lead&amp;id=' . (int)$t['lead_id'] . '">Lead: ' . h($t['lead_name'] ?? ('#' . $t['lead_id'])) . '</a>';
+    if ($showWhere && $t['lead_id']) $where = can_see('leads', (int)$t['lead_id']) ? '<a href="?p=lead&amp;id=' . (int)$t['lead_id'] . '">Lead: ' . h($t['lead_name'] ?? ('#' . $t['lead_id'])) . '</a>' : 'Lead: ' . h($t['lead_name'] ?? ('#' . $t['lead_id']));
     if ($showWhere && $t['matter_id']) $where = '<a href="?p=matter&amp;id=' . (int)$t['matter_id'] . '">' . h(trim(($t['matter_label'] ?? '') ?: ('Matter #' . $t['matter_id']))) . '</a>';
     return '<div class="task' . ($done ? ' done' : '') . '"><div class="body"><strong>' . h($t['title']) . '</strong>
       <div class="meta small">' . ($t['due_on'] ? '<span class="' . ($done ? 'muted' : due_class($t['due_on'])) . '">⏰ ' . h(nice_date($t['due_on'])) . '</span>' : '')
