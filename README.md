@@ -77,6 +77,12 @@ Add an object to the right `src/data/services-*.mjs` file. A page is generated a
   deadlines and tasks can be assigned (one at a time or "Assign all shown"); the person is emailed. Team members see only
   their own work, never amounts/payments, and cannot delete, import, export, assign or change settings. A deadline without
   its own assignee belongs to whoever handles its matter. Notes record who wrote them. Switching a member off signs them out.
+- **Client portal** (`src/static/portal/`, shared code `admin/_inc/portal_lib.php`): the owner switches it on per client
+  (client page → Give portal access; a one-time password is shown with WhatsApp/email share buttons). Clients sign in at
+  `/portal/` with mobile or email + password and see only their own matters: status, office status, upcoming deadline
+  dates (no notes), fee/received/balance, the matter's "message to the client", and documents; they can upload documents
+  (PDF, images, Word, Excel; base64 via `portal/portal.js`). Files live in `leads-data/uploads/` outside public_html and
+  are served only after a sign-in check. Uploads are logged on the matter and emailed to the owner and the matter's handler.
 - **Daily summary email** (`admin/_inc/daily.php`, CLI only): an hourly Hostinger cron job runs
   `/usr/bin/php /home/u784176160/domains/leegtech.in/public_html/admin/_inc/daily.php`; it sends one email a day after
   9am IST (deadlines, follow-ups, tasks, new leads) to the address in Settings (default info@leegtech.in) via PHP `mail()`,

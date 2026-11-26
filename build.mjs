@@ -155,6 +155,7 @@ User-agent: *
 Allow: /
 Disallow: /thank-you/
 Disallow: /admin/
+Disallow: /portal/
 
 # AI assistants and search engines are welcome to read and cite this site.
 User-agent: GPTBot

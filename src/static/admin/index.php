@@ -10,6 +10,7 @@ require __DIR__ . '/_inc/app.php';
 require __DIR__ . '/_inc/clients.php';
 require __DIR__ . '/_inc/portfolio.php';
 require __DIR__ . '/_inc/team.php';
+require __DIR__ . '/_inc/portal_lib.php';
 
 header('X-Robots-Tag: noindex, nofollow');
 header('Cache-Control: no-store');
@@ -85,6 +86,7 @@ if ($method === 'POST') {
     if (str_starts_with($a, 'team_')) team_action($a);
     if (str_starts_with($a, 't_')) task_action($a);
     if ($a === 'bulk_assign') bulk_assign_action();
+    if (str_starts_with($a, 'portal_') || str_starts_with($a, 'doc_')) portal_admin_action($a);
     if (in_array($a, ['digest', 'digest_test', 'lines'], true)) require_owner($self . '?p=settings');
 
     if ($a === 'digest') {
@@ -225,6 +227,13 @@ $notTest = 'COALESCE(is_test, 0) = 0';
 $open = "COALESCE(stage, 'New') IN ('" . implode("','", OPEN_STAGES) . "')";
 
 if ($p === 'tasks') tasks_page();
+
+if ($p === 'doc') {
+    $d = find_row('documents', (int)get('id', 12));
+    if (!$d) redirect($self, 'Document not found.');
+    if ($d['matter_id']) require_see('matters', (int)$d['matter_id']); else require_see('clients', (int)$d['client_id']);
+    send_document($d);
+}
 
 if ($p === 'export') {
     require_owner($self . '?p=settings');
@@ -507,12 +516,12 @@ function page(string $title, string $body, bool $nav = true): void {
     $tab = fn($k, $label, $also = []) => '<a href="?p=' . $k . '"' . ($p === $k || in_array($p, $also, true) ? ' aria-current="page"' : '') . '>' . $label . '</a>';
     echo '<!doctype html><html lang="en-IN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow"><title>' . h($title) . ' · Leegtech leads</title>
-<link rel="stylesheet" href="/admin/admin.css?v=7"><link rel="icon" href="/favicon.ico"></head><body>'
+<link rel="stylesheet" href="/admin/admin.css?v=8"><link rel="icon" href="/favicon.ico"></head><body>'
     . ($nav ? '<header class="bar">' . ($p !== 'home' ? '<a href="' . h(back_href()) . '" class="back" id="backbtn" aria-label="Back" title="Back">←</a>' : '')
         . '<a href="?p=home" class="brand">Leegtech leads</a><a href="?p=settings" class="small">' . (me() && !is_owner() ? h(me()['name']) . ' · ' : '') . 'Settings</a></header>' : '')
     . '<main>' . ($msg ? '<p class="flash" role="status">' . h($msg) . '</p>' : '') . $body . '</main>'
     . ($nav ? '<nav class="tabs">' . $tab('home', 'Today') . $tab('leads', 'Leads') . $tab('clients', 'Clients', ['clients', 'client', 'matter', 'ip', 'import', 'newclient', 'deadlines']) . $tab('add', '+ Add') . '</nav>' : '')
-    . ($nav ? '<script src="/admin/admin.js?v=1" defer></script>' : '') . '</body></html>';
+    . ($nav ? '<script src="/admin/admin.js?v=1" defer></script><script src="/portal/portal.js?v=1" defer></script>' : '') . '</body></html>';
     exit;
 }
 

@@ -268,9 +268,10 @@ function service_names(): array {
 }
 
 function flash(?string $msg = null): ?string {
-    if ($msg !== null) { setcookie('lt_flash', $msg, ['expires' => time() + 60, 'path' => '/admin/', 'secure' => is_https(), 'httponly' => true, 'samesite' => 'Lax']); return null; }
+    $path = str_starts_with((string)($_SERVER['REQUEST_URI'] ?? ''), '/portal') ? '/portal/' : '/admin/';
+    if ($msg !== null) { setcookie('lt_flash', $msg, ['expires' => time() + 60, 'path' => $path, 'secure' => is_https(), 'httponly' => true, 'samesite' => 'Lax']); return null; }
     $m = $_COOKIE['lt_flash'] ?? null;
-    if ($m !== null) setcookie('lt_flash', '', ['expires' => time() - 3600, 'path' => '/admin/', 'secure' => is_https(), 'httponly' => true, 'samesite' => 'Lax']);
+    if ($m !== null) setcookie('lt_flash', '', ['expires' => time() - 3600, 'path' => $path, 'secure' => is_https(), 'httponly' => true, 'samesite' => 'Lax']);
     return is_string($m) ? mb_substr($m, 0, 200) : null;
 }
 

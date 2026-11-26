@@ -34,7 +34,7 @@ function clients_migrate(PDO $db): void {
     if (!in_array('filed_on', $have, true)) $db->exec('ALTER TABLE matters ADD COLUMN filed_on TEXT');
 }
 
-function cdb(): PDO { static $done = false; $db = db(); if (!$done) { $done = true; clients_migrate($db); if (function_exists('portfolio_migrate')) portfolio_migrate($db); if (function_exists('team_migrate')) team_migrate($db); } return $db; }
+function cdb(): PDO { static $done = false; $db = db(); if (!$done) { $done = true; clients_migrate($db); if (function_exists('portfolio_migrate')) portfolio_migrate($db); if (function_exists('team_migrate')) team_migrate($db); if (function_exists('portal_migrate')) portal_migrate($db); } return $db; }
 
 function find_row(string $table, int $id): ?array {
     $st = cdb()->prepare("SELECT * FROM $table WHERE id = ?");
@@ -364,6 +364,7 @@ function clients_page(string $p): void {
         <h1>' . h($c['name']) . '</h1><p class="muted">' . h(implode(' · ', array_filter([$c['company'], $c['city'], $c['phone'], $c['email']]))) . '</p>' . $contact .
         ($c['notes'] ? '<p class="card">' . nl2br(h($c['notes'])) . '</p>' : '') . '
         <h2>Matters</h2><div class="list">' . ($ms ?: '<p class="muted">No matters yet.</p>') . '</div>
+        ' . portal_admin_card($c) . documents_admin_html($cid, null) . '
         <details class="card"><summary>+ Add a matter</summary><form method="post" class="stack">' . $f . '<input type="hidden" name="action" value="c_add_matter">
           <label>Service' . service_select('') . '</label><label>Title<input name="title" maxlength="160" placeholder="e.g. brand name, invention title"></label>
           <button class="btn primary">Add matter</button></form></details>
@@ -422,7 +423,7 @@ function clients_page(string $p): void {
             <button class="btn primary">Add deadline</button>
             <p class="small muted">Take the due date from the official notice or portal. The tracker does not calculate legal deadlines.</p></form></section>
         ' . (show_money() ? payment_card('<input type="hidden" name="matter_id" value="' . $mid . '"><input type="hidden" name="action" value="c_pay">', 'Fee', $m['amount'] === null ? null : (int)$m['amount'], $m['payment_status'], $m['received'] === null ? null : (int)$m['received'])
-          . ($m['invoice_no'] ? '<p class="small muted">Vyapar invoice ' . h($m['invoice_no']) . '</p>' : '') : '') . tasks_section('matter_id', $mid) . '
+          . ($m['invoice_no'] ? '<p class="small muted">Vyapar invoice ' . h($m['invoice_no']) . '</p>' : '') : '') . tasks_section('matter_id', $mid) . documents_admin_html((int)$m['client_id'], $mid, $m['portal_note']) . '
         <section class="card"><h2>Notes</h2><form method="post" class="stack">' . $f . '<input type="hidden" name="action" value="c_matter_note">
           <textarea name="note" rows="2" required maxlength="2000" placeholder="e.g. Filed today, receipt shared with client"></textarea><button class="btn primary">Add note</button></form>
           <ul class="timeline">' . ($log ?: '<li class="muted">No notes yet.</li>') . '</ul></section>

@@ -105,3 +105,17 @@ details.member { border: 1px solid var(--line); border-radius: 10px; padding: 10
 details.member[open] summary { margin-bottom: 10px; }
 details.member.off { opacity: .7; }
 table.team td:first-child a { font-weight: 600; }
+.docs { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; }
+.docs li { overflow-wrap: anywhere; }
+.inline-del { display: inline; margin-left: 8px; }
+.linkbtn { background: none; border: 0; padding: 0; color: var(--late); font: inherit; font-size: .86rem; cursor: pointer; text-decoration: underline; }
+.bar .linkbtn { color: var(--brand); font-size: .9rem; }
+.note { background: #fff3dc; color: #6b3d00; border-radius: 10px; padding: 10px 12px; }
+.plain { padding-left: 18px; margin: 4px 0; }
+.pm .top { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
+.pm h2 { margin: 0; }
+.pm h3 { font-size: .95rem; margin: 14px 0 4px; }
+.pm.closed { opacity: .8; }
+.pw { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 1.15rem; letter-spacing: .03em; }
+body.portal { padding-bottom: 24px; }
+textarea[readonly] { font-size: .9rem; }
