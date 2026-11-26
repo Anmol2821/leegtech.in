@@ -62,7 +62,9 @@ Add an object to the right `src/data/services-*.mjs` file. A page is generated a
     one-time setup code, put its `password_hash()` in `admin/_inc/config.php`, deploy, and set up again at `/admin/`.
   - Never commit `leads-data/` or any lead data to this repository.
 - **Clients, matters and deadlines** (`admin/_inc/clients.php`): a won lead becomes a client ("Make client"); each client has
-  matters (one per filing/job) with application no., status, Vyapar invoice no., amount and paid flag, notes, and deadlines.
+  matters (one per filing/job) with application no., filing date, status, Vyapar invoice no., fee, payment status
+  (Pending / Advance received / Partially paid / Fully paid) and amount received, notes, and deadlines (incl. "Filing due").
+  Leads also have a payment status and amount received, carried over when the lead becomes a client.
   Deadlines are typed in from the official notice; the tracker never calculates statutory dates. Today shows overdue
   deadlines and those due in the next 15 days.
 - **Daily summary email** (`admin/_inc/daily.php`, CLI only): an hourly Hostinger cron job runs

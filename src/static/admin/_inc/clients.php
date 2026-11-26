@@ -9,7 +9,7 @@ if (!defined('LT_ADMIN')) { http_response_code(404); exit; }
 
 const MATTER_STATUSES = ['Documents pending', 'Drafting', 'Ready to file', 'Filed', 'Under examination', 'Objection / FER received',
     'Reply filed', 'Hearing scheduled', 'Published / advertised', 'Registered / granted', 'Completed', 'On hold'];
-const DEADLINE_KINDS = ['Reply to examination report / FER', 'Reply to objection', 'Hearing', 'Opposition', 'Renewal',
+const DEADLINE_KINDS = ['Filing due', 'Reply to examination report / FER', 'Reply to objection', 'Hearing', 'Opposition', 'Renewal',
     'Annual / ROC filing', 'GST / tax return', 'Documents from client', 'Payment from client', 'Other'];
 const DEADLINE_WINDOW = 15; // days ahead shown on Today and in the email
 
@@ -25,6 +25,13 @@ function clients_migrate(PDO $db): void {
     $db->exec('CREATE INDEX IF NOT EXISTS deadlines_due ON deadlines(due_on)');
     $have = array_column($db->query('PRAGMA table_info(leads)')->fetchAll(), 'name');
     if (!in_array('client_id', $have, true)) $db->exec('ALTER TABLE leads ADD COLUMN client_id INTEGER');
+    $have = array_column($db->query('PRAGMA table_info(matters)')->fetchAll(), 'name');
+    if (!in_array('payment_status', $have, true)) {
+        $db->exec("ALTER TABLE matters ADD COLUMN payment_status TEXT DEFAULT 'Pending'");
+        $db->exec("UPDATE matters SET payment_status = CASE WHEN paid = 1 THEN 'Fully paid' ELSE 'Pending' END");
+    }
+    if (!in_array('received', $have, true)) $db->exec('ALTER TABLE matters ADD COLUMN received INTEGER');
+    if (!in_array('filed_on', $have, true)) $db->exec('ALTER TABLE matters ADD COLUMN filed_on TEXT');
 }
 
 function cdb(): PDO { static $done = false; $db = db(); if (!$done) { clients_migrate($db); $done = true; } return $db; }
@@ -76,7 +83,7 @@ function client_card(array $c): string {
       <div class="top"><strong>' . h($c['name']) . '</strong>' . ((int)$c['open_matters'] ? '<span class="badge st-contacted">' . (int)$c['open_matters'] . ' open</span>' : '') . '</div>
       <div class="muted small">' . h(implode(' · ', array_filter([$c['company'], $c['city'], $c['phone']]))) . '</div>
       <div class="meta small">' . ($c['next_due'] ? '<span class="' . due_class($c['next_due']) . '">⏳ Next deadline ' . h(nice_date($c['next_due'])) . '</span>' : '')
-        . ((int)$c['unpaid'] ? '<span class="late">' . (int)$c['unpaid'] . ' unpaid</span>' : '') . '</div>
+        . ((int)$c['unpaid'] ? '<span class="late">' . (int)$c['unpaid'] . ' payment' . ((int)$c['unpaid'] === 1 ? '' : 's') . ' pending</span>' : '') . '</div>
     </a>' . ($c['phone'] ? '<a class="btn wa sm" href="https://wa.me/' . h(wa_number((string)$c['phone'])) . '" target="_blank" rel="noopener">WhatsApp</a>' : '') . '</div>';
 }
 
@@ -115,6 +122,9 @@ function clients_action(string $a): void {
         $cid = client_for($lead, (int)$lead['id']);
         $db->prepare('UPDATE leads SET client_id = ?, updated_at = ? WHERE id = ?')->execute([$cid, now_utc(), $lead['id']]);
         $mid = create_matter($cid, (string)$lead['service'], '', 'Documents pending', $lead['quoted_amount'] === null ? null : (int)$lead['quoted_amount']);
+        $pst = $lead['payment_status'] ?: 'Pending';
+        $db->prepare('UPDATE matters SET payment_status = ?, received = ?, paid = ? WHERE id = ?')->execute([$pst, $lead['received'], $pst === 'Fully paid' ? 1 : 0, $mid]);
+        if ($pst !== 'Pending' || $lead['received']) mlog($mid, 'Payment from lead: ' . $pst . ($lead['received'] ? ', received ' . rupees((int)$lead['received']) : ''));
         log_activity((int)$lead['id'], 'stage', 'Converted to client #' . $cid);
         redirect($self . '?p=matter&id=' . $mid, 'Client and matter created. Add the application number and deadlines below.');
     }
@@ -184,6 +194,10 @@ function clients_action(string $a): void {
         if (in_array($s, MATTER_STATUSES, true) && $s !== $m['status']) {
             $db->prepare('UPDATE matters SET status = ?, updated_at = ? WHERE id = ?')->execute([$s, now_utc(), $mid]);
             mlog($mid, 'Status: ' . ($m['status'] ?: '–') . ' → ' . $s);
+            if ($s === 'Filed' && !$m['filed_on']) {
+                $db->prepare('UPDATE matters SET filed_on = ? WHERE id = ?')->execute([today(), $mid]);
+                mlog($mid, 'Filing date set to today (' . today() . '). Change it under Edit details if needed.');
+            }
         }
         redirect($back, 'Status: ' . $s);
     }
@@ -201,16 +215,21 @@ function clients_action(string $a): void {
     }
     if ($a === 'c_matter_edit') {
         $amt = post('amount', 12); $amt = $amt !== '' && ctype_digit($amt) ? (int)$amt : null;
-        $db->prepare('UPDATE matters SET service = ?, title = ?, app_no = ?, invoice_no = ?, amount = ?, updated_at = ? WHERE id = ?')
-            ->execute([post('service', 160), post('title', 160), post('app_no', 60), post('invoice_no', 60), $amt, now_utc(), $mid]);
+        $filed = post('filed_on', 10); $filed = valid_date($filed) ? $filed : null;
+        $db->prepare('UPDATE matters SET service = ?, title = ?, app_no = ?, invoice_no = ?, amount = ?, filed_on = ?, updated_at = ? WHERE id = ?')
+            ->execute([post('service', 160), post('title', 160), post('app_no', 60), post('invoice_no', 60), $amt, $filed, now_utc(), $mid]);
+        if ($filed !== ($m['filed_on'] ?: null)) mlog($mid, $filed ? 'Filing date: ' . nice_date($filed) . ' (' . $filed . ')' : 'Filing date cleared');
+        if ($amt !== null && $m['payment_status'] !== 'Fully paid' && $m['received'] !== null && (int)$m['received'] >= $amt)
+            $db->prepare("UPDATE matters SET payment_status = 'Fully paid', paid = 1 WHERE id = ?")->execute([$mid]);
         if (post('app_no', 60) !== (string)$m['app_no'] && post('app_no', 60) !== '') mlog($mid, 'Application / reference no.: ' . post('app_no', 60));
         redirect($back, 'Saved.');
     }
-    if ($a === 'c_paid') {
-        $paid = post('paid', 1) === '1' ? 1 : 0;
-        $db->prepare('UPDATE matters SET paid = ?, updated_at = ? WHERE id = ?')->execute([$paid, now_utc(), $mid]);
-        mlog($mid, $paid ? 'Marked paid' : 'Marked unpaid');
-        redirect($back, $paid ? 'Marked paid.' : 'Marked unpaid.');
+    if ($a === 'c_pay') {
+        $oldRec = $m['received'] === null ? null : (int)$m['received'];
+        [$st, $rec] = payment_from_post($m['amount'] === null ? null : (int)$m['amount'], $m['payment_status'], $oldRec);
+        $db->prepare('UPDATE matters SET payment_status = ?, received = ?, paid = ?, updated_at = ? WHERE id = ?')->execute([$st, $rec, $st === 'Fully paid' ? 1 : 0, now_utc(), $mid]);
+        if ($st !== ($m['payment_status'] ?: 'Pending') || $rec !== $oldRec) mlog($mid, 'Payment: ' . $st . ($rec ? ', received ' . rupees($rec) : ''));
+        redirect($back, 'Payment: ' . $st);
     }
     if ($a === 'c_close') {
         $closed = post('closed', 1) === '1' ? 1 : 0;
@@ -258,12 +277,12 @@ function clients_page(string $p): void {
             FROM clients c WHERE ' . implode(' AND ', $where) . ' ORDER BY c.name COLLATE NOCASE LIMIT 500');
         $st->execute($args);
         $rows = $st->fetchAll();
-        $pending = (int)$db->query('SELECT COALESCE(SUM(amount), 0) FROM matters WHERE paid = 0 AND amount > 0')->fetchColumn();
+        $pending = (int)$db->query('SELECT COALESCE(SUM(MAX(amount - COALESCE(received, 0), 0)), 0) FROM matters WHERE paid = 0 AND amount > 0')->fetchColumn();
         page('Clients', '<h1>Clients</h1>
         <div class="actions"><a class="btn primary" href="?p=newclient">+ New client</a><a class="btn" href="?p=deadlines">All deadlines</a></div>
         <form class="search" method="get"><input type="hidden" name="p" value="clients"><input type="search" name="q" value="' . h($q) . '" placeholder="Search name, phone, application no.">
           <select name="f"><option value="">All clients</option><option value="unpaid"' . ($filter === 'unpaid' ? ' selected' : '') . '>Payment pending</option></select><button class="btn">Search</button></form>
-        ' . ($pending ? '<p class="small">Payment pending across all matters: <strong class="late">' . h(rupees($pending)) . '</strong> · <a href="?p=clients&amp;f=unpaid">show</a></p>' : '') . '
+        ' . ($pending ? '<p class="small">Balance pending across all matters: <strong class="late">' . h(rupees($pending)) . '</strong> · <a href="?p=clients&amp;f=unpaid">show</a></p>' : '') . '
         <div class="list">' . (implode('', array_map('client_card', $rows)) ?: '<p class="muted">No clients yet. When a lead is won, open it and tap "Make client", or add one with "+ New client".</p>') . '</div>');
     }
 
@@ -293,7 +312,8 @@ function clients_page(string $p): void {
             <div class="top"><strong>' . h($m['service'] ?: 'Matter') . '</strong><span class="badge ' . ($m['closed'] ? 'st-lost' : 'st-consulted') . '">' . h($m['closed'] ? 'Closed' : ($m['status'] ?: 'Open')) . '</span></div>
             <div class="muted small">' . h(implode(' · ', array_filter([$m['title'], $m['app_no']]))) . '</div>
             <div class="meta small">' . ($m['next_due'] && !$m['closed'] ? '<span class="' . due_class($m['next_due']) . '">⏳ ' . h(nice_date($m['next_due'])) . '</span>' : '')
-            . ($m['amount'] ? '<span class="' . ($m['paid'] ? '' : 'late') . '">' . h(rupees((int)$m['amount'])) . ($m['paid'] ? ' paid' : ' unpaid') . '</span>' : '') . '</div></a></div>';
+            . ($m['amount'] ? '<span class="' . ($m['paid'] ? '' : 'late') . '">' . h(rupees((int)$m['amount'])) . ' · ' . h($m['payment_status'] ?: 'Pending') . '</span>' : '')
+            . ($m['filed_on'] ? '<span>Filed ' . h(nice_date($m['filed_on'])) . '</span>' : '') . '</div></a></div>';
         $lead = $c['lead_id'] ? find_lead((int)$c['lead_id']) : null;
         $f = csrf_field() . '<input type="hidden" name="client_id" value="' . $cid . '">';
         $contact = '<div class="actions">' . ($c['phone'] ? '<a class="btn wa" href="https://wa.me/' . h(wa_number((string)$c['phone'])) . '" target="_blank" rel="noopener">WhatsApp</a><a class="btn" href="tel:+' . h(wa_number((string)$c['phone'])) . '">Call</a>' : '')
@@ -342,7 +362,7 @@ function clients_page(string $p): void {
         $kinds = opt_list(DEADLINE_KINDS, DEADLINE_KINDS[0]);
         page(($m['service'] ?: 'Matter') . ' · ' . $c['name'], '<p class="small"><a href="?p=client&amp;id=' . (int)$c['id'] . '">← ' . h($c['name']) . '</a></p>
         <h1>' . h($m['service'] ?: 'Matter') . ($m['closed'] ? ' <span class="badge st-lost">Closed</span>' : '') . '</h1>
-        <p class="muted">' . h(implode(' · ', array_filter([$m['title'], $m['app_no'] ? 'No. ' . $m['app_no'] : '', '#' . $mid]))) . '</p>
+        <p class="muted">' . h(implode(' · ', array_filter([$m['title'], $m['app_no'] ? 'No. ' . $m['app_no'] : '', $m['filed_on'] ? 'Filed ' . nice_date($m['filed_on']) : 'Not filed yet', '#' . $mid]))) . '</p>
         ' . ($c['phone'] ? '<div class="actions"><a class="btn wa" href="https://wa.me/' . h(wa_number((string)$c['phone'])) . '" target="_blank" rel="noopener">WhatsApp ' . h(explode(' ', (string)$c['name'])[0]) . '</a></div>' : '') . '
         <section class="card"><h2>Status</h2><form method="post" class="inline">' . $f . '<input type="hidden" name="action" value="c_status">
           <select name="status">' . opt_list(MATTER_STATUSES, $m['status']) . '</select><button class="btn">Update</button></form></section>
@@ -352,16 +372,16 @@ function clients_page(string $p): void {
             <label>Note<input name="note" maxlength="300" placeholder="e.g. from examination report dated …"></label>
             <button class="btn primary">Add deadline</button>
             <p class="small muted">Take the due date from the official notice or portal. The tracker does not calculate legal deadlines.</p></form></section>
-        <section class="card"><h2>Payment</h2><p>' . ($m['amount'] ? '<strong>' . h(rupees((int)$m['amount'])) . '</strong> · ' : '') . ($m['invoice_no'] ? 'Invoice ' . h($m['invoice_no']) . ' · ' : '')
-          . '<span class="' . ($m['paid'] ? '' : 'late') . '">' . ($m['paid'] ? 'Paid' : 'Not paid') . '</span></p>
-          <form method="post">' . $f . '<input type="hidden" name="action" value="c_paid"><button class="btn" name="paid" value="' . ($m['paid'] ? '0' : '1') . '">' . ($m['paid'] ? 'Mark unpaid' : 'Mark paid') . '</button></form></section>
+        ' . payment_card('<input type="hidden" name="matter_id" value="' . $mid . '"><input type="hidden" name="action" value="c_pay">', 'Fee', $m['amount'] === null ? null : (int)$m['amount'], $m['payment_status'], $m['received'] === null ? null : (int)$m['received'])
+          . ($m['invoice_no'] ? '<p class="small muted">Vyapar invoice ' . h($m['invoice_no']) . '</p>' : '') . '
         <section class="card"><h2>Notes</h2><form method="post" class="stack">' . $f . '<input type="hidden" name="action" value="c_matter_note">
           <textarea name="note" rows="2" required maxlength="2000" placeholder="e.g. Filed today, receipt shared with client"></textarea><button class="btn primary">Add note</button></form>
           <ul class="timeline">' . ($log ?: '<li class="muted">No notes yet.</li>') . '</ul></section>
         <details class="card"><summary>Edit details</summary><form method="post" class="stack">' . $f . '<input type="hidden" name="action" value="c_matter_edit">
           <label>Service' . service_select((string)$m['service']) . '</label>
           <label>Title<input name="title" maxlength="160" value="' . h($m['title']) . '" placeholder="e.g. brand name, invention title"></label>
-          <label>Application / reference no.<input name="app_no" maxlength="60" value="' . h($m['app_no']) . '"></label>
+          <div class="row2"><label>Application / reference no.<input name="app_no" maxlength="60" value="' . h($m['app_no']) . '"></label>
+          <label>Filed on<input type="date" name="filed_on" value="' . h($m['filed_on'] ?: '') . '"></label></div>
           <div class="row2"><label>Vyapar invoice no.<input name="invoice_no" maxlength="60" value="' . h($m['invoice_no']) . '"></label>
           <label>Amount (₹)<input name="amount" inputmode="numeric" pattern="[0-9]*" maxlength="12" value="' . h($m['amount'] === null ? '' : (string)$m['amount']) . '"></label></div>
           <button class="btn primary">Save</button></form></details>
@@ -423,7 +443,7 @@ function digest_build(): array {
     $since = (new DateTime('yesterday 09:00'))->setTimezone(new DateTimeZone('UTC'))->format('Y-m-d\TH:i:s\Z');
     $st = $db->prepare("SELECT * FROM leads WHERE $notTest AND created_at >= ? ORDER BY id DESC"); $st->execute([$since]); $newLeads = $st->fetchAll();
     $untouched = (int)$db->query("SELECT COUNT(*) FROM leads WHERE $notTest AND COALESCE(stage, 'New') = 'New' AND (follow_up IS NULL OR follow_up = '')")->fetchColumn();
-    $pending = (int)$db->query('SELECT COALESCE(SUM(amount), 0) FROM matters WHERE paid = 0 AND amount > 0')->fetchColumn();
+    $pending = (int)$db->query('SELECT COALESCE(SUM(MAX(amount - COALESCE(received, 0), 0)), 0) FROM matters WHERE paid = 0 AND amount > 0')->fetchColumn();
 
     $base = 'https://leegtech.in/admin/';
     $overdue = count(array_filter($dls, fn($d) => $d['due_on'] < $t));

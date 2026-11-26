@@ -177,6 +177,13 @@ if ($method === 'POST') {
         if ($amt !== null && $amt !== ($lead['quoted_amount'] === null ? null : (int)$lead['quoted_amount'])) log_activity($id, 'note', 'Quoted ' . rupees($amt));
         redirect($back, 'Saved.');
     }
+    if ($a === 'pay') {
+        [$st, $rec] = payment_from_post($lead['quoted_amount'] === null ? null : (int)$lead['quoted_amount'], $lead['payment_status'], $lead['received'] === null ? null : (int)$lead['received']);
+        $db->prepare('UPDATE leads SET payment_status = ?, received = ?, updated_at = ? WHERE id = ?')->execute([$st, $rec, now_utc(), $id]);
+        if ($st !== ($lead['payment_status'] ?: 'Pending') || $rec !== ($lead['received'] === null ? null : (int)$lead['received']))
+            log_activity($id, 'note', 'Payment: ' . $st . ($rec ? ', received ' . rupees($rec) : ''));
+        redirect($back, 'Payment: ' . $st);
+    }
     if ($a === 'delete') {
         if (post('confirm') !== 'yes') redirect($back, 'Tick the box to confirm deleting.');
         $db->prepare('DELETE FROM activity WHERE lead_id = ?')->execute([$id]);
@@ -198,7 +205,7 @@ if ($p === 'export') {
     $out = fopen('php://output', 'w');
     fwrite($out, "\xEF\xBB\xBF");
     $cols = ['id', 'created_at', 'name', 'phone', 'email', 'service', 'city', 'startup_status', 'message', 'source', 'ad_code', 'stage',
-        'line', 'quoted_amount', 'follow_up', 'won_at', 'lost_reason', 'utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'landing_page'];
+        'line', 'quoted_amount', 'payment_status', 'received', 'follow_up', 'won_at', 'lost_reason', 'utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'landing_page'];
     fputcsv($out, array_merge(['Lead no.', 'Date (IST)'], array_slice($cols, 2)), ',', '"', '');
     foreach ($rows as $r) {
         $vals = [$r['id'], ist($r['created_at'], 'Y-m-d H:i')];
@@ -257,7 +264,7 @@ if ($p === 'lead') {
     foreach ([['Phone', $lead['phone']], ['Email', $lead['email']], ['City', $lead['city']], ['Service', $lead['service']],
         ['Startup status', $lead['startup_status']], ['Message', $lead['message']], ['Source', $lead['source']], ['Ad code', $lead['ad_code']], ['Came in on', $lead['line']],
         ['Quote', $lead['quoted_amount'] !== null ? rupees((int)$lead['quoted_amount']) : ''], ['Lost reason', $lead['lost_reason']],
-        ['Received', ist($lead['created_at'])], ['Form page', $lead['page_url']],
+        ['Enquiry date', ist($lead['created_at'])], ['Form page', $lead['page_url']],
         ['Campaign', trim(implode(' / ', array_filter([$lead['utm_source'], $lead['utm_medium'], $lead['utm_campaign'], $lead['utm_content']])))]] as [$k, $v])
         if ((string)$v !== '') $info[] = '<dt>' . h($k) . '</dt><dd>' . nl2br(h((string)$v)) . '</dd>';
 
@@ -280,6 +287,7 @@ if ($p === 'lead') {
         ($fu ? '<button class="chip" name="days" value="clear">Clear</button>' : '') . '</form>
       <form method="post" class="inline">' . $f . '<input type="hidden" name="action" value="followup"><input type="hidden" name="days" value="date">
         <input type="date" name="date" required value="' . h($fu ?: '') . '"><button class="btn">Set date</button></form></section>
+    ' . payment_card('<input type="hidden" name="id" value="' . $id . '"><input type="hidden" name="action" value="pay">', 'Quote', $lead['quoted_amount'] === null ? null : (int)$lead['quoted_amount'], $lead['payment_status'], $lead['received'] === null ? null : (int)$lead['received']) . '
     <section class="card"><h2>Notes</h2>
       <form method="post" class="stack">' . $f . '<input type="hidden" name="action" value="note">
         <textarea name="note" rows="2" required maxlength="2000" placeholder="e.g. Called, sent documents list, will confirm by Friday"></textarea>
@@ -440,7 +448,7 @@ function lead_card(array $r): string {
     return '<div class="lead"><a class="body" href="?p=lead&amp;id=' . (int)$r['id'] . '">
       <div class="top"><strong>' . h($r['name'] ?: 'No name') . '</strong><span class="badge st-' . strtolower($stage) . '">' . h($stage) . '</span></div>
       <div class="muted small">' . h($r['service'] ?: 'Service not set') . '</div>
-      <div class="meta small">' . $fuHtml . '<span>' . h($r['source'] ?: '') . ($r['ad_code'] ? ' · ' . h($r['ad_code']) : '') . (!empty($r['line']) ? ' · ' . h($r['line']) : '') . '</span><span>' . h(ist($r['created_at'], 'j M')) . '</span>' . (!empty($r['is_test']) ? '<span class="late">TEST</span>' : '') . '</div>
+      <div class="meta small">' . $fuHtml . '<span>' . h($r['source'] ?: '') . ($r['ad_code'] ? ' · ' . h($r['ad_code']) : '') . (!empty($r['line']) ? ' · ' . h($r['line']) : '') . '</span><span>' . h(ist($r['created_at'], 'j M')) . '</span>' . (!empty($r['payment_status']) && $r['payment_status'] !== 'Pending' ? '<span>₹ ' . h($r['payment_status']) . '</span>' : '') . (!empty($r['is_test']) ? '<span class="late">TEST</span>' : '') . '</div>
     </a>' . $wa . '</div>';
 }
 
@@ -450,7 +458,7 @@ function page(string $title, string $body, bool $nav = true): void {
     $tab = fn($k, $label) => '<a href="?p=' . $k . '"' . ($p === $k ? ' aria-current="page"' : '') . '>' . $label . '</a>';
     echo '<!doctype html><html lang="en-IN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow"><title>' . h($title) . ' · Leegtech leads</title>
-<link rel="stylesheet" href="/admin/admin.css?v=3"><link rel="icon" href="/favicon.ico"></head><body>'
+<link rel="stylesheet" href="/admin/admin.css?v=4"><link rel="icon" href="/favicon.ico"></head><body>'
     . ($nav ? '<header class="bar"><a href="?p=home" class="brand">Leegtech leads</a><a href="?p=settings" class="small">Settings</a></header>' : '')
     . '<main>' . ($msg ? '<p class="flash" role="status">' . h($msg) . '</p>' : '') . $body . '</main>'
     . ($nav ? '<nav class="tabs">' . $tab('home', 'Today') . $tab('leads', 'Leads') . $tab('clients', 'Clients') . $tab('add', '+ Add') . '</nav>' : '')

@@ -15,6 +15,7 @@ require __DIR__ . '/config.php';
 const STAGES = ['New', 'Contacted', 'Consulted', 'Quoted', 'Won', 'Lost'];
 const OPEN_STAGES = ['New', 'Contacted', 'Consulted', 'Quoted'];
 const SOURCES = ['Meta ad (WhatsApp)', 'Website form', 'Google', 'Referral', 'Phone call', 'Walk-in', 'Existing client', 'Other'];
+const PAY_STATUSES = ['Pending', 'Advance received', 'Partially paid', 'Fully paid'];
 const SESSION_DAYS = 30;
 const COOKIE = 'lt_admin';
 
@@ -69,7 +70,7 @@ function migrate(PDO $db): void {
     $add = [
         'stage' => "TEXT DEFAULT 'New'", 'source' => "TEXT DEFAULT 'Website form'", 'ad_code' => 'TEXT',
         'quoted_amount' => 'INTEGER', 'follow_up' => 'TEXT', 'lost_reason' => 'TEXT', 'won_at' => 'TEXT',
-        'updated_at' => 'TEXT', 'phone_key' => 'TEXT', 'line' => 'TEXT',
+        'updated_at' => 'TEXT', 'phone_key' => 'TEXT', 'line' => 'TEXT', 'payment_status' => "TEXT DEFAULT 'Pending'", 'received' => 'INTEGER',
     ];
     foreach ($add as $col => $def) if (!in_array($col, $have, true)) $db->exec("ALTER TABLE leads ADD COLUMN $col $def");
     $db->exec('CREATE TABLE IF NOT EXISTS activity (id INTEGER PRIMARY KEY AUTOINCREMENT, lead_id INTEGER NOT NULL,
@@ -276,4 +277,50 @@ function redirect(string $to, ?string $msg = null): void {
     if ($msg !== null) flash($msg);
     header('Location: ' . $to, true, 303);
     exit;
+}
+
+/* ---------------- Payments (shared by leads and matters) ---------------- */
+
+function money_in(string $k): ?int { $v = str_replace([',', ' ', '₹'], '', post($k, 15)); return $v !== '' && ctype_digit($v) ? (int)$v : null; }
+
+/**
+ * Works out the new [status, received] from a payment form post.
+ * A status button sets the status; "Save" alone derives it from the amounts.
+ */
+function payment_from_post(?int $total, ?string $status, ?int $received): array {
+    $newRec = array_key_exists('received', $_POST) ? money_in('received') : $received;
+    $btn = post('payment_status', 30);
+    if (in_array($btn, PAY_STATUSES, true)) {
+        $st = $btn;
+        if ($st === 'Fully paid' && $total && (int)$newRec < $total) $newRec = $total;
+        if ($st === 'Pending' && $newRec === null) $newRec = null;
+    } else {
+        $st = $status ?: 'Pending';
+        if ($newRec && $total && $newRec >= $total) $st = 'Fully paid';
+        elseif ($newRec && (in_array($st, ['Pending', 'Fully paid'], true) || ($st === 'Advance received' && $newRec > (int)$received))) $st = 'Partially paid';
+        elseif (!$newRec && $st !== 'Pending') $st = 'Pending';
+    }
+    return [$st, $newRec];
+}
+
+function pay_badge(?string $status): string {
+    $s = $status ?: 'Pending';
+    $cls = ['Pending' => 'st-lost', 'Advance received' => 'st-quoted', 'Partially paid' => 'st-quoted', 'Fully paid' => 'st-won'][$s] ?? 'st-lost';
+    return '<span class="badge ' . $cls . '">' . h($s) . '</span>';
+}
+
+/** Payment card with status buttons and "received so far". $hidden carries the record id and action. */
+function payment_card(string $hidden, string $totalLabel, ?int $total, ?string $status, ?int $received): string {
+    $st = $status ?: 'Pending';
+    $bal = $total !== null ? max(0, $total - (int)$received) : null;
+    $line = [];
+    if ($total !== null) $line[] = h($totalLabel) . ' <strong>' . h(rupees($total)) . '</strong>';
+    if ($received) $line[] = 'Received <strong>' . h(rupees($received)) . '</strong>';
+    if ($bal !== null && $st !== 'Fully paid') $line[] = 'Balance <strong class="' . ($bal > 0 ? 'late' : '') . '">' . h(rupees($bal)) . '</strong>';
+    $btns = '';
+    foreach (PAY_STATUSES as $s) $btns .= '<button class="chip' . ($s === $st ? ' on' : '') . '" name="payment_status" value="' . h($s) . '">' . h($s) . '</button>';
+    return '<section class="card"><h2>Payment ' . pay_badge($st) . '</h2>' . ($line ? '<p>' . implode(' · ', $line) . '</p>' : '<p class="small muted">Add the ' . h(strtolower($totalLabel)) . ' amount under "Edit details" to see the balance.</p>') . '
+      <form method="post" class="stack">' . csrf_field() . $hidden . '
+        <div class="inline"><input name="received" inputmode="numeric" pattern="[0-9,]*" maxlength="12" placeholder="Received so far (₹)" value="' . h($received === null ? '' : (string)$received) . '" aria-label="Received so far in rupees"><button class="btn">Update received</button></div>
+        <div class="chips">' . $btns . '</div></form></section>';
 }
