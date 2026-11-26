@@ -67,6 +67,11 @@ Add an object to the right `src/data/services-*.mjs` file. A page is generated a
   Leads also have a payment status and amount received, carried over when the lead becomes a client.
   Deadlines are typed in from the official notice; the tracker never calculates statutory dates. Today shows overdue
   deadlines and those due in the next 15 days.
+- **IP tabs and sheet import** (`admin/_inc/portfolio.php`): Clients has tabs Patents / Designs / Trademarks / Copyrights
+  (matter `ip_type`, set from the service). "Import from sheet" uploads a CSV (e.g. a Google Sheet tab), shows a preview, then
+  adds applications (applicant, application no., filing date, contact, office status mapped to a tracker status); rows are
+  grouped into clients by contact email, then phone. Re-importing updates existing application numbers. The CSV is never
+  stored in this repository.
 - **Daily summary email** (`admin/_inc/daily.php`, CLI only): an hourly Hostinger cron job runs
   `/usr/bin/php /home/u784176160/domains/leegtech.in/public_html/admin/_inc/daily.php`; it sends one email a day after
   9am IST (deadlines, follow-ups, new leads) to the address in Settings (default info@leegtech.in) via PHP `mail()`.

@@ -88,3 +88,6 @@ summary { cursor: pointer; }
 .dls details.rm { flex-basis: 100%; }
 .dls details.rm summary { color: var(--muted); }
 .dls details.rm form { margin-top: 6px; }
+.clip { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 100%; }
+.tabs2 { margin: 4px -16px 0; }
+.lead .body .meta span { min-width: 0; }

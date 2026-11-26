@@ -34,7 +34,7 @@ function clients_migrate(PDO $db): void {
     if (!in_array('filed_on', $have, true)) $db->exec('ALTER TABLE matters ADD COLUMN filed_on TEXT');
 }
 
-function cdb(): PDO { static $done = false; $db = db(); if (!$done) { clients_migrate($db); $done = true; } return $db; }
+function cdb(): PDO { static $done = false; $db = db(); if (!$done) { $done = true; clients_migrate($db); if (function_exists('portfolio_migrate')) portfolio_migrate($db); } return $db; }
 
 function find_row(string $table, int $id): ?array {
     $st = cdb()->prepare("SELECT * FROM $table WHERE id = ?");
@@ -102,8 +102,8 @@ function client_for(array $x, ?int $leadId = null): int {
 }
 
 function create_matter(int $clientId, string $service, string $title = '', string $status = 'Documents pending', ?int $amount = null): int {
-    cdb()->prepare('INSERT INTO matters (client_id, created_at, service, title, status, amount, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?)')
-        ->execute([$clientId, now_utc(), $service, $title, $status, $amount, now_utc()]);
+    cdb()->prepare('INSERT INTO matters (client_id, created_at, service, title, status, amount, updated_at, ip_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?)')
+        ->execute([$clientId, now_utc(), $service, $title, $status, $amount, now_utc(), function_exists('ip_type_for_service') ? ip_type_for_service($service) : '']);
     $id = (int)cdb()->lastInsertId();
     mlog($id, 'Matter opened' . ($service ? ': ' . $service : ''));
     return $id;
@@ -114,6 +114,9 @@ function create_matter(int $clientId, string $service, string $title = '', strin
 function clients_action(string $a): void {
     $db = cdb();
     $self = '/admin/';
+
+    if ($a === 'c_import_preview') import_preview();
+    if ($a === 'c_import_run') import_run();
 
     if ($a === 'c_from_lead') {
         $lead = find_lead((int)post('id', 12));
@@ -216,8 +219,9 @@ function clients_action(string $a): void {
     if ($a === 'c_matter_edit') {
         $amt = post('amount', 12); $amt = $amt !== '' && ctype_digit($amt) ? (int)$amt : null;
         $filed = post('filed_on', 10); $filed = valid_date($filed) ? $filed : null;
-        $db->prepare('UPDATE matters SET service = ?, title = ?, app_no = ?, invoice_no = ?, amount = ?, filed_on = ?, updated_at = ? WHERE id = ?')
-            ->execute([post('service', 160), post('title', 160), post('app_no', 60), post('invoice_no', 60), $amt, $filed, now_utc(), $mid]);
+        $ipt = array_key_exists(post('ip_type', 12), IP_TYPES) ? post('ip_type', 12) : (post('ip_type', 12) === 'none' ? '' : ip_type_for_service(post('service', 160)));
+        $db->prepare('UPDATE matters SET service = ?, title = ?, app_no = ?, invoice_no = ?, amount = ?, filed_on = ?, applicant = ?, office_status = ?, ip_type = ?, updated_at = ? WHERE id = ?')
+            ->execute([post('service', 160), post('title', 160), post('app_no', 60), post('invoice_no', 60), $amt, $filed, post('applicant', 160), post('office_status', 400), $ipt, now_utc(), $mid]);
         if ($filed !== ($m['filed_on'] ?: null)) mlog($mid, $filed ? 'Filing date: ' . nice_date($filed) . ' (' . $filed . ')' : 'Filing date cleared');
         if ($amt !== null && $m['payment_status'] !== 'Fully paid' && $m['received'] !== null && (int)$m['received'] >= $amt)
             $db->prepare("UPDATE matters SET payment_status = 'Fully paid', paid = 1 WHERE id = ?")->execute([$mid]);
@@ -264,9 +268,9 @@ function clients_page(string $p): void {
             $like = '%' . str_replace(['\\', '%', '_'], ['\\\\', '\\%', '\\_'], $q) . '%';
             $digits = preg_replace('/\D/', '', $q);
             $where[] = "(c.name LIKE ? ESCAPE '\\' OR c.company LIKE ? ESCAPE '\\' OR c.email LIKE ? ESCAPE '\\' OR c.city LIKE ? ESCAPE '\\'
-                OR EXISTS (SELECT 1 FROM matters m2 WHERE m2.client_id = c.id AND (m2.app_no LIKE ? ESCAPE '\\' OR m2.title LIKE ? ESCAPE '\\' OR m2.service LIKE ? ESCAPE '\\'))"
+                OR EXISTS (SELECT 1 FROM matters m2 WHERE m2.client_id = c.id AND (m2.app_no LIKE ? ESCAPE '\\' OR m2.title LIKE ? ESCAPE '\\' OR m2.service LIKE ? ESCAPE '\\' OR m2.applicant LIKE ? ESCAPE '\\'))"
                 . (strlen($digits) >= 4 ? ' OR c.phone_key LIKE ?' : '') . ')';
-            array_push($args, $like, $like, $like, $like, $like, $like, $like);
+            array_push($args, $like, $like, $like, $like, $like, $like, $like, $like);
             if (strlen($digits) >= 4) $args[] = '%' . $digits . '%';
         }
         if ($filter === 'unpaid') $where[] = 'EXISTS (SELECT 1 FROM matters m3 WHERE m3.client_id = c.id AND m3.paid = 0 AND m3.amount > 0)';
@@ -278,7 +282,7 @@ function clients_page(string $p): void {
         $st->execute($args);
         $rows = $st->fetchAll();
         $pending = (int)$db->query('SELECT COALESCE(SUM(MAX(amount - COALESCE(received, 0), 0)), 0) FROM matters WHERE paid = 0 AND amount > 0')->fetchColumn();
-        page('Clients', '<h1>Clients</h1>
+        page('Clients', portfolio_tabs('clients') . '<h1>Clients</h1>
         <div class="actions"><a class="btn primary" href="?p=newclient">+ New client</a><a class="btn" href="?p=deadlines">All deadlines</a></div>
         <form class="search" method="get"><input type="hidden" name="p" value="clients"><input type="search" name="q" value="' . h($q) . '" placeholder="Search name, phone, application no.">
           <select name="f"><option value="">All clients</option><option value="unpaid"' . ($filter === 'unpaid' ? ' selected' : '') . '>Payment pending</option></select><button class="btn">Search</button></form>
@@ -310,7 +314,7 @@ function clients_page(string $p): void {
         $ms = '';
         foreach ($st->fetchAll() as $m) $ms .= '<div class="lead"><a class="body" href="?p=matter&amp;id=' . (int)$m['id'] . '">
             <div class="top"><strong>' . h($m['service'] ?: 'Matter') . '</strong><span class="badge ' . ($m['closed'] ? 'st-lost' : 'st-consulted') . '">' . h($m['closed'] ? 'Closed' : ($m['status'] ?: 'Open')) . '</span></div>
-            <div class="muted small">' . h(implode(' · ', array_filter([$m['title'], $m['app_no']]))) . '</div>
+            <div class="muted small">' . h(implode(' · ', array_filter([$m['applicant'], $m['title'], $m['app_no']]))) . '</div>
             <div class="meta small">' . ($m['next_due'] && !$m['closed'] ? '<span class="' . due_class($m['next_due']) . '">⏳ ' . h(nice_date($m['next_due'])) . '</span>' : '')
             . ($m['amount'] ? '<span class="' . ($m['paid'] ? '' : 'late') . '">' . h(rupees((int)$m['amount'])) . ' · ' . h($m['payment_status'] ?: 'Pending') . '</span>' : '')
             . ($m['filed_on'] ? '<span>Filed ' . h(nice_date($m['filed_on'])) . '</span>' : '') . '</div></a></div>';
@@ -362,10 +366,12 @@ function clients_page(string $p): void {
         $kinds = opt_list(DEADLINE_KINDS, DEADLINE_KINDS[0]);
         page(($m['service'] ?: 'Matter') . ' · ' . $c['name'], '<p class="small"><a href="?p=client&amp;id=' . (int)$c['id'] . '">← ' . h($c['name']) . '</a></p>
         <h1>' . h($m['service'] ?: 'Matter') . ($m['closed'] ? ' <span class="badge st-lost">Closed</span>' : '') . '</h1>
-        <p class="muted">' . h(implode(' · ', array_filter([$m['title'], $m['app_no'] ? 'No. ' . $m['app_no'] : '', $m['filed_on'] ? 'Filed ' . nice_date($m['filed_on']) : 'Not filed yet', '#' . $mid]))) . '</p>
-        ' . ($c['phone'] ? '<div class="actions"><a class="btn wa" href="https://wa.me/' . h(wa_number((string)$c['phone'])) . '" target="_blank" rel="noopener">WhatsApp ' . h(explode(' ', (string)$c['name'])[0]) . '</a></div>' : '') . '
+        ' . ($m['applicant'] ? '<p><strong>Applicant:</strong> ' . h($m['applicant']) . '</p>' : '') . '
+        <p class="muted">' . h(implode(' · ', array_filter([$m['title'], $m['app_no'] ? 'No. ' . $m['app_no'] : '', $m['filed_on'] ? 'Filed ' . nice_date($m['filed_on']) : 'Not filed yet', IP_TYPES[$m['ip_type'] ?? ''] ?? '', '#' . $mid]))) . '</p>
+        ' . ($c['phone'] ? '<div class="actions"><a class="btn wa" href="https://wa.me/' . h(wa_number((string)$c['phone'])) . '" target="_blank" rel="noopener">WhatsApp contact</a><a class="btn" href="?p=client&amp;id=' . (int)$c['id'] . '">' . h(mb_strimwidth((string)$c['name'], 0, 28, '…')) . '</a></div>' : '') . '
         <section class="card"><h2>Status</h2><form method="post" class="inline">' . $f . '<input type="hidden" name="action" value="c_status">
-          <select name="status">' . opt_list(MATTER_STATUSES, $m['status']) . '</select><button class="btn">Update</button></form></section>
+          <select name="status">' . opt_list(MATTER_STATUSES, $m['status']) . '</select><button class="btn">Update</button></form>
+          ' . ($m['office_status'] ? '<p class="small"><span class="muted">Office status:</span> ' . h($m['office_status']) . '</p>' : '') . '</section>
         <section class="card"><h2>Deadlines</h2><ul class="dls">' . ($dl ?: '<li class="muted">No deadlines yet.</li>') . '</ul>
           <form method="post" class="stack addl">' . $f . '<input type="hidden" name="action" value="c_add_deadline">
             <div class="row2"><label>What<select name="kind">' . $kinds . '</select></label><label>Due on<input type="date" name="due_on" required></label></div>
@@ -380,6 +386,9 @@ function clients_page(string $p): void {
         <details class="card"><summary>Edit details</summary><form method="post" class="stack">' . $f . '<input type="hidden" name="action" value="c_matter_edit">
           <label>Service' . service_select((string)$m['service']) . '</label>
           <label>Title<input name="title" maxlength="160" value="' . h($m['title']) . '" placeholder="e.g. brand name, invention title"></label>
+          <label>Applicant<input name="applicant" maxlength="160" value="' . h($m['applicant']) . '" placeholder="Name on the application, if different from the client"></label>
+          <label>Tab<select name="ip_type"><option value="none">None (not patent, design, trademark or copyright)</option>' . implode('', array_map(fn($k) => '<option value="' . $k . '"' . (($m['ip_type'] ?? '') === $k ? ' selected' : '') . '>' . IP_TYPES[$k] . '</option>', array_keys(IP_TYPES))) . '</select></label>
+          <label>Office status (as shown by the office)<textarea name="office_status" rows="2" maxlength="400">' . h($m['office_status']) . '</textarea></label>
           <div class="row2"><label>Application / reference no.<input name="app_no" maxlength="60" value="' . h($m['app_no']) . '"></label>
           <label>Filed on<input type="date" name="filed_on" value="' . h($m['filed_on'] ?: '') . '"></label></div>
           <div class="row2"><label>Vyapar invoice no.<input name="invoice_no" maxlength="60" value="' . h($m['invoice_no']) . '"></label>

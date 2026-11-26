@@ -8,6 +8,7 @@ declare(strict_types=1);
 define('LT_ADMIN', true);
 require __DIR__ . '/_inc/app.php';
 require __DIR__ . '/_inc/clients.php';
+require __DIR__ . '/_inc/portfolio.php';
 
 header('X-Robots-Tag: noindex, nofollow');
 header('Cache-Control: no-store');
@@ -313,6 +314,7 @@ if ($p === 'lead') {
         <button class="btn danger">Delete</button></form></details>');
 }
 
+if (in_array($p, ['ip', 'import'], true)) portfolio_page($p);
 if (in_array($p, ['clients', 'client', 'matter', 'deadlines', 'newclient'], true)) clients_page($p);
 
 if ($p === 'leads') {
@@ -455,13 +457,13 @@ function lead_card(array $r): string {
 function page(string $title, string $body, bool $nav = true): void {
     global $p;
     $msg = flash();
-    $tab = fn($k, $label) => '<a href="?p=' . $k . '"' . ($p === $k ? ' aria-current="page"' : '') . '>' . $label . '</a>';
+    $tab = fn($k, $label, $also = []) => '<a href="?p=' . $k . '"' . ($p === $k || in_array($p, $also, true) ? ' aria-current="page"' : '') . '>' . $label . '</a>';
     echo '<!doctype html><html lang="en-IN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow"><title>' . h($title) . ' · Leegtech leads</title>
-<link rel="stylesheet" href="/admin/admin.css?v=4"><link rel="icon" href="/favicon.ico"></head><body>'
+<link rel="stylesheet" href="/admin/admin.css?v=5"><link rel="icon" href="/favicon.ico"></head><body>'
     . ($nav ? '<header class="bar"><a href="?p=home" class="brand">Leegtech leads</a><a href="?p=settings" class="small">Settings</a></header>' : '')
     . '<main>' . ($msg ? '<p class="flash" role="status">' . h($msg) . '</p>' : '') . $body . '</main>'
-    . ($nav ? '<nav class="tabs">' . $tab('home', 'Today') . $tab('leads', 'Leads') . $tab('clients', 'Clients') . $tab('add', '+ Add') . '</nav>' : '')
+    . ($nav ? '<nav class="tabs">' . $tab('home', 'Today') . $tab('leads', 'Leads') . $tab('clients', 'Clients', ['clients', 'client', 'matter', 'ip', 'import', 'newclient', 'deadlines']) . $tab('add', '+ Add') . '</nav>' : '')
     . '</body></html>';
     exit;
 }
