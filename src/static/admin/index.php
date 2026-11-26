@@ -9,6 +9,7 @@ define('LT_ADMIN', true);
 require __DIR__ . '/_inc/app.php';
 require __DIR__ . '/_inc/clients.php';
 require __DIR__ . '/_inc/portfolio.php';
+require __DIR__ . '/_inc/team.php';
 
 header('X-Robots-Tag: noindex, nofollow');
 header('Cache-Control: no-store');
@@ -17,6 +18,7 @@ header('Referrer-Policy: same-origin');
 $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
 $p = get('p') ?: 'home';
 $self = '/admin/';
+cdb(); // create/upgrade tables before anything else
 
 // Reject cross-site form posts.
 if ($method === 'POST') {
@@ -45,11 +47,12 @@ if (admin_config() === null) {
 }
 
 /* ---------- Sign in ---------- */
-if (!current_session()) {
+if (current_session() && !me()) end_session(); // switched-off team member
+if (!current_session() || !me()) {
     $err = null;
     if ($method === 'POST' && post('action') === 'login') {
         if (login_locked()) $err = 'Too many wrong attempts. Wait 15 minutes and try again.';
-        elseif (password_verify((string)($_POST['password'] ?? ''), admin_config()['password_hash'])) { start_session(); redirect($self); }
+        elseif (($uid = login_user((string)($_POST['password'] ?? ''))) !== null) { start_session($uid); redirect($self); }
         else { record_login_fail(); $err = 'Wrong password.'; }
     }
     page('Sign in', '<div class="auth"><h1>Leegtech leads</h1>' . ($err ? '<p class="alert">' . h($err) . '</p>' : '') . '
@@ -58,7 +61,6 @@ if (!current_session()) {
         <button class="btn primary">Sign in</button></form></div>', false);
 }
 
-cdb(); // make sure client/matter tables and columns exist
 
 /* ---------- Actions (all POST, signed in) ---------- */
 if ($method === 'POST') {
@@ -70,13 +72,20 @@ if ($method === 'POST') {
     if ($a === 'logout_all') { end_session(true); redirect($self); }
 
     if ($a === 'password') {
-        if (!password_verify((string)($_POST['current'] ?? ''), admin_config()['password_hash'])) redirect($self . '?p=settings', 'Current password is wrong.');
+        $hash = is_owner() ? admin_config()['password_hash'] : (string)user_row(my_id())['pw_hash'];
+        if (!password_verify((string)($_POST['current'] ?? ''), $hash)) redirect($self . '?p=settings', 'Current password is wrong.');
         if ($e = password_problem($_POST['password'] ?? '', $_POST['password2'] ?? '')) redirect($self . '?p=settings', $e);
-        save_password((string)$_POST['password']);
+        if (password_taken((string)$_POST['password'], my_id())) redirect($self . '?p=settings', 'Choose a different password.');
+        if (is_owner()) save_password((string)$_POST['password']);
+        else $db->prepare('UPDATE users SET pw_hash = ? WHERE id = ?')->execute([password_hash((string)$_POST['password'], PASSWORD_DEFAULT), my_id()]);
         redirect($self . '?p=settings', 'Password changed.');
     }
 
     if (str_starts_with($a, 'c_')) clients_action($a);
+    if (str_starts_with($a, 'team_')) team_action($a);
+    if (str_starts_with($a, 't_')) task_action($a);
+    if ($a === 'bulk_assign') bulk_assign_action();
+    if (in_array($a, ['digest', 'digest_test', 'lines'], true)) require_owner($self . '?p=settings');
 
     if ($a === 'digest') {
         $to = strtolower(post('digest_to', 160));
@@ -112,19 +121,22 @@ if ($method === 'POST') {
         $st = $db->prepare('SELECT id FROM leads WHERE phone_key = ? AND COALESCE(is_test, 0) = 0 ORDER BY id DESC LIMIT 1');
         $st->execute([$key]);
         if ($dup = $st->fetchColumn()) {
+            if (!can_see('leads', (int)$dup)) redirect($self . '?p=add', 'This number is already in the tracker under someone else. Ask the owner to assign it to you.');
             if ($note !== '') log_activity((int)$dup, 'note', $note);
             redirect($self . '?p=lead&id=' . $dup, 'This number is already saved, so its existing lead is open.' . ($note !== '' ? ' Your note was added.' : ''));
         }
         $source = in_array(post('source'), SOURCES, true) ? post('source') : 'Other';
         $fu = post('follow_up', 10); if (!valid_date($fu)) $fu = null;
-        $amt = post('quoted_amount', 12); $amt = $amt !== '' && ctype_digit($amt) ? (int)$amt : null;
+        $amt = post('quoted_amount', 12); $amt = $amt !== '' && ctype_digit($amt) && show_money() ? (int)$amt : null;
+        $who = is_owner() ? posted_person() : my_id();
         $line = in_array(post('line', 60), wa_lines(), true) ? post('line', 60) : null;
         if ($line) setcookie('lt_line', $line, ['expires' => time() + 365 * 86400, 'path' => '/admin/', 'secure' => is_https(), 'httponly' => true, 'samesite' => 'Lax']);
-        $db->prepare('INSERT INTO leads (created_at, event_id, name, phone, phone_key, email, service, city, source, ad_code, line, quoted_amount, follow_up, stage, updated_at, consent, is_test)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0)')
+        $db->prepare('INSERT INTO leads (created_at, event_id, name, phone, phone_key, email, service, city, source, ad_code, line, quoted_amount, follow_up, stage, updated_at, consent, is_test, assigned_to)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, ?)')
             ->execute([now_utc(), 'adm-' . bin2hex(random_bytes(6)), $name, $phone, $key, strtolower(post('email', 160)), post('service', 160), post('city', 80),
-                $source, strtoupper(post('ad_code', 30)), $line, $amt, $fu, 'New', now_utc(), 'n/a']);
+                $source, strtoupper(post('ad_code', 30)), $line, $amt, $fu, 'New', now_utc(), 'n/a', $who]);
         $id = (int)$db->lastInsertId();
+        notify_assigned($who, 'Lead: ' . $name, '?p=lead&id=' . $id, post('service', 160));
         log_activity($id, 'created', 'Lead added (' . $source . ($line ? ', ' . $line : '') . ')');
         if ($note !== '') log_activity($id, 'note', $note);
         redirect($self . '?p=lead&id=' . $id, 'Lead saved.');
@@ -135,6 +147,18 @@ if ($method === 'POST') {
     if (!$lead) redirect($self . '?p=leads', 'That lead was not found.');
     $back = $self . '?p=lead&id=' . $id;
     $stage = $lead['stage'] ?: 'New';
+    require_see('leads', $id);
+    if (in_array($a, ['pay', 'delete', 'assign'], true)) require_owner($back);
+
+    if ($a === 'assign') {
+        $who = posted_person();
+        if ($who !== ($lead['assigned_to'] === null ? null : (int)$lead['assigned_to'])) {
+            $db->prepare('UPDATE leads SET assigned_to = ?, updated_at = ? WHERE id = ?')->execute([$who, now_utc(), $id]);
+            log_activity($id, 'note', $who ? 'Assigned to ' . person_name($who) : 'Unassigned');
+            notify_assigned($who, 'Lead: ' . ($lead['name'] ?: 'No name'), '?p=lead&id=' . $id, trim(($lead['service'] ?: '') . ($lead['follow_up'] ? ' · follow up ' . nice_date($lead['follow_up']) : '')));
+        }
+        redirect($back, $who ? 'Assigned to ' . person_name($who) . '.' : 'Unassigned.');
+    }
 
     $setStage = function (string $new) use ($db, $id, $stage) {
         if ($new === $stage || !in_array($new, STAGES, true)) return;
@@ -169,6 +193,7 @@ if ($method === 'POST') {
     if ($a === 'edit') {
         $source = in_array(post('source'), SOURCES, true) ? post('source') : ($lead['source'] ?: 'Other');
         $amt = post('quoted_amount', 12); $amt = $amt !== '' && ctype_digit($amt) ? (int)$amt : null;
+        if (!show_money()) $amt = $lead['quoted_amount'] === null ? null : (int)$lead['quoted_amount'];
         $phone = post('phone', 25) ?: (string)$lead['phone'];
         $line = post('line', 60);
         $line = $line === '' ? null : (in_array($line, wa_lines(), true) || $line === $lead['line'] ? $line : $lead['line']);
@@ -199,7 +224,10 @@ $db = db();
 $notTest = 'COALESCE(is_test, 0) = 0';
 $open = "COALESCE(stage, 'New') IN ('" . implode("','", OPEN_STAGES) . "')";
 
+if ($p === 'tasks') tasks_page();
+
 if ($p === 'export') {
+    require_owner($self . '?p=settings');
     $rows = $db->query("SELECT * FROM leads WHERE $notTest ORDER BY id")->fetchAll();
     header('Content-Type: text/csv; charset=utf-8');
     header('Content-Disposition: attachment; filename="leegtech-leads-' . today() . '.csv"');
@@ -230,7 +258,8 @@ if ($p === 'add') {
       <label>Came in on' . line_select(is_string($_COOKIE['lt_line'] ?? null) && in_array($_COOKIE['lt_line'], wa_lines(), true) ? $_COOKIE['lt_line'] : wa_lines()[0]) . '</label>
       <label>Note<textarea name="note" rows="2" maxlength="2000" placeholder="What they need, budget, anything useful"></textarea></label>
       <div class="row2"><label>Follow up on<input type="date" name="follow_up" value="' . h(plus_days(1)) . '"></label>
-      <label>Quote (₹)<input name="quoted_amount" inputmode="numeric" pattern="[0-9]*" maxlength="12"></label></div>
+      ' . (show_money() ? '<label>Quote (₹)<input name="quoted_amount" inputmode="numeric" pattern="[0-9]*" maxlength="12"></label>' : '') . '</div>
+      ' . (is_owner() && team_names() ? '<label>Assign to' . person_select('assigned_to', null, 'Me (not assigned)') . '</label>' : '') . '
       <details><summary>More details</summary><div class="stack">
         <label>Email<input name="email" type="email" maxlength="160"></label>
         <label>City<input name="city" maxlength="80"></label></div></details>
@@ -242,6 +271,7 @@ if ($p === 'lead') {
     $lead = find_lead((int)get('id', 12));
     if (!$lead) redirect($self . '?p=leads', 'That lead was not found.');
     $id = (int)$lead['id'];
+    require_see('leads', $id);
     $stage = $lead['stage'] ?: 'New';
     $st = $db->prepare('SELECT * FROM activity WHERE lead_id = ? ORDER BY id DESC');
     $st->execute([$id]);
@@ -264,13 +294,13 @@ if ($p === 'lead') {
     $info = [];
     foreach ([['Phone', $lead['phone']], ['Email', $lead['email']], ['City', $lead['city']], ['Service', $lead['service']],
         ['Startup status', $lead['startup_status']], ['Message', $lead['message']], ['Source', $lead['source']], ['Ad code', $lead['ad_code']], ['Came in on', $lead['line']],
-        ['Quote', $lead['quoted_amount'] !== null ? rupees((int)$lead['quoted_amount']) : ''], ['Lost reason', $lead['lost_reason']],
+        ['Quote', $lead['quoted_amount'] !== null && show_money() ? rupees((int)$lead['quoted_amount']) : ''], ['Lost reason', $lead['lost_reason']],
         ['Enquiry date', ist($lead['created_at'])], ['Form page', $lead['page_url']],
         ['Campaign', trim(implode(' / ', array_filter([$lead['utm_source'], $lead['utm_medium'], $lead['utm_campaign'], $lead['utm_content']])))]] as [$k, $v])
         if ((string)$v !== '') $info[] = '<dt>' . h($k) . '</dt><dd>' . nl2br(h((string)$v)) . '</dd>';
 
     $timeline = '';
-    foreach ($acts as $x) $timeline .= '<li class="k-' . h($x['kind']) . '"><span class="muted small">' . h(ist($x['created_at'], 'j M, g:i a')) . '</span><div>' . nl2br(h($x['text'])) . '</div></li>';
+    foreach ($acts as $x) $timeline .= '<li class="k-' . h($x['kind']) . '"><span class="muted small">' . h(ist($x['created_at'], 'j M, g:i a')) . ($x['by_name'] ? ' · ' . h($x['by_name']) : '') . '</span><div>' . nl2br(h($x['text'])) . '</div></li>';
 
     $srcOpts = '';
     foreach (SOURCES as $s) $srcOpts .= '<option' . ($s === $lead['source'] ? ' selected' : '') . '>' . h($s) . '</option>';
@@ -279,7 +309,7 @@ if ($p === 'lead') {
     $f = csrf_field() . '<input type="hidden" name="id" value="' . $id . '">';
     page($lead['name'] ?: 'Lead', '<p class="small"><a href="?p=leads">← All leads</a></p>
     <h1>' . h($lead['name'] ?: 'No name') . ' <span class="badge st-' . strtolower($stage) . '">' . h($stage) . '</span></h1>
-    <p class="muted">' . h($lead['service'] ?: 'Service not set') . ' · #' . $id . '</p>' . $contact . convert_card($lead) . '
+    <p class="muted">' . h($lead['service'] ?: 'Service not set') . ' · #' . $id . '</p>' . $contact . assign_card('<input type="hidden" name="id" value="' . $id . '"><input type="hidden" name="action" value="assign">', $lead['assigned_to'] ? (int)$lead['assigned_to'] : null) . convert_card($lead) . '
     <section class="card"><h2>Stage</h2><form method="post" class="chips">' . $f . '<input type="hidden" name="action" value="stage">' . $stageBtns . '</form></section>
     <section class="card"><h2>Next follow-up: ' . $fuText . '</h2>
       <form method="post" class="chips">' . $f . '<input type="hidden" name="action" value="followup">
@@ -288,7 +318,7 @@ if ($p === 'lead') {
         ($fu ? '<button class="chip" name="days" value="clear">Clear</button>' : '') . '</form>
       <form method="post" class="inline">' . $f . '<input type="hidden" name="action" value="followup"><input type="hidden" name="days" value="date">
         <input type="date" name="date" required value="' . h($fu ?: '') . '"><button class="btn">Set date</button></form></section>
-    ' . payment_card('<input type="hidden" name="id" value="' . $id . '"><input type="hidden" name="action" value="pay">', 'Quote', $lead['quoted_amount'] === null ? null : (int)$lead['quoted_amount'], $lead['payment_status'], $lead['received'] === null ? null : (int)$lead['received']) . '
+    ' . (show_money() ? payment_card('<input type="hidden" name="id" value="' . $id . '"><input type="hidden" name="action" value="pay">', 'Quote', $lead['quoted_amount'] === null ? null : (int)$lead['quoted_amount'], $lead['payment_status'], $lead['received'] === null ? null : (int)$lead['received']) : '') . tasks_section('lead_id', $id) . '
     <section class="card"><h2>Notes</h2>
       <form method="post" class="stack">' . $f . '<input type="hidden" name="action" value="note">
         <textarea name="note" rows="2" required maxlength="2000" placeholder="e.g. Called, sent documents list, will confirm by Friday"></textarea>
@@ -305,13 +335,13 @@ if ($p === 'lead') {
         <div class="row2"><label>Source<select name="source">' . $srcOpts . '</select></label>
         <label>Ad code<input name="ad_code" maxlength="30" value="' . h($lead['ad_code']) . '"></label></div>
         <label>Came in on' . line_select($lead['line']) . '</label>
-        <label>Quote (₹)<input name="quoted_amount" inputmode="numeric" pattern="[0-9]*" maxlength="12" value="' . h($lead['quoted_amount'] === null ? '' : (string)$lead['quoted_amount']) . '"></label>
+        ' . (show_money() ? '<label>Quote (₹)<input name="quoted_amount" inputmode="numeric" pattern="[0-9]*" maxlength="12" value="' . h($lead['quoted_amount'] === null ? '' : (string)$lead['quoted_amount']) . '"></label>' : '') . '
         <label>Lost reason (if lost)<input name="lost_reason" maxlength="200" value="' . h($lead['lost_reason']) . '" placeholder="e.g. price, chose someone else, not reachable"></label>
         <button class="btn primary">Save details</button></form></details>
-    <details class="card"><summary>Delete this lead</summary>
+    ' . (is_owner() ? '<details class="card"><summary>Delete this lead</summary>
       <form method="post" class="stack">' . $f . '<input type="hidden" name="action" value="delete">
         <label class="check"><input type="checkbox" name="confirm" value="yes" required> Yes, permanently delete this lead and its notes</label>
-        <button class="btn danger">Delete</button></form></details>');
+        <button class="btn danger">Delete</button></form></details>' : ''));
 }
 
 if (in_array($p, ['ip', 'import'], true)) portfolio_page($p);
@@ -319,7 +349,7 @@ if (in_array($p, ['clients', 'client', 'matter', 'deadlines', 'newclient'], true
 
 if ($p === 'leads') {
     $stageF = get('stage'); $q = get('q', 80); $srcF = get('source', 60); $lineF = get('line', 60); $tests = get('tests') === '1';
-    $where = [$tests ? '1=1' : $notTest]; $args = [];
+    $where = [$tests ? '1=1' : $notTest, lead_scope('leads'), who_sql('assigned_to')]; $args = [];
     if ($stageF === 'open') $where[] = $open;
     elseif (in_array($stageF, STAGES, true)) { $where[] = "COALESCE(stage, 'New') = ?"; $args[] = $stageF; }
     if ($srcF !== '') { $where[] = 'source = ?'; $args[] = $srcF; }
@@ -335,10 +365,10 @@ if ($p === 'leads') {
     $st->execute($args);
     $rows = $st->fetchAll();
 
-    $counts = $db->query("SELECT COALESCE(stage, 'New') s, COUNT(*) n FROM leads WHERE $notTest GROUP BY s")->fetchAll(PDO::FETCH_KEY_PAIR);
+    $counts = $db->query("SELECT COALESCE(stage, 'New') s, COUNT(*) n FROM leads WHERE $notTest AND " . lead_scope('leads') . ' AND ' . who_sql('assigned_to') . ' GROUP BY s')->fetchAll(PDO::FETCH_KEY_PAIR);
     $openN = 0; foreach (OPEN_STAGES as $s) $openN += (int)($counts[$s] ?? 0);
     $chip = function (string $val, string $label, int $n) use ($stageF, $q, $srcF, $lineF) {
-        $qs = http_build_query(array_filter(['p' => 'leads', 'stage' => $val, 'q' => $q, 'source' => $srcF, 'line' => $lineF]));
+        $qs = http_build_query(array_filter(['p' => 'leads', 'stage' => $val, 'q' => $q, 'source' => $srcF, 'line' => $lineF, 'who' => who_filter()]));
         return '<a class="chip' . ($stageF === $val ? ' on' : '') . '" href="?' . h($qs) . '">' . h($label) . ' <span class="n">' . $n . '</span></a>';
     };
     $chips = $chip('', 'All', array_sum(array_map('intval', $counts))) . $chip('open', 'Open', $openN);
@@ -351,14 +381,26 @@ if ($p === 'leads') {
     page('Leads', '<h1>Leads</h1>
     <form class="search" method="get"><input type="hidden" name="p" value="leads"><input type="hidden" name="stage" value="' . h($stageF) . '">
       <input type="search" name="q" value="' . h($q) . '" placeholder="Search name, phone, service, ad code">
-      <select name="source">' . $srcOpts . '</select><select name="line">' . $lineOpts . '</select><button class="btn">Search</button></form>
+      <select name="source">' . $srcOpts . '</select><select name="line">' . $lineOpts . '</select>' . who_select() . '<button class="btn">Search</button></form>
     <nav class="chips scroll">' . $chips . '</nav>
     <div class="list">' . (implode('', array_map('lead_card', $rows)) ?: '<p class="muted">No leads here yet.</p>') . '</div>
-    <p class="small muted">' . count($rows) . ' shown' . (count($rows) >= 300 ? ' (latest 300; search to narrow)' : '') . ' · <a href="?p=leads&amp;tests=' . ($tests ? '0' : '1') . '">' . ($tests ? 'Hide' : 'Show') . ' test entries</a></p>');
+    <p class="small muted">' . count($rows) . ' shown' . (count($rows) >= 300 ? ' (latest 300; search to narrow)' : '') . ' · <a href="?p=leads&amp;tests=' . ($tests ? '0' : '1') . '">' . ($tests ? 'Hide' : 'Show') . ' test entries</a></p>' . bulk_assign_form('leads', array_column($rows, 'id'), 'leads'));
+}
+
+if ($p === 'settings' && !is_owner()) {
+    page('Settings', '<h1>Settings</h1><p class="muted">Signed in as <strong>' . h(me()['name']) . '</strong>.</p>
+    <section class="card"><h2>Change your password</h2><form method="post" class="stack">' . csrf_field() . '<input type="hidden" name="action" value="password">
+      <label>Current password<input type="password" name="current" required autocomplete="current-password"></label>
+      <label>New password (at least 10 characters)<input type="password" name="password" required minlength="10" autocomplete="new-password"></label>
+      <label>Repeat new password<input type="password" name="password2" required minlength="10" autocomplete="new-password"></label>
+      <button class="btn primary">Change password</button></form></section>
+    <section class="card"><h2>Sign out</h2><div class="actions">
+      <form method="post">' . csrf_field() . '<button class="btn" name="action" value="logout">Sign out</button></form>
+      <form method="post">' . csrf_field() . '<button class="btn danger" name="action" value="logout_all">Sign out on all my devices</button></form></div></section>');
 }
 
 if ($p === 'settings') {
-    page('Settings', '<h1>Settings</h1>
+    page('Settings', '<h1>Settings</h1>' . team_settings_html() . '
     <section class="card"><h2>Download all leads</h2><p class="muted">A spreadsheet (CSV) of every lead, for backup or Excel.</p><a class="btn" href="?p=export">Download CSV</a></section>
     <section class="card"><h2>Daily summary email</h2><p class="muted">Every morning after 9am: deadlines due in the next ' . DEADLINE_WINDOW . ' days, lead follow-ups due, and new leads.</p>
       <form method="post" class="stack">' . csrf_field() . '<input type="hidden" name="action" value="digest">
@@ -382,10 +424,12 @@ if ($p === 'settings') {
 
 /* Today (home) */
 $t = today();
-$due = $db->prepare("SELECT * FROM leads WHERE $notTest AND $open AND follow_up IS NOT NULL AND follow_up <= ? ORDER BY follow_up, id");
+$ls = lead_scope('leads');
+$due = $db->prepare("SELECT * FROM leads WHERE $notTest AND $open AND $ls AND follow_up IS NOT NULL AND follow_up <= ? ORDER BY follow_up, id");
 $due->execute([$t]); $due = $due->fetchAll();
-$fresh = $db->query("SELECT * FROM leads WHERE $notTest AND COALESCE(stage, 'New') = 'New' AND (follow_up IS NULL OR follow_up = '') ORDER BY id DESC LIMIT 30")->fetchAll();
-$soon = $db->prepare("SELECT COUNT(*) FROM leads WHERE $notTest AND $open AND follow_up > ? AND follow_up <= ?");
+$fresh = $db->query("SELECT * FROM leads WHERE $notTest AND $ls AND COALESCE(stage, 'New') = 'New' AND (follow_up IS NULL OR follow_up = '') ORDER BY id DESC LIMIT 30")->fetchAll();
+$soon = $db->prepare("SELECT COUNT(*) FROM leads WHERE $notTest AND $open AND $ls AND follow_up > ? AND follow_up <= ?");
+$myTasks = open_tasks('(t.due_on IS NULL OR t.due_on <= ?)' . (is_owner() ? ' AND t.assigned_to IS NULL' : ''), [plus_days(3)], 50);
 $soon->execute([$t, plus_days(7)]); $soon = (int)$soon->fetchColumn();
 
 $monthStart = (new DateTime(date('Y-m-01 00:00:00')))->setTimezone(new DateTimeZone('UTC'))->format('Y-m-d\TH:i:s\Z');
@@ -409,15 +453,18 @@ $tbl = function (array $rows, string $head) {
 
 page('Today', '<h1>Today <span class="muted small">' . h(date('D, j M')) . '</span></h1>
 <a class="btn primary big" href="?p=add">+ Add a lead</a>
-' . today_deadlines_html() . '
+' . team_summary_html() . today_deadlines_html() . '
+<section><h2>' . (is_owner() && team_names() ? 'Your tasks' : 'Tasks') . ($myTasks ? ' <span class="n">' . count($myTasks) . '</span>' : '') . '</h2>
+  <div class="list">' . (implode('', array_map('task_card', $myTasks)) ?: '<p class="muted">No tasks due in the next 3 days.</p>') . '</div>
+  <p class="small"><a href="?p=tasks">All tasks</a> · <a href="?p=tasks&amp;new=1#new">+ New task</a></p></section>
 <section><h2>Follow up today' . ($due ? ' <span class="n">' . count($due) . '</span>' : '') . '</h2>
   <div class="list">' . (implode('', array_map('lead_card', $due)) ?: '<p class="muted">Nothing due. ' . ($soon ? $soon . ' follow-up(s) in the next 7 days.' : '') . '</p>') . '</div></section>
 <section><h2>New, not yet followed up' . ($fresh ? ' <span class="n">' . count($fresh) . '</span>' : '') . '</h2>
   <div class="list">' . (implode('', array_map('lead_card', $fresh)) ?: '<p class="muted">All new leads have a follow-up date.</p>') . '</div></section>
-<section class="card"><h2>This month</h2>
+' . (is_owner() ? '<section class="card"><h2>This month</h2>
   <div class="stats"><div><b>' . (int)$m['n'] . '</b><span>new leads</span></div><div><b>' . (int)$w['n'] . '</b><span>won</span></div><div><b>' . h(rupees((int)$w['v'])) . '</b><span>won value</span></div></div>
   ' . $tbl(array_map(fn($r) => ['Source' => $r['s'], 'n' => $r['n'], 'won' => $r['won']], $bySrc), 'Source') . $tbl(array_map(fn($r) => ['Line' => $r['l'], 'n' => $r['n'], 'won' => $r['won']], $byLine), 'WhatsApp number') . $tbl(array_map(fn($r) => ['Ad' => $r['a'], 'n' => $r['n'], 'won' => $r['won']], $byAd), 'Ad code') . '
-</section>');
+</section>' : ''));
 
 /* ---------- Templates ---------- */
 
@@ -450,7 +497,7 @@ function lead_card(array $r): string {
     return '<div class="lead"><a class="body" href="?p=lead&amp;id=' . (int)$r['id'] . '">
       <div class="top"><strong>' . h($r['name'] ?: 'No name') . '</strong><span class="badge st-' . strtolower($stage) . '">' . h($stage) . '</span></div>
       <div class="muted small">' . h($r['service'] ?: 'Service not set') . '</div>
-      <div class="meta small">' . $fuHtml . '<span>' . h($r['source'] ?: '') . ($r['ad_code'] ? ' · ' . h($r['ad_code']) : '') . (!empty($r['line']) ? ' · ' . h($r['line']) : '') . '</span><span>' . h(ist($r['created_at'], 'j M')) . '</span>' . (!empty($r['payment_status']) && $r['payment_status'] !== 'Pending' ? '<span>₹ ' . h($r['payment_status']) . '</span>' : '') . (!empty($r['is_test']) ? '<span class="late">TEST</span>' : '') . '</div>
+      <div class="meta small">' . $fuHtml . '<span>' . h($r['source'] ?: '') . ($r['ad_code'] ? ' · ' . h($r['ad_code']) : '') . (!empty($r['line']) ? ' · ' . h($r['line']) : '') . '</span><span>' . h(ist($r['created_at'], 'j M')) . '</span>' . (!empty($r['payment_status']) && $r['payment_status'] !== 'Pending' && show_money() ? '<span>₹ ' . h($r['payment_status']) . '</span>' : '') . (is_owner() && !empty($r['assigned_to']) ? '<span>👤 ' . h(person_name((int)$r['assigned_to'])) . '</span>' : '') . (!empty($r['is_test']) ? '<span class="late">TEST</span>' : '') . '</div>
     </a>' . $wa . '</div>';
 }
 
@@ -460,9 +507,9 @@ function page(string $title, string $body, bool $nav = true): void {
     $tab = fn($k, $label, $also = []) => '<a href="?p=' . $k . '"' . ($p === $k || in_array($p, $also, true) ? ' aria-current="page"' : '') . '>' . $label . '</a>';
     echo '<!doctype html><html lang="en-IN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow"><title>' . h($title) . ' · Leegtech leads</title>
-<link rel="stylesheet" href="/admin/admin.css?v=6"><link rel="icon" href="/favicon.ico"></head><body>'
+<link rel="stylesheet" href="/admin/admin.css?v=7"><link rel="icon" href="/favicon.ico"></head><body>'
     . ($nav ? '<header class="bar">' . ($p !== 'home' ? '<a href="' . h(back_href()) . '" class="back" id="backbtn" aria-label="Back" title="Back">←</a>' : '')
-        . '<a href="?p=home" class="brand">Leegtech leads</a><a href="?p=settings" class="small">Settings</a></header>' : '')
+        . '<a href="?p=home" class="brand">Leegtech leads</a><a href="?p=settings" class="small">' . (me() && !is_owner() ? h(me()['name']) . ' · ' : '') . 'Settings</a></header>' : '')
     . '<main>' . ($msg ? '<p class="flash" role="status">' . h($msg) . '</p>' : '') . $body . '</main>'
     . ($nav ? '<nav class="tabs">' . $tab('home', 'Today') . $tab('leads', 'Leads') . $tab('clients', 'Clients', ['clients', 'client', 'matter', 'ip', 'import', 'newclient', 'deadlines']) . $tab('add', '+ Add') . '</nav>' : '')
     . ($nav ? '<script src="/admin/admin.js?v=1" defer></script>' : '') . '</body></html>';

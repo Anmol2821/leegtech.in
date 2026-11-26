@@ -72,9 +72,15 @@ Add an object to the right `src/data/services-*.mjs` file. A page is generated a
   adds applications (applicant, application no., filing date, contact, office status mapped to a tracker status); rows are
   grouped into clients by contact email, then phone. Re-importing updates existing application numbers. The CSV is never
   stored in this repository.
+- **Team and assignments** (`admin/_inc/team.php`): the owner (original password) adds team members in Settings → Team
+  (name, email, own password; passwords must be unique because sign-in is by password only). Leads, matters, individual
+  deadlines and tasks can be assigned (one at a time or "Assign all shown"); the person is emailed. Team members see only
+  their own work, never amounts/payments, and cannot delete, import, export, assign or change settings. A deadline without
+  its own assignee belongs to whoever handles its matter. Notes record who wrote them. Switching a member off signs them out.
 - **Daily summary email** (`admin/_inc/daily.php`, CLI only): an hourly Hostinger cron job runs
   `/usr/bin/php /home/u784176160/domains/leegtech.in/public_html/admin/_inc/daily.php`; it sends one email a day after
-  9am IST (deadlines, follow-ups, new leads) to the address in Settings (default info@leegtech.in) via PHP `mail()`.
+  9am IST (deadlines, follow-ups, tasks, new leads) to the address in Settings (default info@leegtech.in) via PHP `mail()`,
+  and a personal one to each active team member with an email (only their work, no amounts).
   Preview without sending: `php daily.php --preview`.
 
 ## Ads & analytics

@@ -44,7 +44,7 @@ function ip_type_for_service(string $service): string {
 
 /** Tab row shown on Clients and on each portfolio tab. */
 function portfolio_tabs(string $active): string {
-    $counts = cdb()->query("SELECT COALESCE(ip_type, '') t, COUNT(*) n FROM matters GROUP BY t")->fetchAll(PDO::FETCH_KEY_PAIR);
+    $counts = cdb()->query("SELECT COALESCE(m.ip_type, '') t, COUNT(*) n FROM matters m WHERE " . matter_scope('m') . ' GROUP BY t')->fetchAll(PDO::FETCH_KEY_PAIR);
     $o = '<nav class="chips scroll tabs2"><a class="chip' . ($active === 'clients' ? ' on' : '') . '" href="?p=clients">Clients</a>';
     foreach (IP_TYPES as $k => $label)
         $o .= '<a class="chip' . ($active === $k ? ' on' : '') . '" href="?p=ip&amp;t=' . $k . '">' . $label . ' <span class="n">' . (int)($counts[$k] ?? 0) . '</span></a>';
@@ -58,6 +58,7 @@ function app_card(array $m): string {
       <div class="muted small">' . h(implode(' · ', array_filter([$m['app_no'] ? 'No. ' . $m['app_no'] : '', $m['filed_on'] ? 'Filed ' . nice_date($m['filed_on']) : '', $m['title']]))) . '</div>
       <div class="meta small">' . ($m['client_name'] && $m['client_name'] !== $who ? '<span>Contact: ' . h($m['client_name']) . '</span>' : '')
         . ($m['next_due'] ? '<span class="' . due_class($m['next_due']) . '">⏳ ' . h(nice_date($m['next_due'])) . '</span>' : '')
+        . (is_owner() && $m['assigned_to'] ? '<span>👤 ' . h(person_name((int)$m['assigned_to'])) . '</span>' : '')
         . ($m['office_status'] ? '<span class="clip">' . h(mb_strimwidth((string)$m['office_status'], 0, 90, '…')) . '</span>' : '') . '</div>
     </a></div>';
 }
@@ -74,11 +75,11 @@ function status_class(string $s): string {
 
 function portfolio_page(string $p): void {
     $db = cdb();
-    if ($p === 'import') { import_form_page(get('t', 12)); }
+    if ($p === 'import') { require_owner('/admin/?p=clients'); import_form_page(get('t', 12)); }
 
     $t = array_key_exists(get('t', 12), IP_TYPES) ? get('t', 12) : 'design';
     $q = get('q', 80); $stF = get('s', 60);
-    $where = ['m.ip_type = ?']; $args = [$t];
+    $where = ['m.ip_type = ?', matter_scope('m'), who_sql('m.assigned_to')]; $args = [$t];
     if ($stF !== '') { $where[] = 'm.status = ?'; $args[] = $stF; }
     if ($q !== '') {
         $like = '%' . str_replace(['\\', '%', '_'], ['\\\\', '\\%', '\\_'], $q) . '%';
@@ -90,22 +91,22 @@ function portfolio_page(string $p): void {
         FROM matters m JOIN clients c ON c.id = m.client_id WHERE ' . implode(' AND ', $where) . ' ORDER BY COALESCE(m.filed_on, m.created_at) DESC, m.id DESC LIMIT 1000');
     $st->execute($args);
     $rows = $st->fetchAll();
-    $cnt = $db->prepare('SELECT status, COUNT(*) n FROM matters WHERE ip_type = ? GROUP BY status ORDER BY n DESC');
+    $cnt = $db->prepare('SELECT m.status, COUNT(*) n FROM matters m WHERE m.ip_type = ? AND ' . matter_scope('m') . ' AND ' . who_sql('m.assigned_to') . ' GROUP BY m.status ORDER BY n DESC');
     $cnt->execute([$t]);
     $counts = $cnt->fetchAll(PDO::FETCH_KEY_PAIR);
     $chip = function (string $val, string $label, int $n) use ($t, $q, $stF) {
-        $qs = http_build_query(array_filter(['p' => 'ip', 't' => $t, 's' => $val, 'q' => $q]));
+        $qs = http_build_query(array_filter(['p' => 'ip', 't' => $t, 's' => $val, 'q' => $q, 'who' => who_filter()]));
         return '<a class="chip' . ($stF === $val ? ' on' : '') . '" href="?' . h($qs) . '">' . h($label) . ' <span class="n">' . $n . '</span></a>';
     };
     $chips = $chip('', 'All', array_sum(array_map('intval', $counts)));
     foreach ($counts as $s => $n) $chips .= $chip((string)$s, $s ?: 'No status', (int)$n);
     page(IP_TYPES[$t], portfolio_tabs($t) . '<h1>' . h(IP_TYPES[$t]) . '</h1>
-    <div class="actions"><a class="btn" href="?p=newclient">+ New client</a><a class="btn" href="?p=import&amp;t=' . $t . '">Import from sheet</a></div>
+    <div class="actions"><a class="btn" href="?p=newclient">+ New client</a>' . (is_owner() ? '<a class="btn" href="?p=import&amp;t=' . $t . '">Import from sheet</a>' : '') . '</div>
     <form class="search" method="get"><input type="hidden" name="p" value="ip"><input type="hidden" name="t" value="' . $t . '"><input type="hidden" name="s" value="' . h($stF) . '">
-      <input type="search" name="q" value="' . h($q) . '" placeholder="Search applicant, application no., contact"><button class="btn">Search</button></form>
+      <input type="search" name="q" value="' . h($q) . '" placeholder="Search applicant, application no., contact">' . who_select() . '<button class="btn">Search</button></form>
     <nav class="chips scroll">' . $chips . '</nav>
     <div class="list">' . (implode('', array_map('app_card', $rows)) ?: '<p class="muted">Nothing here yet. Add a matter to a client, or use "Import from sheet".</p>') . '</div>
-    <p class="small muted">' . count($rows) . ' shown</p>');
+    <p class="small muted">' . count($rows) . ' shown</p>' . bulk_assign_form('matters', array_column($rows, 'id'), strtolower(IP_TYPES[$t])));
 }
 
 /* ---------------- CSV import ---------------- */

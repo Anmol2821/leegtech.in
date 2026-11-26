@@ -163,11 +163,11 @@ function set_cookie(string $value, int $expires): void {
     setcookie(COOKIE, $value, ['expires' => $expires, 'path' => '/admin/', 'secure' => is_https(), 'httponly' => true, 'samesite' => 'Lax']);
 }
 
-function start_session(): void {
+function start_session(int $userId = 0): void {
     $token = bin2hex(random_bytes(32));
     $exp = time() + SESSION_DAYS * 86400;
-    db()->prepare('INSERT INTO admin_sessions (token_hash, csrf, created_at, expires_at, user_agent) VALUES (?, ?, ?, ?, ?)')
-        ->execute([hash('sha256', $token), bin2hex(random_bytes(16)), now_utc(), $exp, mb_substr((string)($_SERVER['HTTP_USER_AGENT'] ?? ''), 0, 200)]);
+    db()->prepare('INSERT INTO admin_sessions (token_hash, csrf, created_at, expires_at, user_agent, user_id) VALUES (?, ?, ?, ?, ?, ?)')
+        ->execute([hash('sha256', $token), bin2hex(random_bytes(16)), now_utc(), $exp, mb_substr((string)($_SERVER['HTTP_USER_AGENT'] ?? ''), 0, 200), $userId]);
     set_cookie($token, $exp);
 }
 
@@ -188,7 +188,8 @@ function current_session(): ?array {
 
 function end_session(bool $everywhere = false): void {
     $s = current_session();
-    if ($everywhere) db()->exec('DELETE FROM admin_sessions');
+    if ($everywhere && $s && (int)($s['user_id'] ?? 0) !== 0) db()->prepare('DELETE FROM admin_sessions WHERE user_id = ?')->execute([(int)$s['user_id']]);
+    elseif ($everywhere) db()->exec('DELETE FROM admin_sessions');
     elseif ($s) db()->prepare('DELETE FROM admin_sessions WHERE token_hash = ?')->execute([$s['token_hash']]);
     set_cookie('', time() - 3600);
 }
@@ -250,7 +251,7 @@ function rupees(?int $n): string {
 }
 
 function log_activity(int $leadId, string $kind, string $text): void {
-    db()->prepare('INSERT INTO activity (lead_id, created_at, kind, text) VALUES (?, ?, ?, ?)')->execute([$leadId, now_utc(), $kind, $text]);
+    db()->prepare('INSERT INTO activity (lead_id, created_at, kind, text, by_name) VALUES (?, ?, ?, ?, ?)')->execute([$leadId, now_utc(), $kind, $text, function_exists('by_name') ? by_name() : null]);
 }
 
 function find_lead(int $id): ?array {
