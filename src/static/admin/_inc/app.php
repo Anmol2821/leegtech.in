@@ -69,7 +69,7 @@ function migrate(PDO $db): void {
     $add = [
         'stage' => "TEXT DEFAULT 'New'", 'source' => "TEXT DEFAULT 'Website form'", 'ad_code' => 'TEXT',
         'quoted_amount' => 'INTEGER', 'follow_up' => 'TEXT', 'lost_reason' => 'TEXT', 'won_at' => 'TEXT',
-        'updated_at' => 'TEXT', 'phone_key' => 'TEXT',
+        'updated_at' => 'TEXT', 'phone_key' => 'TEXT', 'line' => 'TEXT',
     ];
     foreach ($add as $col => $def) if (!in_array($col, $have, true)) $db->exec("ALTER TABLE leads ADD COLUMN $col $def");
     $db->exec('CREATE TABLE IF NOT EXISTS activity (id INTEGER PRIMARY KEY AUTOINCREMENT, lead_id INTEGER NOT NULL,
@@ -104,6 +104,29 @@ function save_password(string $password): void {
     $f = admin_file();
     if (file_put_contents($f, json_encode($cfg, JSON_PRETTY_PRINT), LOCK_EX) === false) fail('Could not save the password.');
     @chmod($f, 0600);
+}
+
+/** Names of the business's WhatsApp numbers ("lines"), editable in Settings. */
+function wa_lines(): array {
+    $l = admin_config()['lines'] ?? null;
+    return is_array($l) && $l ? array_values($l) : ['WhatsApp 1', 'WhatsApp 2'];
+}
+
+function save_lines(array $lines): void {
+    $cfg = admin_config();
+    if (!$cfg) return;
+    $cfg['lines'] = $lines;
+    $f = admin_file();
+    if (file_put_contents($f, json_encode($cfg, JSON_PRETTY_PRINT), LOCK_EX) === false) fail('Could not save settings.');
+    @chmod($f, 0600);
+}
+
+function line_select(?string $current, bool $withBlank = true): string {
+    $o = '<select name="line">' . ($withBlank ? '<option value="">Not WhatsApp / not known</option>' : '');
+    $found = !$current;
+    foreach (wa_lines() as $l) { $sel = $l === $current; $found = $found || $sel; $o .= '<option' . ($sel ? ' selected' : '') . '>' . h($l) . '</option>'; }
+    if (!$found) $o .= '<option selected>' . h((string)$current) . '</option>';
+    return $o . '</select>';
 }
 
 function password_problem(string $p, string $p2): ?string {

@@ -54,6 +54,7 @@ Add an object to the right `src/data/services-*.mjs` file. A page is generated a
 - **Lead tracker:** `https://leegtech.in/admin/` (private, password-protected, not indexed). Source: `src/static/admin/`.
   Shows website leads automatically; leads from WhatsApp/Meta ads, calls and referrals are added with "+ Add".
   Stages New → Contacted → Consulted → Quoted → Won/Lost, follow-up dates, notes, quote amounts, ad codes,
+  which WhatsApp number the lead came in on (numbers are named in Settings),
   monthly counts by source and ad code, CSV export.
   - Shared code `admin/_inc/app.php` (blocked from the web by `_inc/.htaccess`); the service picker list
     `admin/_inc/services.json` is written by `build.mjs`.
