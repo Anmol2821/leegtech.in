@@ -26,6 +26,8 @@ const copyDir = (from, to) => {
 };
 copyDir(path.join(SRC, 'static'), OUT);
 copyDir(path.join(SRC, 'assets'), path.join(OUT, 'assets'));
+// Service names for the private lead tracker's service picker (/admin/).
+fs.writeFileSync(path.join(OUT, 'admin/_inc/services.json'), JSON.stringify(categories.map(c => ({ group: c.name, items: c.services.map(x => x.name) }))));
 
 // Fingerprint CSS and JS for long-term caching.
 const fingerprint = (rel) => {
@@ -152,6 +154,7 @@ fs.writeFileSync(path.join(OUT, 'robots.txt'), process.env.SITE_PREVIEW ? 'User-
 User-agent: *
 Allow: /
 Disallow: /thank-you/
+Disallow: /admin/
 
 # AI assistants and search engines are welcome to read and cite this site.
 User-agent: GPTBot

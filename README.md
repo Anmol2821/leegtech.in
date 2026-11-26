@@ -49,7 +49,17 @@ It is added automatically to the blog index, sitemap, RSS feed and `llms.txt`.
 Add an object to the right `src/data/services-*.mjs` file. A page is generated at `/<category>/<slug>/`, and it is added to menus, footer, sitemap, structured data and the enquiry form.
 
 ## Leads
-Enquiry forms are handled by **Netlify Forms** (form name `consultation`). Each submission includes UTM parameters, `gclid`/`fbclid`, landing page and referrer. Set up email notifications in Netlify → Forms → Notifications.
+- The enquiry form posts to `src/static/api/lead.php`, which saves the lead (with UTM/gclid/fbclid, landing page, referrer)
+  to `leads-data/leads.sqlite` **outside public_html** (plus a `leads.csv` mirror), then the visitor continues to WhatsApp.
+- **Lead tracker:** `https://leegtech.in/admin/` (private, password-protected, not indexed). Source: `src/static/admin/`.
+  Shows website leads automatically; leads from WhatsApp/Meta ads, calls and referrals are added with "+ Add".
+  Stages New → Contacted → Consulted → Quoted → Won/Lost, follow-up dates, notes, quote amounts, ad codes,
+  monthly counts by source and ad code, CSV export.
+  - Shared code `admin/_inc/app.php` (blocked from the web by `_inc/.htaccess`); the service picker list
+    `admin/_inc/services.json` is written by `build.mjs`.
+  - Password hash: `leads-data/admin.json`. Forgot it? Delete that file in hPanel → File Manager, generate a new
+    one-time setup code, put its `password_hash()` in `admin/_inc/config.php`, deploy, and set up again at `/admin/`.
+  - Never commit `leads-data/` or any lead data to this repository.
 
 ## Ads & analytics
 Fill IDs in `src/data/site.mjs → tracking` and rebuild:
