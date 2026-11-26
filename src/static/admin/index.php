@@ -460,10 +460,21 @@ function page(string $title, string $body, bool $nav = true): void {
     $tab = fn($k, $label, $also = []) => '<a href="?p=' . $k . '"' . ($p === $k || in_array($p, $also, true) ? ' aria-current="page"' : '') . '>' . $label . '</a>';
     echo '<!doctype html><html lang="en-IN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow"><title>' . h($title) . ' · Leegtech leads</title>
-<link rel="stylesheet" href="/admin/admin.css?v=5"><link rel="icon" href="/favicon.ico"></head><body>'
-    . ($nav ? '<header class="bar"><a href="?p=home" class="brand">Leegtech leads</a><a href="?p=settings" class="small">Settings</a></header>' : '')
+<link rel="stylesheet" href="/admin/admin.css?v=6"><link rel="icon" href="/favicon.ico"></head><body>'
+    . ($nav ? '<header class="bar">' . ($p !== 'home' ? '<a href="' . h(back_href()) . '" class="back" id="backbtn" aria-label="Back" title="Back">←</a>' : '')
+        . '<a href="?p=home" class="brand">Leegtech leads</a><a href="?p=settings" class="small">Settings</a></header>' : '')
     . '<main>' . ($msg ? '<p class="flash" role="status">' . h($msg) . '</p>' : '') . $body . '</main>'
     . ($nav ? '<nav class="tabs">' . $tab('home', 'Today') . $tab('leads', 'Leads') . $tab('clients', 'Clients', ['clients', 'client', 'matter', 'ip', 'import', 'newclient', 'deadlines']) . $tab('add', '+ Add') . '</nav>' : '')
-    . '</body></html>';
+    . ($nav ? '<script src="/admin/admin.js?v=1" defer></script>' : '') . '</body></html>';
     exit;
+}
+
+/** Where the back button goes when there is no earlier screen in this tab (e.g. opened from the email). */
+function back_href(): string {
+    global $p;
+    if ($p === 'lead') return '?p=leads';
+    if ($p === 'matter' && ($m = find_row('matters', (int)get('id', 12)))) return '?p=client&id=' . (int)$m['client_id'];
+    if ($p === 'import') return '?p=ip&t=' . (array_key_exists(get('t', 12), IP_TYPES) ? get('t', 12) : 'design');
+    if (in_array($p, ['client', 'matter', 'ip', 'newclient', 'deadlines'], true)) return '?p=clients';
+    return '?p=home';
 }

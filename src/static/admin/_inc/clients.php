@@ -313,7 +313,7 @@ function clients_page(string $p): void {
         $st->execute([$cid]);
         $ms = '';
         foreach ($st->fetchAll() as $m) $ms .= '<div class="lead"><a class="body" href="?p=matter&amp;id=' . (int)$m['id'] . '">
-            <div class="top"><strong>' . h($m['service'] ?: 'Matter') . '</strong><span class="badge ' . ($m['closed'] ? 'st-lost' : 'st-consulted') . '">' . h($m['closed'] ? 'Closed' : ($m['status'] ?: 'Open')) . '</span></div>
+            <div class="top"><strong>' . h($m['service'] ?: 'Matter') . '</strong><span class="badge ' . ($m['closed'] ? 'st-lost' : (function_exists('status_class') ? status_class((string)$m['status']) : 'st-consulted')) . '">' . h($m['closed'] ? 'Closed' : ($m['status'] ?: 'Open')) . '</span></div>
             <div class="muted small">' . h(implode(' · ', array_filter([$m['applicant'], $m['title'], $m['app_no']]))) . '</div>
             <div class="meta small">' . ($m['next_due'] && !$m['closed'] ? '<span class="' . due_class($m['next_due']) . '">⏳ ' . h(nice_date($m['next_due'])) . '</span>' : '')
             . ($m['amount'] ? '<span class="' . ($m['paid'] ? '' : 'late') . '">' . h(rupees((int)$m['amount'])) . ' · ' . h($m['payment_status'] ?: 'Pending') . '</span>' : '')
