@@ -116,10 +116,11 @@ function import_form_page(string $t, ?string $err = null): void {
     page('Import', portfolio_tabs($t ?: 'design') . '<h1>Import applications from a sheet</h1>
     <p class="muted">In Google Sheets open the tab, then File → Download → Comma-separated values (.csv), and upload that file here. You will see a preview before anything is saved.</p>
     ' . ($err ? '<p class="alert">' . h($err) . '</p>' : '') . '
-    <form method="post" enctype="multipart/form-data" class="stack card">' . csrf_field() . '<input type="hidden" name="action" value="c_import_preview">
+    <form method="post" enctype="multipart/form-data" class="stack card" id="impf">' . csrf_field() . '<input type="hidden" name="action" value="c_import_preview">
+      <input type="hidden" name="csv_b64" value=""><input type="hidden" name="csv_name" value="">
       <label>These applications are<select name="ip_type">' . $opts . '</select></label>
       <label>CSV file<input type="file" name="csv" accept=".csv,text/csv" required></label>
-      <button class="btn primary">Preview</button></form>
+      <button class="btn primary">Preview</button></form><script src="/admin/import.js?v=1" defer></script>
     <section class="card small"><h2>What the importer reads</h2><p>Columns are matched by their heading: applicant name, application number, filing date, contact person, mobile, email and status. Other columns are ignored.</p>
     <ul><li>Each row becomes an application (matter). Rows are grouped into clients by contact email, then phone, then name. An existing client with the same email or phone is reused.</li>
     <li>An application number already in the tracker is not added twice: its status and office status are updated instead, so you can re-upload an updated sheet.</li>
@@ -255,10 +256,25 @@ function import_plan(string $file, string $type): array {
 
 function import_preview(): void {
     $type = array_key_exists(post('ip_type', 12), IP_TYPES) ? post('ip_type', 12) : 'design';
-    $f = $_FILES['csv'] ?? null;
-    if (!$f || !is_array($f) || ($f['error'] ?? 1) !== UPLOAD_ERR_OK || !is_uploaded_file((string)$f['tmp_name'])) import_form_page($type, 'Choose the CSV file to upload.');
-    if ((int)$f['size'] > 5 * 1024 * 1024) import_form_page($type, 'That file is too large (over 5 MB).');
-    $plan = import_plan((string)$f['tmp_name'], $type);
+    // The page script sends the file base64-encoded in a normal form field (the host's firewall can block raw
+    // file uploads); a plain file upload is still accepted when scripts are off.
+    $b64 = $_POST['csv_b64'] ?? '';
+    $tmp = null;
+    if (is_string($b64) && $b64 !== '') {
+        if (strlen($b64) > 7 * 1024 * 1024) import_form_page($type, 'That file is too large (over 5 MB).');
+        $raw = base64_decode($b64, true);
+        if ($raw === false) import_form_page($type, 'The file could not be read. Try again.');
+        $tmp = tempnam(sys_get_temp_dir(), 'ltimp');
+        file_put_contents($tmp, $raw);
+        $path = $tmp;
+    } else {
+        $f = $_FILES['csv'] ?? null;
+        if (!$f || !is_array($f) || ($f['error'] ?? 1) !== UPLOAD_ERR_OK || !is_uploaded_file((string)$f['tmp_name'])) import_form_page($type, 'Choose the CSV file to upload.');
+        if ((int)$f['size'] > 5 * 1024 * 1024) import_form_page($type, 'That file is too large (over 5 MB).');
+        $path = (string)$f['tmp_name'];
+    }
+    $plan = import_plan($path, $type);
+    if ($tmp) @unlink($tmp);
     if (isset($plan['error'])) import_form_page($type, $plan['error']);
     if (!$plan['rows']) import_form_page($type, 'No application rows were found in the file.');
 
