@@ -57,8 +57,7 @@ export const ctaBand = (title = 'Your Idea Is Worth Protecting.', text = 'Patent
 
 export const serviceOptions = (selected = '') => categories.map(c => `<optgroup label="${esc(c.name)}">${c.services.map(s => `<option value="${esc(s.name)}"${s.slug === selected ? ' selected' : ''}>${esc(s.name)}</option>`).join('')}</optgroup>`).join('') + `<option value="Not sure, need advice"${selected === 'not-sure' ? ' selected' : ''}>Not sure, need advice</option>`;
 
-export const leadForm = ({ selected = '', id = 'lead', title = 'Book Your Free Consultation', compact = false } = {}) => `<form class="lead-form${compact ? ' compact' : ''}" name="consultation" method="POST" action="/thank-you/" data-netlify="true" netlify-honeypot="company_website" id="${id}" novalidate>
-  <input type="hidden" name="form-name" value="consultation">
+export const leadForm = ({ selected = '', id = 'lead', title = 'Book Your Free Consultation', compact = false } = {}) => `<form class="lead-form${compact ? ' compact' : ''}" name="consultation" method="POST" action="/thank-you/" id="${id}" novalidate>
   <p class="hp" aria-hidden="true"><label>Leave this empty <input name="company_website" tabindex="-1" autocomplete="off"></label></p>
   <div class="lf-head"><h2 class="lf-title">${esc(title)}</h2><p>Your enquiry is sent to us on WhatsApp. No obligation.</p></div>
   <div class="lf-grid">
@@ -70,7 +69,7 @@ export const leadForm = ({ selected = '', id = 'lead', title = 'Book Your Free C
     <div class="field"><label for="${id}-city">City</label><input id="${id}-city" name="city" type="text" autocomplete="address-level2" placeholder="Your city"></div>
     <div class="field field-full"><label for="${id}-msg">Tell us about your requirement <span class="opt">(optional)</span></label><textarea id="${id}-msg" name="message" rows="3" placeholder="Describe your invention, brand, business or legal need briefly..."></textarea></div>
   </div>
-  <input type="hidden" name="utm_source"><input type="hidden" name="utm_medium"><input type="hidden" name="utm_campaign"><input type="hidden" name="utm_term"><input type="hidden" name="utm_content"><input type="hidden" name="gclid"><input type="hidden" name="fbclid"><input type="hidden" name="landing_page"><input type="hidden" name="referrer"><input type="hidden" name="page">
+  <input type="hidden" name="utm_source"><input type="hidden" name="utm_medium"><input type="hidden" name="utm_campaign"><input type="hidden" name="utm_term"><input type="hidden" name="utm_content"><input type="hidden" name="gclid"><input type="hidden" name="fbclid"><input type="hidden" name="landing_page"><input type="hidden" name="referrer"><input type="hidden" name="page_url">
   <label class="consent-check"><input type="checkbox" name="consent" value="yes" required> <span>I agree to be contacted by Leegtech on WhatsApp, phone or email about my enquiry, and I accept the <a href="/privacy-policy/" target="_blank">Privacy Policy</a>.</span></label>
   <span class="err err-consent">Please accept to continue</span>
   <button class="btn btn-wa btn-lg btn-block" type="submit">${waIcon()} Send Enquiry on WhatsApp</button>

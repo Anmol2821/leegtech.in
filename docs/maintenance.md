@@ -11,6 +11,8 @@ Fix what you safely can, deploy with `npm run deploy` if anything in the repo ch
    occasionally drops a request (HTTP 000/502); retry a URL up to 5 times before treating it as down.
    Also confirm `https://leegtech.in/google049db8a1006dc535.html` and `/google8c276c0552068377.html` return 200: it keeps Google Search Console
    verified (source: `src/static/`). Never delete it.
+   Also confirm `GET https://leegtech.in/api/lead.php` returns `{"ok":false,"error":"method"}` (the lead endpoint is
+   running). Do not POST test leads to it except with `_test=1`.
 2. **Redirects and errors:** `https://www.leegtech.in/` → 301 to apex; `/privacy` → `/privacy-policy/`;
    `/no-such-page/` → 404; `/wp-admin/` → 410.
 3. **SSL:** certificate for leegtech.in valid for more than 14 days (Hostinger renews it automatically; if not,
@@ -54,6 +56,15 @@ Purpose: keep legal and statutory information current. Follow CLAUDE.md ground r
 4. If anything was reviewed, set `site.lastReviewed` to today. Run all checks, commit, `npm run deploy`,
    `npm run publish-live`.
 5. Report what changed, with sources, or "no changes needed".
+
+## Website leads
+Every enquiry-form submission is saved by `src/static/api/lead.php` (PHP 8.3 on Hostinger) before the visitor is
+sent to WhatsApp. Storage is a SQLite file **outside public_html**: `domains/leegtech.in/leads-data/leads.sqlite`
+(all fields, including test rows flagged `is_test=1`), mirrored to `leads.csv` in the same folder for real leads only.
+The owner downloads `leads.csv` from hPanel > File Manager > domains/leegtech.in/leads-data. Deploys never touch this
+folder. Security: same-origin check, honeypot, server-side validation, max 5 submissions per IP per 10 minutes (IP
+stored only as a salted hash), files chmod 600, CSV formula-injection guard. The Meta Pixel `Lead` event fires on
+submit with `eventID` = the lead's `event_id`, so a future Conversions API event can be de-duplicated.
 
 ## Search Console
 The owner verified leegtech.in in Google Search Console (URL prefix, HTML file) on 2026-11-25. There is no API access;

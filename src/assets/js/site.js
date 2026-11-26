@@ -86,8 +86,8 @@
       var el = form.querySelector('input[name="' + k + '"]');
       if (el && attr[k]) el.value = attr[k];
     });
-    var pg = form.querySelector('input[name="page"]');
-    if (pg) pg.value = location.pathname;
+    var pg = form.querySelector('input[name="page_url"]');
+    if (pg) pg.value = (location.origin + location.pathname + location.search).slice(0, 500);
     var started = false;
     form.addEventListener('input', function (e) {
       if (!started) { started = true; push({ event: 'form_start', form_id: form.id, page_path: location.pathname }); }
@@ -100,23 +100,30 @@
       var btn = form.querySelector('button[type=submit]');
       var label = btn.innerHTML;
       btn.disabled = true; btn.textContent = 'Sending…';
-      var data = new FormData(form);
-      var body = new URLSearchParams(data).toString();
-      var g = function (k) { return (data.get(k) || '').toString().trim(); };
       var lead = {
-        name: g('name'), email: g('email').toLowerCase(), phone: g('phone').replace(/[^\d+]/g, ''), service: g('service'),
-        stage: g('startup_status'), city: g('city'), message: g('message').slice(0, 600), page: location.pathname,
-        id: Date.now() + '-' + Math.random().toString(36).slice(2, 8)
+        id: Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 10)
       };
+      var data = new FormData(form);
+      data.set('event_id', lead.id);
+      var g = function (k) { return (data.get(k) || '').toString().trim(); };
+      lead.name = g('name'); lead.email = g('email').toLowerCase(); lead.phone = g('phone').replace(/[^\d+]/g, '');
+      lead.service = g('service'); lead.stage = g('startup_status'); lead.city = g('city');
+      lead.message = g('message').slice(0, 600); lead.page = location.pathname;
+      // Meta Pixel: Lead on submit (eventID lets Meta de-duplicate if a server event is added later).
+      fbq('track', 'Lead', { content_name: lead.service || 'Consultation' }, { eventID: lead.id });
+      push({ event: 'generate_lead_submit', form_id: form.id, service: lead.service });
+      var done = false;
       var go = function () {
+        if (done) return; done = true;
         ss.set('lt_lead', JSON.stringify(lead));
-        push({ event: 'generate_lead_submit', form_id: form.id, service: lead.service });
         location.href = '/thank-you/';
       };
-      // Keep a backup copy in Netlify Forms, but never block the WhatsApp hand-off on it.
-      var done = false; var finish = function () { if (!done) { done = true; go(); } };
-      setTimeout(finish, 3500);
-      fetch('/', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: body }).then(finish, finish);
+      // Save the enquiry first; never block the WhatsApp hand-off for more than a few seconds.
+      setTimeout(go, 4000);
+      try {
+        fetch('/api/lead.php', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: new URLSearchParams(data).toString(), keepalive: true, credentials: 'same-origin' })
+          .then(function (r) { push({ event: r.ok ? 'lead_saved' : 'lead_save_failed', status: r.status }); go(); }, go);
+      } catch (err) { go(); }
     });
   });
 
@@ -136,7 +143,6 @@
         window.gtag('event', 'generate_lead', { service: lead.service || '' });
         if (LT.ads) window.gtag('event', 'conversion', { send_to: LT.ads, transaction_id: lead.id });
       }
-      fbq('track', 'Lead', { content_name: lead.service || 'Consultation' }, { eventID: lead.id });
       var lines = ['Hi Leegtech! I would like a free consultation.', '', 'Name: ' + lead.name, 'Phone: ' + lead.phone, 'Email: ' + lead.email];
       if (lead.service) lines.push('Service: ' + lead.service);
       if (lead.stage) lines.push('Startup status: ' + lead.stage);
