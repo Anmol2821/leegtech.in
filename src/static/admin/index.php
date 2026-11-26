@@ -130,7 +130,7 @@ if ($method === 'POST') {
         $source = in_array(post('source'), SOURCES, true) ? post('source') : 'Other';
         $fu = post('follow_up', 10); if (!valid_date($fu)) $fu = null;
         $amt = post('quoted_amount', 12); $amt = $amt !== '' && ctype_digit($amt) && show_money() ? (int)$amt : null;
-        $who = is_owner() ? posted_person() : my_id();
+        $who = assignee_from_post();
         $line = in_array(post('line', 60), wa_lines(), true) ? post('line', 60) : null;
         if ($line) setcookie('lt_line', $line, ['expires' => time() + 365 * 86400, 'path' => '/admin/', 'secure' => is_https(), 'httponly' => true, 'samesite' => 'Lax']);
         $db->prepare('INSERT INTO leads (created_at, event_id, name, phone, phone_key, email, service, city, source, ad_code, line, quoted_amount, follow_up, stage, updated_at, consent, is_test, assigned_to)
@@ -150,7 +150,9 @@ if ($method === 'POST') {
     $back = $self . '?p=lead&id=' . $id;
     $stage = $lead['stage'] ?: 'New';
     require_see('leads', $id);
-    if (in_array($a, ['pay', 'delete', 'assign'], true)) require_owner($back);
+    if ($a === 'pay') require_can('money', $back);
+    if ($a === 'delete') require_can('delete', $back);
+    if ($a === 'assign') require_can('assign', $back);
 
     if ($a === 'assign') {
         $who = posted_person();
@@ -236,7 +238,7 @@ if ($p === 'doc') {
 }
 
 if ($p === 'export') {
-    require_owner($self . '?p=settings');
+    require_can('import', $self . '?p=settings');
     $rows = $db->query("SELECT * FROM leads WHERE $notTest ORDER BY id")->fetchAll();
     header('Content-Type: text/csv; charset=utf-8');
     header('Content-Disposition: attachment; filename="leegtech-leads-' . today() . '.csv"');
@@ -268,7 +270,7 @@ if ($p === 'add') {
       <label>Note<textarea name="note" rows="2" maxlength="2000" placeholder="What they need, budget, anything useful"></textarea></label>
       <div class="row2"><label>Follow up on<input type="date" name="follow_up" value="' . h(plus_days(1)) . '"></label>
       ' . (show_money() ? '<label>Quote (₹)<input name="quoted_amount" inputmode="numeric" pattern="[0-9]*" maxlength="12"></label>' : '') . '</div>
-      ' . (is_owner() && team_names() ? '<label>Assign to' . person_select('assigned_to', null, 'Me (not assigned)') . '</label>' : '') . '
+      ' . (can('assign') && team_names() ? '<label>Assign to' . person_select('assigned_to', null, is_owner() ? 'Me (not assigned)' : 'Me') . '</label>' : '') . '
       <details><summary>More details</summary><div class="stack">
         <label>Email<input name="email" type="email" maxlength="160"></label>
         <label>City<input name="city" maxlength="80"></label></div></details>
@@ -347,7 +349,7 @@ if ($p === 'lead') {
         ' . (show_money() ? '<label>Quote (₹)<input name="quoted_amount" inputmode="numeric" pattern="[0-9]*" maxlength="12" value="' . h($lead['quoted_amount'] === null ? '' : (string)$lead['quoted_amount']) . '"></label>' : '') . '
         <label>Lost reason (if lost)<input name="lost_reason" maxlength="200" value="' . h($lead['lost_reason']) . '" placeholder="e.g. price, chose someone else, not reachable"></label>
         <button class="btn primary">Save details</button></form></details>
-    ' . (is_owner() ? '<details class="card"><summary>Delete this lead</summary>
+    ' . (can('delete') ? '<details class="card"><summary>Delete this lead</summary>
       <form method="post" class="stack">' . $f . '<input type="hidden" name="action" value="delete">
         <label class="check"><input type="checkbox" name="confirm" value="yes" required> Yes, permanently delete this lead and its notes</label>
         <button class="btn danger">Delete</button></form></details>' : ''));
@@ -397,7 +399,8 @@ if ($p === 'leads') {
 }
 
 if ($p === 'settings' && !is_owner()) {
-    page('Settings', '<h1>Settings</h1><p class="muted">Signed in as <strong>' . h(me()['name']) . '</strong>.</p>
+    page('Settings', '<h1>Settings</h1><p class="muted">Signed in as <strong>' . h(me()['name']) . '</strong> · ' . h(perms_summary(me()['perms'])) . '</p>
+    ' . (can('import') ? '<section class="card"><h2>Download all leads</h2><p class="muted">A spreadsheet (CSV) of every lead.</p><a class="btn" href="?p=export">Download CSV</a></section>' : '') . '
     <section class="card"><h2>Change your password</h2><form method="post" class="stack">' . csrf_field() . '<input type="hidden" name="action" value="password">
       <label>Current password<input type="password" name="current" required autocomplete="current-password"></label>
       <label>New password (at least 10 characters)<input type="password" name="password" required minlength="10" autocomplete="new-password"></label>
@@ -438,7 +441,7 @@ $due = $db->prepare("SELECT * FROM leads WHERE $notTest AND $open AND $ls AND fo
 $due->execute([$t]); $due = $due->fetchAll();
 $fresh = $db->query("SELECT * FROM leads WHERE $notTest AND $ls AND COALESCE(stage, 'New') = 'New' AND (follow_up IS NULL OR follow_up = '') ORDER BY id DESC LIMIT 30")->fetchAll();
 $soon = $db->prepare("SELECT COUNT(*) FROM leads WHERE $notTest AND $open AND $ls AND follow_up > ? AND follow_up <= ?");
-$myTasks = open_tasks('(t.due_on IS NULL OR t.due_on <= ?)' . (is_owner() ? ' AND t.assigned_to IS NULL' : ''), [plus_days(3)], 50);
+$myTasks = open_tasks('(t.due_on IS NULL OR t.due_on <= ?)' . (is_owner() ? ' AND t.assigned_to IS NULL' : ' AND t.assigned_to = ' . my_id()), [plus_days(3)], 50);
 $soon->execute([$t, plus_days(7)]); $soon = (int)$soon->fetchColumn();
 
 $monthStart = (new DateTime(date('Y-m-01 00:00:00')))->setTimezone(new DateTimeZone('UTC'))->format('Y-m-d\TH:i:s\Z');
@@ -463,15 +466,15 @@ $tbl = function (array $rows, string $head) {
 page('Today', '<h1>Today <span class="muted small">' . h(date('D, j M')) . '</span></h1>
 <a class="btn primary big" href="?p=add">+ Add a lead</a>
 ' . team_summary_html() . today_deadlines_html() . '
-<section><h2>' . (is_owner() && team_names() ? 'Your tasks' : 'Tasks') . ($myTasks ? ' <span class="n">' . count($myTasks) . '</span>' : '') . '</h2>
+<section><h2>' . (can('all') && team_names() ? 'Your tasks' : 'Tasks') . ($myTasks ? ' <span class="n">' . count($myTasks) . '</span>' : '') . '</h2>
   <div class="list">' . (implode('', array_map('task_card', $myTasks)) ?: '<p class="muted">No tasks due in the next 3 days.</p>') . '</div>
   <p class="small"><a href="?p=tasks">All tasks</a> · <a href="?p=tasks&amp;new=1#new">+ New task</a></p></section>
 <section><h2>Follow up today' . ($due ? ' <span class="n">' . count($due) . '</span>' : '') . '</h2>
   <div class="list">' . (implode('', array_map('lead_card', $due)) ?: '<p class="muted">Nothing due. ' . ($soon ? $soon . ' follow-up(s) in the next 7 days.' : '') . '</p>') . '</div></section>
 <section><h2>New, not yet followed up' . ($fresh ? ' <span class="n">' . count($fresh) . '</span>' : '') . '</h2>
   <div class="list">' . (implode('', array_map('lead_card', $fresh)) ?: '<p class="muted">All new leads have a follow-up date.</p>') . '</div></section>
-' . (is_owner() ? '<section class="card"><h2>This month</h2>
-  <div class="stats"><div><b>' . (int)$m['n'] . '</b><span>new leads</span></div><div><b>' . (int)$w['n'] . '</b><span>won</span></div><div><b>' . h(rupees((int)$w['v'])) . '</b><span>won value</span></div></div>
+' . (can('all') ? '<section class="card"><h2>This month</h2>
+  <div class="stats"><div><b>' . (int)$m['n'] . '</b><span>new leads</span></div><div><b>' . (int)$w['n'] . '</b><span>won</span></div>' . (show_money() ? '<div><b>' . h(rupees((int)$w['v'])) . '</b><span>won value</span></div>' : '') . '</div>
   ' . $tbl(array_map(fn($r) => ['Source' => $r['s'], 'n' => $r['n'], 'won' => $r['won']], $bySrc), 'Source') . $tbl(array_map(fn($r) => ['Line' => $r['l'], 'n' => $r['n'], 'won' => $r['won']], $byLine), 'WhatsApp number') . $tbl(array_map(fn($r) => ['Ad' => $r['a'], 'n' => $r['n'], 'won' => $r['won']], $byAd), 'Ad code') . '
 </section>' : ''));
 
@@ -506,7 +509,7 @@ function lead_card(array $r): string {
     return '<div class="lead"><a class="body" href="?p=lead&amp;id=' . (int)$r['id'] . '">
       <div class="top"><strong>' . h($r['name'] ?: 'No name') . '</strong><span class="badge st-' . strtolower($stage) . '">' . h($stage) . '</span></div>
       <div class="muted small">' . h($r['service'] ?: 'Service not set') . '</div>
-      <div class="meta small">' . $fuHtml . '<span>' . h($r['source'] ?: '') . ($r['ad_code'] ? ' · ' . h($r['ad_code']) : '') . (!empty($r['line']) ? ' · ' . h($r['line']) : '') . '</span><span>' . h(ist($r['created_at'], 'j M')) . '</span>' . (!empty($r['payment_status']) && $r['payment_status'] !== 'Pending' && show_money() ? '<span>₹ ' . h($r['payment_status']) . '</span>' : '') . (is_owner() && !empty($r['assigned_to']) ? '<span>👤 ' . h(person_name((int)$r['assigned_to'])) . '</span>' : '') . (!empty($r['is_test']) ? '<span class="late">TEST</span>' : '') . '</div>
+      <div class="meta small">' . $fuHtml . '<span>' . h($r['source'] ?: '') . ($r['ad_code'] ? ' · ' . h($r['ad_code']) : '') . (!empty($r['line']) ? ' · ' . h($r['line']) : '') . '</span><span>' . h(ist($r['created_at'], 'j M')) . '</span>' . (!empty($r['payment_status']) && $r['payment_status'] !== 'Pending' && show_money() ? '<span>₹ ' . h($r['payment_status']) . '</span>' : '') . (can('all') && !empty($r['assigned_to']) ? '<span>👤 ' . h(person_name((int)$r['assigned_to'])) . '</span>' : '') . (!empty($r['is_test']) ? '<span class="late">TEST</span>' : '') . '</div>
     </a>' . $wa . '</div>';
 }
 
@@ -516,7 +519,7 @@ function page(string $title, string $body, bool $nav = true): void {
     $tab = fn($k, $label, $also = []) => '<a href="?p=' . $k . '"' . ($p === $k || in_array($p, $also, true) ? ' aria-current="page"' : '') . '>' . $label . '</a>';
     echo '<!doctype html><html lang="en-IN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow"><title>' . h($title) . ' · Leegtech leads</title>
-<link rel="stylesheet" href="/admin/admin.css?v=8"><link rel="icon" href="/favicon.ico"></head><body>'
+<link rel="stylesheet" href="/admin/admin.css?v=9"><link rel="icon" href="/favicon.ico"></head><body>'
     . ($nav ? '<header class="bar">' . ($p !== 'home' ? '<a href="' . h(back_href()) . '" class="back" id="backbtn" aria-label="Back" title="Back">←</a>' : '')
         . '<a href="?p=home" class="brand">Leegtech leads</a><a href="?p=settings" class="small">' . (me() && !is_owner() ? h(me()['name']) . ' · ' : '') . 'Settings</a></header>' : '')
     . '<main>' . ($msg ? '<p class="flash" role="status">' . h($msg) . '</p>' : '') . $body . '</main>'

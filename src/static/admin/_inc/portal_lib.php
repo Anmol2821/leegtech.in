@@ -157,7 +157,7 @@ function notify_client_upload(array $client, ?array $matter, string $fileName): 
 
 /** Owner's card on the client page: switch the portal on/off, reset the password. */
 function portal_admin_card(array $c): string {
-    if (!is_owner()) return '';
+    if (!can('portal')) return '';
     $f = csrf_field() . '<input type="hidden" name="client_id" value="' . (int)$c['id'] . '">';
     if (!(int)$c['portal_on']) {
         $can = strlen(phone_key((string)$c['phone'])) >= 8 || filter_var((string)$c['email'], FILTER_VALIDATE_EMAIL);
@@ -180,7 +180,7 @@ function documents_admin_html(int $clientId, ?int $matterId, ?string $portalNote
     $rows = '';
     foreach ($st->fetchAll() as $d) {
         $rows .= '<li><a href="?p=doc&amp;id=' . (int)$d['id'] . '">' . h($d['name']) . '</a> <span class="small muted">' . h(human_size((int)$d['size'])) . ' · ' . h(ist($d['created_at'], 'j M, g:i a')) . ' · ' . ((int)$d['by_client'] ? 'from client' : h((string)$d['by_name'])) . '</span>'
-            . (is_owner() ? '<form method="post" class="inline-del">' . csrf_field() . '<input type="hidden" name="doc_id" value="' . (int)$d['id'] . '"><button class="linkbtn" name="action" value="doc_delete">Delete</button></form>' : '') . '</li>';
+            . (can('delete') ? '<form method="post" class="inline-del">' . csrf_field() . '<input type="hidden" name="doc_id" value="' . (int)$d['id'] . '"><button class="linkbtn" name="action" value="doc_delete">Delete</button></form>' : '') . '</li>';
     }
     $note = '';
     if ($matterId !== null) {
@@ -200,7 +200,7 @@ function documents_admin_html(int $clientId, ?int $matterId, ?string $portalNote
 function portal_admin_action(string $a): void {
     $db = cdb();
     if ($a === 'doc_delete') {
-        require_owner();
+        require_can('delete');
         $d = find_row('documents', (int)post('doc_id', 12));
         if ($d) { delete_document($d); if ($d['matter_id']) mlog((int)$d['matter_id'], 'Document deleted: ' . $d['name']); }
         $back = $_SERVER['HTTP_REFERER'] ?? '/admin/';
@@ -222,7 +222,7 @@ function portal_admin_action(string $a): void {
         mlog((int)$m['id'], 'Portal message: ' . (post('portal_note', 1000) ?: '(cleared)'));
         redirect('/admin/?p=matter&id=' . $m['id'], 'Message saved. The client sees it in their portal' . ((int)(find_row('clients', (int)$m['client_id'])['portal_on'] ?? 0) ? '.' : ' once you give them portal access.'));
     }
-    require_owner();
+    require_can('portal');
     $c = find_row('clients', (int)post('client_id', 12));
     if (!$c) redirect('/admin/?p=clients', 'Client not found.');
     $back = '/admin/?p=client&id=' . $c['id'];

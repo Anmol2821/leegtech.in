@@ -58,7 +58,7 @@ function app_card(array $m): string {
       <div class="muted small">' . h(implode(' · ', array_filter([$m['app_no'] ? 'No. ' . $m['app_no'] : '', $m['filed_on'] ? 'Filed ' . nice_date($m['filed_on']) : '', $m['title']]))) . '</div>
       <div class="meta small">' . ($m['client_name'] && $m['client_name'] !== $who ? '<span>Contact: ' . h($m['client_name']) . '</span>' : '')
         . ($m['next_due'] ? '<span class="' . due_class($m['next_due']) . '">⏳ ' . h(nice_date($m['next_due'])) . '</span>' : '')
-        . (is_owner() && $m['assigned_to'] ? '<span>👤 ' . h(person_name((int)$m['assigned_to'])) . '</span>' : '')
+        . (can('all') && $m['assigned_to'] ? '<span>👤 ' . h(person_name((int)$m['assigned_to'])) . '</span>' : '')
         . ($m['office_status'] ? '<span class="clip">' . h(mb_strimwidth((string)$m['office_status'], 0, 90, '…')) . '</span>' : '') . '</div>
     </a></div>';
 }
@@ -75,7 +75,7 @@ function status_class(string $s): string {
 
 function portfolio_page(string $p): void {
     $db = cdb();
-    if ($p === 'import') { require_owner('/admin/?p=clients'); import_form_page(get('t', 12)); }
+    if ($p === 'import') { require_can('import', '/admin/?p=clients'); import_form_page(get('t', 12)); }
 
     $t = array_key_exists(get('t', 12), IP_TYPES) ? get('t', 12) : 'design';
     $q = get('q', 80); $stF = get('s', 60);
@@ -101,7 +101,7 @@ function portfolio_page(string $p): void {
     $chips = $chip('', 'All', array_sum(array_map('intval', $counts)));
     foreach ($counts as $s => $n) $chips .= $chip((string)$s, $s ?: 'No status', (int)$n);
     page(IP_TYPES[$t], portfolio_tabs($t) . '<h1>' . h(IP_TYPES[$t]) . '</h1>
-    <div class="actions"><a class="btn" href="?p=newclient">+ New client</a>' . (is_owner() ? '<a class="btn" href="?p=import&amp;t=' . $t . '">Import from sheet</a>' : '') . '</div>
+    <div class="actions"><a class="btn" href="?p=newclient">+ New client</a>' . (can('import') ? '<a class="btn" href="?p=import&amp;t=' . $t . '">Import from sheet</a>' : '') . '</div>
     <form class="search" method="get"><input type="hidden" name="p" value="ip"><input type="hidden" name="t" value="' . $t . '"><input type="hidden" name="s" value="' . h($stF) . '">
       <input type="search" name="q" value="' . h($q) . '" placeholder="Search applicant, application no., contact">' . who_select() . '<button class="btn">Search</button></form>
     <nav class="chips scroll">' . $chips . '</nav>

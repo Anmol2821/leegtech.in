@@ -119,3 +119,8 @@ table.team td:first-child a { font-weight: 600; }
 .pw { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 1.15rem; letter-spacing: .03em; }
 body.portal { padding-bottom: 24px; }
 textarea[readonly] { font-size: .9rem; }
+fieldset.perms { border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; margin: 0; display: flex; flex-direction: column; gap: 10px; }
+fieldset.perms legend { font-weight: 600; font-size: .92rem; padding: 0 4px; }
+fieldset.perms p { margin: 0; }
+fieldset.perms label.check { align-items: flex-start; }
+fieldset.perms input[type=checkbox] { margin-top: 2px; flex: none; }

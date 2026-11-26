@@ -74,8 +74,10 @@ Add an object to the right `src/data/services-*.mjs` file. A page is generated a
   stored in this repository.
 - **Team and assignments** (`admin/_inc/team.php`): the owner (original password) adds team members in Settings → Team
   (name, email, own password; passwords must be unique because sign-in is by password only). Leads, matters, individual
-  deadlines and tasks can be assigned (one at a time or "Assign all shown"); the person is emailed. Team members see only
-  their own work, never amounts/payments, and cannot delete, import, export, assign or change settings. A deadline without
+  deadlines and tasks can be assigned (one at a time or "Assign all shown"); the person is emailed. By default team members
+  see only their own work, never amounts/payments, and cannot delete, import, export, assign or change settings. The owner can
+  tick extra powers per member (`PERMS` in team.php, checked with `can()` on every action): all clients & leads, fees &
+  payments, assign work, import & download, client portal, delete. Team and settings stay owner-only. A deadline without
   its own assignee belongs to whoever handles its matter. Notes record who wrote them. Switching a member off signs them out.
 - **Client portal** (`src/static/portal/`, shared code `admin/_inc/portal_lib.php`): the owner switches it on per client
   (client page → Give portal access; a one-time password is shown with WhatsApp/email share buttons). Clients sign in at

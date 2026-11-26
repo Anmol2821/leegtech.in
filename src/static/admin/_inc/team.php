@@ -18,14 +18,44 @@ function team_migrate(PDO $db): void {
         assigned_to INTEGER, lead_id INTEGER, matter_id INTEGER, done_at TEXT, created_at TEXT NOT NULL, created_by TEXT)');
     $db->exec('CREATE INDEX IF NOT EXISTS tasks_open ON tasks(done_at, due_on)');
     $add = ['leads' => ['assigned_to' => 'INTEGER'], 'matters' => ['assigned_to' => 'INTEGER'], 'deadlines' => ['assigned_to' => 'INTEGER'],
-        'admin_sessions' => ['user_id' => 'INTEGER DEFAULT 0'], 'activity' => ['by_name' => 'TEXT'], 'matter_log' => ['by_name' => 'TEXT']];
+        'admin_sessions' => ['user_id' => 'INTEGER DEFAULT 0'], 'activity' => ['by_name' => 'TEXT'], 'matter_log' => ['by_name' => 'TEXT'],
+        'users' => ['perms' => "TEXT DEFAULT ''"]];
     foreach ($add as $table => $cols) {
         $have = array_column($db->query("PRAGMA table_info($table)")->fetchAll(), 'name');
         foreach ($cols as $c => $t) if (!in_array($c, $have, true)) $db->exec("ALTER TABLE $table ADD COLUMN $c $t");
     }
 }
 
-/* ---------------- Who is signed in ---------------- */
+/* ---------------- Who is signed in, and what they may do ---------------- */
+
+/** Extra powers the owner can give a team member. Without any, a member sees only work assigned to them. */
+const PERMS = [
+    'all' => ['All clients & leads', 'See and work on every lead, client and application, not only their own'],
+    'money' => ['Fees & payments', 'See quotes, fees and balances, and record payments'],
+    'assign' => ['Assign work', 'Assign leads, matters, deadlines and tasks to others'],
+    'import' => ['Import & download', 'Import sheets and download the leads CSV'],
+    'portal' => ['Client portal', 'Give, reset or switch off client portal access'],
+    'delete' => ['Delete', 'Delete leads, clients, matters, deadlines and documents'],
+];
+
+function perms_of(?string $s): array { return array_values(array_intersect(array_keys(PERMS), explode(',', (string)$s))); }
+
+/** True for the owner, or a team member the owner gave this power. */
+function can(string $perm): bool {
+    $m = me();
+    if (!$m) return false;
+    return $m['owner'] || in_array($perm, $m['perms'], true);
+}
+
+function require_can(string $perm, string $back = '/admin/'): void {
+    if (!can($perm)) redirect($back, 'You do not have permission for that. Ask the owner.');
+}
+
+/** Who new work goes to from a form: the chosen person if allowed to assign, else the person themself (owner = not assigned). */
+function assignee_from_post(): ?int {
+    if (!can('assign')) return is_owner() ? null : my_id();
+    return posted_person() ?? (is_owner() ? null : my_id());
+}
 
 function owner_name(): string { $n = trim((string)(admin_config()['owner_name'] ?? '')); return $n !== '' ? $n : 'Owner'; }
 
@@ -38,15 +68,15 @@ function me(): ?array {
     $s = current_session();
     if (!$s) return null;
     $uid = (int)($s['user_id'] ?? 0);
-    if ($uid === 0) return $me = ['id' => 0, 'name' => owner_name(), 'email' => function_exists('digest_to') ? digest_to() : '', 'owner' => true];
+    if ($uid === 0) return $me = ['id' => 0, 'name' => owner_name(), 'email' => function_exists('digest_to') ? digest_to() : '', 'owner' => true, 'perms' => array_keys(PERMS)];
     $u = user_row($uid);
     if (!$u || !(int)$u['active']) return null;
-    return $me = ['id' => $uid, 'name' => $u['name'], 'email' => (string)$u['email'], 'owner' => false];
+    return $me = ['id' => $uid, 'name' => $u['name'], 'email' => (string)$u['email'], 'owner' => false, 'perms' => perms_of($u['perms'] ?? '')];
 }
 
 function is_owner(): bool { $m = me(); return $m !== null && $m['owner']; }
 function my_id(): int { return (int)(me()['id'] ?? 0); }
-function show_money(): bool { return is_owner(); }
+function show_money(): bool { return can('money'); }
 function by_name(): ?string { return PHP_SAPI === 'cli' ? null : (me()['name'] ?? null); }
 
 function user_row(int $id): ?array {
@@ -86,32 +116,32 @@ function password_taken(string $password, ?int $exceptUser): bool {
 /* ---------------- What each person may see (SQL fragments; ids are integers) ---------------- */
 
 function lead_scope(string $a = 'leads'): string {
-    if (is_owner()) return '1=1';
+    if (can('all')) return '1=1';
     $u = my_id();
     return "($a.assigned_to = $u OR EXISTS (SELECT 1 FROM tasks tq WHERE tq.lead_id = $a.id AND tq.assigned_to = $u AND tq.done_at IS NULL))";
 }
 
 function matter_scope(string $a = 'm'): string {
-    if (is_owner()) return '1=1';
+    if (can('all')) return '1=1';
     $u = my_id();
     return "($a.assigned_to = $u OR EXISTS (SELECT 1 FROM deadlines dq WHERE dq.matter_id = $a.id AND dq.assigned_to = $u AND dq.done_at IS NULL)
         OR EXISTS (SELECT 1 FROM tasks tq WHERE tq.matter_id = $a.id AND tq.assigned_to = $u AND tq.done_at IS NULL))";
 }
 
 function client_scope(string $a = 'c'): string {
-    if (is_owner()) return '1=1';
+    if (can('all')) return '1=1';
     return "(EXISTS (SELECT 1 FROM matters mq WHERE mq.client_id = $a.id AND " . matter_scope('mq') . ")
         OR EXISTS (SELECT 1 FROM leads lq WHERE lq.client_id = $a.id AND " . lead_scope('lq') . '))';
 }
 
 /** Deadlines: own assignee, else the matter's. $alias d = deadlines, m = matters. */
 function deadline_scope(string $d = 'd', string $m = 'm'): string {
-    if (is_owner()) return '1=1';
+    if (can('all')) return '1=1';
     return "COALESCE($d.assigned_to, $m.assigned_to) = " . my_id();
 }
 
 function can_see(string $table, int $id): bool {
-    if (is_owner()) return true;
+    if (can('all')) return true;
     $scope = ['leads' => lead_scope('x'), 'matters' => matter_scope('x'), 'clients' => client_scope('x')][$table] ?? '0';
     $st = db()->prepare("SELECT 1 FROM $table x WHERE x.id = ? AND $scope");
     $st->execute([$id]);
@@ -140,12 +170,12 @@ function who_filter(): string { $w = get('who', 12); return $w === 'none' || ($w
 
 function who_sql(string $col): string {
     $w = who_filter();
-    if (!is_owner() || $w === '') return '1=1';
+    if (!can('all') || $w === '') return '1=1';
     return $w === 'none' ? "$col IS NULL" : "$col = " . (int)$w;
 }
 
 function who_select(): string {
-    if (!is_owner() || !team_names()) return '';
+    if (!can('all') || !team_names()) return '';
     $w = who_filter();
     $o = '<select name="who" aria-label="Person"><option value="">Everyone</option><option value="none"' . ($w === 'none' ? ' selected' : '') . '>Not assigned</option>';
     foreach (team_names(true) as $id => $n) $o .= '<option value="' . (int)$id . '"' . ($w === (string)$id ? ' selected' : '') . '>' . h($n) . '</option>';
@@ -176,7 +206,7 @@ function notify_assigned(?int $userId, string $what, string $path, string $detai
 
 /** Small "assigned to" form for the owner. $hidden carries the record id and action. */
 function assign_card(string $hidden, ?int $current, string $label = 'Assigned to'): string {
-    if (!is_owner()) return $current ? '<p class="small muted">' . h($label) . ': ' . h(person_name($current)) . '</p>' : '';
+    if (!can('assign')) return $current ? '<p class="small muted">' . h($label) . ': ' . h(person_name($current)) . '</p>' : '';
     if (!team_names() && !$current) return '<p class="small muted">' . h($label) . ': you. <a href="?p=settings#team">Add team members</a> to assign work.</p>';
     return '<form method="post" class="inline assign">' . csrf_field() . $hidden . '<span class="small muted">' . h($label) . '</span>' . person_select('assigned_to', $current) . '<button class="btn">Save</button></form>';
 }
@@ -191,14 +221,14 @@ function task_card(array $t, bool $showWhere = true): string {
     if ($showWhere && $t['matter_id']) $where = '<a href="?p=matter&amp;id=' . (int)$t['matter_id'] . '">' . h(trim(($t['matter_label'] ?? '') ?: ('Matter #' . $t['matter_id']))) . '</a>';
     return '<div class="task' . ($done ? ' done' : '') . '"><div class="body"><strong>' . h($t['title']) . '</strong>
       <div class="meta small">' . ($t['due_on'] ? '<span class="' . ($done ? 'muted' : due_class($t['due_on'])) . '">⏰ ' . h(nice_date($t['due_on'])) . '</span>' : '')
-        . ($t['assigned_to'] && (is_owner() || (int)$t['assigned_to'] !== my_id()) ? '<span>👤 ' . h(person_name((int)$t['assigned_to'])) . '</span>' : (is_owner() && !$t['assigned_to'] ? '<span>👤 you</span>' : ''))
+        . ($t['assigned_to'] && (can('all') || (int)$t['assigned_to'] !== my_id()) ? '<span>👤 ' . h(person_name((int)$t['assigned_to'])) . '</span>' : (is_owner() && !$t['assigned_to'] ? '<span>👤 you</span>' : ''))
         . ($where ? '<span>' . $where . '</span>' : '') . ($t['note'] ? '<span>' . h($t['note']) . '</span>' : '') . '</div></div>
       <form method="post">' . $f . '<button class="btn sm' . ($done ? '' : ' primary') . '" name="action" value="' . ($done ? 't_undo' : 't_done') . '">' . ($done ? 'Undo' : 'Done') . '</button></form></div>';
 }
 
 /** Open tasks the signed-in person may see. */
 function open_tasks(string $extraWhere = '1=1', array $args = [], int $limit = 200): array {
-    $scope = is_owner() ? '1=1' : 't.assigned_to = ' . my_id();
+    $scope = can('all') ? '1=1' : 't.assigned_to = ' . my_id();
     $st = db()->prepare("SELECT t.*, l.name lead_name, (m.service || CASE WHEN COALESCE(m.applicant, '') != '' THEN ' – ' || m.applicant ELSE '' END) matter_label
         FROM tasks t LEFT JOIN leads l ON l.id = t.lead_id LEFT JOIN matters m ON m.id = t.matter_id
         WHERE t.done_at IS NULL AND $scope AND $extraWhere ORDER BY t.due_on IS NULL, t.due_on, t.id LIMIT $limit");
@@ -208,7 +238,7 @@ function open_tasks(string $extraWhere = '1=1', array $args = [], int $limit = 2
 
 /** Tasks block for a lead or matter page, with an add form. */
 function tasks_section(string $field, int $id): string {
-    $st = db()->prepare("SELECT * FROM tasks WHERE $field = ? AND (done_at IS NULL OR done_at > ?) " . (is_owner() ? '' : 'AND assigned_to = ' . my_id()) . ' ORDER BY done_at IS NOT NULL, due_on IS NULL, due_on, id');
+    $st = db()->prepare("SELECT * FROM tasks WHERE $field = ? AND (done_at IS NULL OR done_at > ?) " . (can('all') ? '' : 'AND assigned_to = ' . my_id()) . ' ORDER BY done_at IS NOT NULL, due_on IS NULL, due_on, id');
     $st->execute([$id, gmdate('Y-m-d\TH:i:s\Z', time() - 14 * 86400)]);
     $rows = $st->fetchAll();
     return '<section class="card"><h2>Tasks' . ($rows ? ' <span class="n">' . count(array_filter($rows, fn($t) => $t['done_at'] === null)) . '</span>' : '') . '</h2>
@@ -220,7 +250,7 @@ function task_form(string $hidden = ''): string {
     return '<form method="post" class="stack mt">' . csrf_field() . '<input type="hidden" name="action" value="t_add">' . $hidden . '
       <label>Task<input name="title" required maxlength="200" placeholder="e.g. Collect signed POA from client"></label>
       <div class="row2"><label>Due on<input type="date" name="due_on" value="' . h(plus_days(1)) . '"></label>'
-      . (is_owner() ? '<label>For' . person_select('assigned_to', null, 'Me') . '</label>' : '') . '</div>
+      . (can('assign') && team_names() ? '<label>For' . person_select('assigned_to', null, 'Me') . '</label>' : '') . '</div>
       <label>Note<input name="note" maxlength="300"></label><button class="btn primary">Add task</button></form>';
 }
 
@@ -234,7 +264,7 @@ function task_action(string $a): void {
         $leadId = (int)post('lead_id', 12) ?: null; $matterId = (int)post('matter_id', 12) ?: null;
         if ($leadId) require_see('leads', $leadId);
         if ($matterId) require_see('matters', $matterId);
-        $who = is_owner() ? posted_person() : my_id();
+        $who = assignee_from_post();
         $due = valid_date(post('due_on', 10)) ? post('due_on', 10) : null;
         $db->prepare('INSERT INTO tasks (title, note, due_on, assigned_to, lead_id, matter_id, created_at, created_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?)')
             ->execute([$title, post('note', 300), $due, $who, $leadId, $matterId, now_utc(), by_name()]);
@@ -247,7 +277,7 @@ function task_action(string $a): void {
     }
     $t = find_row('tasks', (int)post('task_id', 12));
     if (!$t) redirect($back, 'Task not found.');
-    if (!is_owner() && (int)$t['assigned_to'] !== my_id()) redirect('/admin/', 'That task is not yours.');
+    if (!can('all') && (int)$t['assigned_to'] !== my_id()) redirect('/admin/', 'That task is not yours.');
     $done = $a === 't_done';
     $db->prepare('UPDATE tasks SET done_at = ? WHERE id = ?')->execute([$done ? now_utc() : null, $t['id']]);
     $txt = ($done ? 'Task done: ' : 'Task reopened: ') . $t['title'];
@@ -258,7 +288,7 @@ function task_action(string $a): void {
 
 function tasks_page(): void {
     $w = who_filter();
-    $extra = is_owner() && $w !== '' ? ($w === 'none' ? 't.assigned_to IS NULL' : 't.assigned_to = ' . (int)$w) : '1=1';
+    $extra = can('all') && $w !== '' ? ($w === 'none' ? 't.assigned_to IS NULL' : 't.assigned_to = ' . (int)$w) : '1=1';
     $rows = open_tasks($extra, [], 500);
     page('Tasks', '<h1>Tasks</h1>' . (who_select() ? '<form class="search" method="get"><input type="hidden" name="p" value="tasks">' . who_select() . '<button class="btn">Show</button></form>' : '') . '
     <div class="list">' . (implode('', array_map('task_card', $rows)) ?: '<p class="muted">No open tasks.</p>') . '</div>
@@ -282,7 +312,7 @@ function team_action(string $a): void {
         if ($email !== '' && !filter_var($email, FILTER_VALIDATE_EMAIL)) redirect($back, 'That email address is not valid.');
         if ($e = password_problem($pw, $pw)) redirect($back, $e);
         if (password_taken($pw, null)) redirect($back, 'That password is already used by someone. Choose a different one.');
-        $db->prepare('INSERT INTO users (name, email, pw_hash, active, created_at) VALUES (?, ?, ?, 1, ?)')->execute([$name, $email, password_hash($pw, PASSWORD_DEFAULT), now_utc()]);
+        $db->prepare('INSERT INTO users (name, email, pw_hash, active, created_at, perms) VALUES (?, ?, ?, 1, ?, ?)')->execute([$name, $email, password_hash($pw, PASSWORD_DEFAULT), now_utc(), posted_perms()]);
         redirect($back, $name . ' added. Give them the password and the link leegtech.in/admin.');
     }
     $u = user_row((int)post('user_id', 12));
@@ -290,7 +320,7 @@ function team_action(string $a): void {
     if ($a === 'team_update') {
         $email = strtolower(post('email', 160));
         if ($email !== '' && !filter_var($email, FILTER_VALIDATE_EMAIL)) redirect($back, 'That email address is not valid.');
-        $db->prepare('UPDATE users SET name = ?, email = ? WHERE id = ?')->execute([post('name', 60) ?: $u['name'], $email, $u['id']]);
+        $db->prepare('UPDATE users SET name = ?, email = ?, perms = ? WHERE id = ?')->execute([post('name', 60) ?: $u['name'], $email, posted_perms(), $u['id']]);
         $pw = (string)($_POST['password'] ?? '');
         if ($pw !== '') {
             if ($e = password_problem($pw, $pw)) redirect($back, $e);
@@ -309,6 +339,23 @@ function team_action(string $a): void {
     redirect($back);
 }
 
+function posted_perms(): string {
+    $p = $_POST['perms'] ?? [];
+    return implode(',', array_values(array_intersect(array_keys(PERMS), is_array($p) ? $p : [])));
+}
+
+function perms_checkboxes(array $have): string {
+    $o = '<fieldset class="perms"><legend>What they can do</legend><p class="small muted">With nothing ticked they see only the work assigned to them.</p>';
+    foreach (PERMS as $k => [$label, $help])
+        $o .= '<label class="check"><input type="checkbox" name="perms[]" value="' . $k . '"' . (in_array($k, $have, true) ? ' checked' : '') . '> <span><strong>' . h($label) . '</strong><br><span class="small muted">' . h($help) . '</span></span></label>';
+    return $o . '</fieldset>';
+}
+
+function perms_summary(array $have): string {
+    if (!$have) return 'Own work only';
+    return implode(', ', array_map(fn($k) => PERMS[$k][0], $have));
+}
+
 function team_settings_html(): string {
     $db = cdb();
     $rows = '';
@@ -318,28 +365,30 @@ function team_settings_html(): string {
             (SELECT COUNT(*) FROM matters WHERE assigned_to = $id AND closed = 0) m, (SELECT COUNT(*) FROM tasks WHERE assigned_to = $id AND done_at IS NULL) t")->fetch();
         $f = csrf_field() . '<input type="hidden" name="user_id" value="' . $id . '">';
         $rows .= '<details class="member' . ((int)$u['active'] ? '' : ' off') . '"><summary><strong>' . h($u['name']) . '</strong>' . ((int)$u['active'] ? '' : ' <span class="badge st-lost">Switched off</span>')
-            . '<span class="small muted"> · ' . (int)$n['l'] . ' leads · ' . (int)$n['m'] . ' matters · ' . (int)$n['t'] . ' tasks</span></summary>
+            . '<span class="small muted"> · ' . (int)$n['l'] . ' leads · ' . (int)$n['m'] . ' matters · ' . (int)$n['t'] . ' tasks</span><div class="small">' . h(perms_summary(perms_of($u['perms'] ?? ''))) . '</div></summary>
           <p class="small"><a href="?p=leads&amp;who=' . $id . '">Their leads</a> · <a href="?p=ip&amp;t=design&amp;who=' . $id . '">Their designs</a> · <a href="?p=deadlines&amp;r=all&amp;who=' . $id . '">Their deadlines</a> · <a href="?p=tasks&amp;who=' . $id . '">Their tasks</a></p>
           <form method="post" class="stack">' . $f . '<input type="hidden" name="action" value="team_update">
             <div class="row2"><label>Name<input name="name" maxlength="60" value="' . h($u['name']) . '"></label><label>Email (for their daily email)<input name="email" type="email" maxlength="160" value="' . h($u['email']) . '"></label></div>
             <label>New password (leave empty to keep)<input name="password" type="text" minlength="10" maxlength="100" autocomplete="off"></label>
-            <button class="btn">Save</button></form>
+            ' . perms_checkboxes(perms_of($u['perms'] ?? '')) . '
+            <button class="btn primary">Save</button></form>
           <form method="post" class="mt">' . $f . '<button class="btn' . ((int)$u['active'] ? ' danger' : '') . '" name="action" value="team_toggle">' . ((int)$u['active'] ? 'Switch off access' : 'Switch access back on') . '</button></form></details>';
     }
     return '<section class="card" id="team"><h2>Team</h2>
-      <p class="muted small">Each person signs in at leegtech.in/admin with their own password. They see only the leads, matters, deadlines and tasks assigned to them, never amounts or payments, and cannot delete, import, download or change settings.</p>
+      <p class="muted small">Each person signs in at leegtech.in/admin with their own password. By default they see only the work assigned to them; tick powers below to give them more. Only you can manage the team and settings.</p>
       <form method="post" class="inline">' . csrf_field() . '<input type="hidden" name="action" value="team_owner_name"><input name="owner_name" maxlength="60" value="' . h(owner_name() === 'Owner' ? '' : owner_name()) . '" placeholder="Your name (shown on notes)" aria-label="Your name"><button class="btn">Save</button></form>
       <div class="members">' . ($rows ?: '<p class="muted small mt">No team members yet.</p>') . '</div>
       <details class="mt"><summary><strong>+ Add a team member</strong></summary>
       <form method="post" class="stack mt">' . csrf_field() . '<input type="hidden" name="action" value="team_add">
         <div class="row2"><label>Name<input name="name" required maxlength="60"></label><label>Email (for their daily email)<input name="email" type="email" maxlength="160"></label></div>
         <label>Password for them (at least 10 characters)<input name="password" type="text" required minlength="10" maxlength="100" autocomplete="off" placeholder="e.g. three words and a number"></label>
+        ' . perms_checkboxes([]) . '
         <button class="btn primary">Add team member</button></form></details></section>';
 }
 
 /** Owner's Today: open work per person. */
 function team_summary_html(): string {
-    if (!is_owner() || !team_names()) return '';
+    if (!can('all') || !team_names()) return '';
     $db = cdb(); $t = today(); $soon = plus_days(DEADLINE_WINDOW);
     $rows = '';
     foreach (team_names() + ['none' => 'Not assigned'] as $id => $name) {
@@ -359,7 +408,7 @@ function team_summary_html(): string {
 
 /** Owner bulk-assign: every lead or matter currently listed. */
 function bulk_assign_form(string $table, array $ids, string $label): string {
-    if (!is_owner() || !$ids || !team_names()) return '';
+    if (!can('assign') || !$ids || !team_names()) return '';
     return '<details class="card"><summary>Assign all ' . count($ids) . ' ' . h($label) . ' shown</summary>
       <form method="post" class="inline mt">' . csrf_field() . '<input type="hidden" name="action" value="bulk_assign"><input type="hidden" name="table" value="' . h($table) . '">
       <input type="hidden" name="ids" value="' . h(implode(',', array_map('intval', $ids))) . '">' . person_select('assigned_to', null) . '<button class="btn primary">Assign</button></form>
@@ -367,7 +416,7 @@ function bulk_assign_form(string $table, array $ids, string $label): string {
 }
 
 function bulk_assign_action(): void {
-    require_owner();
+    require_can('assign');
     $table = post('table', 10) === 'leads' ? 'leads' : 'matters';
     $ids = array_values(array_filter(array_map('intval', explode(',', (string)($_POST['ids'] ?? ''))))) ;
     $ids = array_slice($ids, 0, 2000);
