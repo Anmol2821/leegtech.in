@@ -15,9 +15,9 @@ Mark a topic `[x]` when published and add it to the log below. Add new topics wi
 - [x] Can software be patented in India?
 - [x] Foreign filing permission under Section 39: filing abroad from India
 - [x] Patent search: how to check if your invention is new
-- [ ] Statement of working of patents (Form 27) explained
+- [x] Statement of working of patents (Form 27) explained
 ### Design
-- [ ] Design registration in India: process, term and documents
+- [x] Design registration in India: process, term and documents
 - [ ] Design vs patent vs trademark for product companies
 - [ ] What is a utility model? German utility models for Indian businesses
 ### Trademark & copyright
@@ -71,3 +71,5 @@ Mark a topic `[x]` when published and add it to the log below. Add new topics wi
 | 2026-11-25 | Can Software Be Patented in India? Section 3(k) and the CRI Guidelines 2025 | /blog/software-patent-india/ |
 | 2026-11-26 | Foreign Filing Permission under Section 39: Filing Abroad from India | /blog/foreign-filing-permission-section-39/ |
 | 2026-11-26 | Patent Search: How to Check If Your Invention Is New | /blog/patent-search-india/ |
+| 2026-11-27 | Statement of Working of Patents (Form 27) Explained | /blog/form-27-statement-of-working-india/ |
+| 2026-11-27 | Design Registration in India: Process, Term and Documents | /blog/design-registration-india/ |
