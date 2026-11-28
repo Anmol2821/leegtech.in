@@ -1,0 +1,1068 @@
+# Leegtech: full service reference
+
+Leegtech provides end-to-end patent, trademark, copyright, design, business registration, compliance and legal drafting services across India, with international filing support.
+Contact: +91 89823 46105, info@leegtech.in, Gincube Center, Smart City Office, Moti Mahal, Gwalior, Madhya Pradesh 474001.
+Information is general guidance, not legal advice. Last reviewed 2026-11-21.
+
+## Patent Services in India & Abroad
+URL: https://leegtech.in/patent/
+From your first patent search to filing, examination and grant, Leegtech manages the complete patent lifecycle with strategic support at every stage. Whether you are protecting an invention in India or expanding globally, we assist with provisional and complete specifications, PCT applications, international filings, examination responses, oppositions and renewals.
+
+### Patent Search (Prior Art Search)
+URL: https://leegtech.in/patent/patent-search/
+A prior art search tells you, before you invest in drafting and filing, whether your invention is likely to be new and inventive compared with what already exists.
+
+Under the Patents Act, 1970, an invention must be new, involve an inventive step and be capable of industrial application. A patent office examiner will test your application against published patents, patent applications and non-patent literature from anywhere in the world. A search before filing lets you see that material first.
+
+Our search covers patent databases and technical literature relevant to your field. The result is a written report that lists the closest prior art, explains how it compares with your invention and gives a practical view on patentability, so you can decide whether to file, redesign or keep the idea as a trade secret.
+
+Who needs it: Inventors and startups about to file a provisional or complete application; Researchers and universities assessing an invention disclosure; Businesses planning R&D investment in a technology area; Anyone who wants to draft stronger, better-defined claims.
+What's included: Understanding call to capture the inventive features; Keyword and classification-based search (IPC/CPC) across patent databases; Review of relevant non-patent literature where applicable; Written report with the closest prior art references; Feature-by-feature comparison and patentability opinion; Recommendations to strengthen claims or change scope.
+Process: 1) Share your invention: Send a short description, drawings or a prototype note under confidentiality. 2) Search strategy: We define key features, keywords and patent classifications. 3) Search and analysis: We search and screen results, then shortlist the closest references. 4) Report and discussion: You receive the report and a call to plan the next step.
+Documents: Invention description (problem, solution, key features); Drawings, flowcharts or photographs (if available); Any known similar products or patents.
+Key facts:
+- Patentability criteria: Novelty, inventive step and industrial applicability (Section 2(1)(j), Patents Act, 1970)
+- Non-patentable subject matter: Sections 3 and 4 of the Patents Act, 1970
+- Scope of prior art: Worldwide publications, not only Indian documents
+FAQs:
+Q: Is a patent search mandatory before filing?
+A: No. It is not a legal requirement, but it is strongly recommended. It helps you avoid filing for something that already exists and helps you draft claims that can survive examination.
+Q: Can a search guarantee that my patent will be granted?
+A: No search can guarantee grant. Databases do not cover every disclosure, and examination involves judgement. A good search significantly reduces risk and improves drafting.
+Q: Will my invention stay confidential?
+A: Yes. We handle invention details confidentially, and searching does not involve publishing anything about your invention.
+
+### Provisional Patent Application
+URL: https://leegtech.in/patent/provisional-patent-application/
+A provisional application lets you secure an early filing date (priority date) for your invention while you continue to develop it, test it or raise funds.
+
+Under Section 9 of the Patents Act, 1970, an application can be filed with a provisional specification that describes the invention. It does not need claims. A complete specification must then be filed within 12 months of the provisional filing date, otherwise the application is treated as abandoned.
+
+Because patents in India follow a first-to-file system, an early date can be decisive. The provisional date can also be claimed as priority for international filings, such as a PCT application, within the same 12-month window. The provisional must still describe the invention properly, because only what it discloses is covered by the early date.
+
+Who needs it: Inventors who need to disclose the idea soon (pitch, publication, exhibition); Startups still refining a prototype; Researchers and students before a paper or thesis is published; Companies that want a 12-month window to assess commercial value.
+What's included: Review of the invention and any prior art search results; Drafting of the provisional specification with drawings; Preparation of statutory forms (Form 1, Form 2 and supporting forms); Online filing with the Indian Patent Office; Docketing of the 12-month complete specification deadline; Guidance on foreign filing and confidentiality.
+Process: 1) Invention briefing: We understand the invention, variants and intended use. 2) Drafting: We prepare the provisional specification and drawings for your review. 3) Filing: We file online and share the filing receipt with your application number. 4) 12-month plan: We track the deadline and plan the complete specification and any foreign filing.
+Documents: Invention write-up and drawings; Applicant and inventor names, addresses and nationality; Startup / small entity / MSME proof for reduced fees (if applicable); Power of attorney (Form 26), which we prepare.
+Key facts:
+- Governing law: Section 9, Patents Act, 1970; Patents Rules, 2003
+- Complete specification deadline: 12 months from the provisional filing date (not extendable)
+- Claims required?: No, claims are filed with the complete specification
+- International priority: Can be claimed within 12 months (Paris Convention / PCT)
+FAQs:
+Q: Can I say "patent pending" after filing a provisional?
+A: You can state that a patent has been applied for. You must not describe the invention as patented until a patent is actually granted.
+Q: What happens if I miss the 12-month deadline?
+A: The provisional application is treated as abandoned and you lose that priority date. If the invention has not been disclosed, a fresh application may still be possible, but with a later date.
+Q: Is a provisional application examined?
+A: No. Examination happens only after a complete specification is filed and a request for examination is made.
+
+### Patent Registration (Complete Specification & Grant)
+URL: https://leegtech.in/patent/patent-registration/
+We take your invention from a complete specification through publication, examination and objections to grant, with every statutory deadline tracked.
+
+A complete specification fully describes the invention, sets out the best method of performing it and ends with claims that define the legal scope of protection (Section 10, Patents Act, 1970). The quality of the claims largely decides the value of the patent.
+
+After filing, the application is published, normally 18 months from the priority date or earlier on request. It is examined only after a request for examination is filed, now within 31 months from the priority date. The examiner issues a First Examination Report (FER), objections are answered, a hearing may follow, and if the application meets the requirements the patent is granted. A granted patent lasts 20 years from the filing date, provided renewal fees are paid.
+
+Who needs it: Inventors and startups converting a provisional into a complete application; Companies protecting products, processes, devices and software-related technical inventions; Universities and research institutions; Applicants entering India through the PCT national phase.
+What's included: Drafting the complete specification, claims, abstract and drawings; Preparation and filing of all statutory forms; Early publication request (Form 9) where useful; Request for examination (Form 18) or expedited examination (Form 18A) if eligible; FER analysis, response and claim amendments; Hearing representation and follow-up until grant.
+Process: 1) Drafting: Specification and claims are drafted and finalised with you. 2) Filing and publication: Application filed; published after 18 months or earlier on request. 3) Examination: Request for examination filed; examiner issues the FER. 4) Response and hearing: We reply to objections and attend any hearing. 5) Grant: Patent granted and recorded; renewal schedule begins.
+Documents: Invention details and drawings; Provisional application number (if any); Inventor and applicant details; Proof of right to apply (assignment) if the applicant is not the inventor; Startup / small entity proof (if applicable).
+Key facts:
+- Patent term: 20 years from the date of filing (Section 53)
+- Publication: 18 months from the priority date, or earlier on request (Section 11A)
+- Request for examination: Within 31 months from the priority date (reduced from 48 months by the Patents (Amendment) Rules, 2024)
+- Expedited examination: Available to eligible applicants such as startups, small entities and women applicants
+- Reduced official fees: Available to natural persons, startups, small entities and educational institutions
+FAQs:
+Q: How long does it take to get a patent in India?
+A: It varies with the technology field and examination backlog. Ordinary examination often takes a few years from filing. Expedited examination, where eligible, can shorten this substantially.
+Q: Can software be patented in India?
+A: Computer programmes "per se" are excluded under Section 3(k). An invention that delivers a technical effect or technical contribution, with software as one part, may be patentable. Claim drafting is critical.
+Q: Do I need to file in India first?
+A: If you are resident in India, Section 39 requires either filing in India first (and waiting six weeks) or obtaining permission from the Patent Office before filing abroad.
+
+### Response to First Examination Report (FER)
+URL: https://leegtech.in/patent/fer-response/
+The FER is where most patent applications are won or lost. We prepare a complete, well-reasoned response with arguments and claim amendments.
+
+After a request for examination, the Indian Patent Office issues a First Examination Report listing objections. Typical objections cover lack of novelty or inventive step against cited documents, non-patentable subject matter under Section 3, unclear claims, insufficient disclosure and formal requirements.
+
+The applicant has six months from the date of the FER to put the application in order for grant. This can be extended by up to three months on request. If the deadline is missed, the application is treated as abandoned. We analyse each objection and the cited prior art, and respond with technical and legal arguments and, where needed, claim amendments that stay within the original disclosure.
+
+Who needs it: Applicants who have received an FER; Applicants whose earlier attorney is unavailable; Companies seeking a second opinion on objections.
+What's included: Objection-wise analysis of the FER; Comparison with cited prior art; Drafting of arguments and amended claims; Filing of the response and amended documents; Hearing request where appropriate; Status tracking after filing.
+Process: 1) Share the FER: Send the FER and your application documents. 2) Analysis call: We explain the objections and the strategy. 3) Draft response: We prepare arguments and amendments for your review. 4) File and follow up: Response filed before the deadline; hearing handled if issued.
+Documents: Copy of the FER; Filed specification and claims; Any technical data supporting inventive step (optional).
+Key facts:
+- Response period: 6 months from the FER date, extendable by up to 3 months on request
+- Consequence of missing it: Application treated as abandoned (Section 21)
+- Amendment limits: Amendments must be by way of disclaimer, correction or explanation and stay within the disclosure (Sections 57 and 59)
+FAQs:
+Q: Can I change my claims in the FER reply?
+A: Yes, within limits. Amendments must be supported by what was originally disclosed and must not broaden the scope of the invention.
+Q: What if the examiner is not convinced?
+A: The Controller usually issues a hearing notice, where the arguments can be presented in person or by video conference.
+Q: Can you reply if another firm filed my application?
+A: Yes. We can take over the matter by filing a fresh power of attorney.
+
+### Patent Hearing Representation
+URL: https://leegtech.in/patent/patent-hearing/
+If objections remain after your FER response, the Controller offers a hearing. We prepare, argue and file the written submissions that follow.
+
+A hearing gives the applicant an opportunity to be heard before the Controller refuses or requires amendment of an application. Hearings are usually conducted by video conference. The hearing notice lists the objections that are still outstanding.
+
+Preparation matters: we study the outstanding objections, any new citations and the examiner's reasoning, prepare a clear line of argument and, where helpful, alternative claim sets. After the hearing, written submissions and any amended claims are filed within the prescribed period, which is currently 15 days.
+
+Who needs it: Applicants who have received a hearing notice; Applicants whose earlier response was not accepted; Pre-grant opposition proceedings that require a hearing.
+What's included: Analysis of the hearing notice; Strategy session with you; Oral arguments before the Controller; Post-hearing written submissions; Amended claims and specification if required; Follow-up until a decision issues.
+Process: 1) Notice review: We assess outstanding objections and the time available. 2) Preparation: Arguments and fallback claim sets are prepared. 3) Hearing: We present the case before the Controller. 4) Written submissions: Filed within the prescribed period, followed by the decision.
+Documents: Hearing notice; FER and your earlier response; Current specification and claims.
+Key facts:
+- Legal basis: Section 14 and Section 80, Patents Act, 1970
+- Mode: Hearings are commonly held by video conference
+- Written submissions: Due within the prescribed period after the hearing (currently 15 days)
+FAQs:
+Q: Is attending the hearing compulsory?
+A: If you do not attend and do not file submissions, the Controller may decide on the record, which often leads to refusal. Representation is strongly advised.
+Q: Can the hearing be adjourned?
+A: Adjournment can be requested within the limits set by the Patents Rules, with reasons and in advance of the hearing date.
+Q: What if the application is refused?
+A: An appeal against a Controller's refusal lies before the High Court.
+
+### Patent Renewal & Maintenance
+URL: https://leegtech.in/patent/patent-renewal/
+A granted patent stays in force only if renewal fees are paid on time. We track every due date and also handle working statements and restoration.
+
+In India, renewal fees become payable from the third year, counted from the date of the patent, and continue every year until the 20-year term ends. Fees can be paid in advance for several years, and the Rules give a fee reduction for advance payment made electronically for a block of years. A six-month extension is available on payment of an additional fee.
+
+If renewal is not paid, the patent ceases. An application for restoration can be filed within 18 months from the date of cessation, with an explanation showing the failure was unintentional. Patentees also file a statement of commercial working of the patent (Form 27), currently once for every block of three financial years.
+
+Who needs it: Patentees with granted Indian patents; Companies managing patent portfolios; Owners of lapsed patents seeking restoration.
+What's included: Renewal calendar and reminders; Renewal fee payment and receipts; Advance multi-year payments; Statement of working (Form 27); Restoration applications for lapsed patents; Portfolio review: keep, license or let lapse.
+Process: 1) Portfolio intake: We record your patents and due dates. 2) Reminders: You receive reminders well before each due date. 3) Payment and filing: Fees paid and filings made on your instruction. 4) Records: Receipts and status shared after every filing.
+Documents: Patent number(s) and grant certificate; Details of commercial working (for Form 27).
+Key facts:
+- Renewal starts: From the 3rd year, counted from the date of the patent
+- Grace period: Up to 6 months on payment of an extension fee
+- Restoration: Within 18 months from cessation (Section 60)
+- Statement of working: Form 27, currently once for each period of three financial years
+FAQs:
+Q: When is the first renewal due if my patent is granted late?
+A: Renewal fees for earlier years that have already passed at grant become payable together, within the period allowed after grant.
+Q: Can a lapsed patent always be restored?
+A: Not always. Restoration is granted only if the failure was unintentional and the application is made in time. Third-party rights during the lapse may also be protected.
+Q: Do you handle renewals for foreign patents?
+A: Yes, we coordinate renewals in other jurisdictions where we handled or can take over the filing.
+
+### Technical Amendment of Patent
+URL: https://leegtech.in/patent/patent-amendment/
+Errors in a specification or claims can weaken a patent. We prepare legally permissible amendments that fix the problem without losing protection.
+
+Sections 57 and 59 of the Patents Act, 1970 allow an applicant or patentee to amend the application, complete specification or related documents. Amendments can only be by way of disclaimer, correction or explanation, and must not claim matter that was not in substance disclosed before. After grant, amended claims must fall wholly within the scope of the claims before amendment.
+
+Typical reasons include correcting clerical or translation errors, narrowing claims to avoid prior art identified later, aligning claims with a product, or preparing a patent for licensing or enforcement. We assess whether the change is permissible and file the request with supporting reasons.
+
+Who needs it: Applicants who spotted errors after filing; Patentees preparing to license or enforce; Applicants responding to new prior art.
+What's included: Review of the specification and proposed changes; Legal permissibility check; Preparation of amendment request with reasons; Marked-up and clean copies; Filing and follow-up, including any opposition to the amendment.
+Process: 1) Review: We identify the issues and the proper route. 2) Drafting: Amendment request and marked copies prepared. 3) Filing: Request filed with the Patent Office. 4) Decision: We follow up until the amendment is allowed and recorded.
+Documents: Filed or granted specification; Details of the required changes.
+Key facts:
+- Legal basis: Sections 57 and 59, Patents Act, 1970
+- Permitted types: Disclaimer, correction or explanation only
+- Post-grant limit: Amended claims must fall within the scope of the claims before amendment
+FAQs:
+Q: Can I add new features to my patent through amendment?
+A: No. New matter cannot be added. A new invention needs a new application, possibly a patent of addition if it improves the main invention.
+Q: Is amendment after grant published?
+A: Yes. Post-grant amendment requests are published and can be opposed by interested persons.
+
+### Pre-Grant Patent Opposition
+URL: https://leegtech.in/patent/pre-grant-opposition/
+If a competitor's published application could block your business, a pre-grant opposition lets you challenge it before a patent is granted.
+
+Under Section 25(1) of the Patents Act, 1970, any person can file a representation opposing a patent application after it is published and before the patent is granted. A patent is not granted until six months after publication, which gives third parties time to act.
+
+The grounds are listed in the Act. They include anticipation by prior publication, prior claiming, prior public knowledge or use in India, obviousness or lack of inventive step, non-patentable subject matter, insufficient description, failure to disclose foreign filing information, and anticipation by traditional knowledge. We build the case with documentary evidence and represent you through the hearing. If you are the applicant, we defend the application.
+
+Who needs it: Competitors facing a blocking application; Generic and component manufacturers; Applicants defending their application against an opposition.
+What's included: Monitoring of published applications; Prior art search to support grounds; Drafting the representation and evidence; Reply to the applicant's statement; Hearing representation; Defence of applicants against oppositions.
+Process: 1) Assessment: We review the application and potential grounds. 2) Evidence: Prior art and supporting documents are collected. 3) Filing: Representation filed before grant. 4) Hearing and decision: We represent you at the hearing.
+Documents: Application number or publication details; Any known prior art or product evidence.
+Key facts:
+- Who can oppose: Any person (Section 25(1))
+- When: After publication and before grant
+- Earliest grant: Not before 6 months from publication
+FAQs:
+Q: Do I need to show I am affected?
+A: No. Any person can file a pre-grant opposition. Post-grant opposition is limited to a "person interested".
+Q: Does the applicant get a chance to respond?
+A: Yes. If the Controller finds the representation maintainable, the applicant is notified and can file a reply statement and evidence. The Controller may hold a hearing before deciding.
+
+### Post-Grant Patent Opposition
+URL: https://leegtech.in/patent/post-grant-opposition/
+A granted patent can still be challenged. Within one year of the publication of grant, an interested person can file a post-grant opposition.
+
+Section 25(2) of the Patents Act, 1970 allows any person interested to file a notice of opposition within one year from the date of publication of the grant. The Controller refers the matter to an Opposition Board, which examines the evidence and makes a recommendation before the Controller decides.
+
+The grounds are similar to pre-grant opposition. After the one-year window, a patent can generally be challenged only through a revocation petition before the High Court or as a counter-claim in an infringement suit. We handle the full process for opponents and defend patentees.
+
+Who needs it: Businesses whose products may be affected by a granted patent; Patentees defending their patents; Research organisations working in the same field.
+What's included: Grounds analysis and prior art search; Notice of opposition and written statement; Evidence and expert affidavits where needed; Representation before the Opposition Board and Controller; Defence strategy for patentees.
+Process: 1) Grounds review: We assess the patent and the available evidence. 2) Filing: Notice and written statement filed within the deadline. 3) Evidence rounds: Reply and evidence exchanged as per the rules. 4) Board and hearing: Opposition Board report, hearing and decision.
+Documents: Patent number; Evidence of your interest in the field; Known prior art.
+Key facts:
+- Who can oppose: A "person interested" (Section 25(2))
+- Deadline: 12 months from the date of publication of grant
+- After the deadline: Revocation before the High Court (Section 64)
+FAQs:
+Q: What does "person interested" mean?
+A: It broadly includes a person engaged in, or promoting, research in the same field as the invention, or whose business may be affected by the patent.
+Q: Is post-grant opposition cheaper than revocation?
+A: Generally yes. It is an administrative proceeding before the Patent Office, while revocation is litigation before the High Court.
+
+### PCT International Patent Application
+URL: https://leegtech.in/patent/pct-application/
+A single PCT application preserves your right to seek patents in over 150 contracting states and gives you up to 30 or 31 months from priority to decide where to go.
+
+The Patent Cooperation Treaty (PCT), administered by WIPO, lets you file one international application with legal effect in all PCT contracting states. There is no single "international patent". Patents are still granted country by country in the national phase.
+
+In the international phase you receive an International Search Report and a written opinion on patentability, which helps you judge the strength of the invention before spending on national filings. National phase entry is usually due at 30 or 31 months from the priority date, depending on the country. India's national phase deadline is 31 months. Applicants resident in India can file the PCT application with the Indian Patent Office as receiving office.
+
+Who needs it: Startups with export or global licensing plans; Companies unsure which countries matter yet; Universities seeking international licensees.
+What's included: Strategy on timing, priority and target markets; Foreign filing permission guidance (Section 39); PCT application drafting or conversion of an Indian application; Filing with a receiving office and choice of search authority; Responding to search report and written opinion; National phase coordination in selected countries.
+Process: 1) Plan: Decide timing within 12 months from your Indian priority date. 2) File: PCT application filed and the search authority selected. 3) International phase: Search report and opinion reviewed, with optional amendments. 4) National phase: Entry into chosen countries before 30/31 months.
+Documents: Indian application details (priority); Complete specification in English; Applicant and inventor details; Assignment or proof of right.
+Key facts:
+- Treaty: Patent Cooperation Treaty, administered by WIPO
+- Coverage: More than 150 contracting states
+- Priority claim: Within 12 months from the earliest filing
+- National phase: Generally 30 or 31 months from priority (India: 31 months)
+- Indian residents: Foreign filing permission rules under Section 39 apply
+FAQs:
+Q: Does a PCT application give me a worldwide patent?
+A: No. It is a filing system. You still need to enter the national or regional phase and obtain grant in each country you choose.
+Q: Can I file a PCT without an Indian application first?
+A: Yes, if filed with the Indian Patent Office as receiving office, this counts as an Indian filing for Section 39. Advice is needed before filing directly abroad.
+Q: Is the search report binding on countries?
+A: No, but national offices often take it into account, and it is a useful early indicator of patentability.
+
+### USA Patent Application
+URL: https://leegtech.in/patent/us-patent-application/
+For inventions with a US market, we help you file directly with the United States Patent and Trademark Office (USPTO) and manage prosecution.
+
+The US allows a provisional application, which holds a filing date for 12 months, and a non-provisional application, which is examined. A US utility patent generally lasts 20 years from the earliest non-provisional filing date, subject to maintenance fees paid at 3.5, 7.5 and 11.5 years after grant. Reduced fees are available to qualifying small and micro entities.
+
+If you are resident in India, you must either file in India first and wait six weeks, or obtain foreign filing permission from the Indian Patent Office, before filing in the US (Section 39, Patents Act, 1970). We plan this correctly and claim priority from your Indian filing where applicable.
+
+Who needs it: Indian startups selling or raising funds in the US; Software and hardware companies with US customers; Inventors planning to license to US companies.
+What's included: Filing route strategy (direct or through PCT); Foreign filing permission (Form 25) where required; Adapting the specification and claims to US practice; Entity status assessment; Filing and response to USPTO office actions; Maintenance fee tracking after grant.
+Process: 1) Strategy: Choose a direct, provisional or PCT route. 2) Indian compliance: Ensure Section 39 is satisfied. 3) Preparation: Specification adapted for US filing. 4) Filing and prosecution: Filed with the USPTO; office actions handled.
+Documents: Specification and drawings; Indian application details (if claiming priority); Inventor declarations and assignment; Entity status information.
+Key facts:
+- Office: United States Patent and Trademark Office (USPTO)
+- Provisional window: 12 months to file the non-provisional
+- Term: Generally 20 years from the earliest non-provisional filing date
+- Indian residents: Section 39 foreign filing rules apply
+FAQs:
+Q: Should I file directly in the US or through PCT?
+A: If the US is your only key market, direct filing can be faster. If you need several countries or more time, PCT is usually better. We advise based on your plans and budget.
+Q: What is a US office action?
+A: It is the examiner's report rejecting or objecting to claims. Responses typically involve arguments and claim amendments.
+
+### UK Patent Application
+URL: https://leegtech.in/patent/uk-patent-application/
+Protect your invention in the United Kingdom with a direct UKIPO filing, either as a first filing or claiming priority from India.
+
+A UK patent is granted by the UK Intellectual Property Office under the Patents Act 1977. The process includes a search, publication (normally around 18 months from priority) and substantive examination on request. A granted UK patent can last up to 20 years from filing, with renewal fees payable annually from the fifth year.
+
+Indian residents must satisfy Section 39 of the Indian Patents Act before filing abroad. Priority from an Indian application can be claimed within 12 months. The UK can also be covered through a European patent application or the PCT route. We help you choose the right path.
+
+Who needs it: Businesses entering the UK market; Startups with UK customers or investors; Inventors seeking UK licensing partners.
+What's included: Route selection: direct UK, European or PCT; Foreign filing compliance in India; Specification adaptation and filing; Search and examination responses; Renewal tracking.
+Process: 1) Strategy: Choose the most efficient route to the UK. 2) Filing: Application filed with priority claim. 3) Search and examination: Reports reviewed and answered. 4) Grant and renewals: Patent granted; renewals tracked.
+Documents: Specification and drawings; Priority application details; Applicant and inventor details.
+Key facts:
+- Office: UK Intellectual Property Office (UKIPO)
+- Law: Patents Act 1977 (UK)
+- Maximum term: 20 years from filing, subject to renewals
+- Priority: 12 months from the first filing
+FAQs:
+Q: Does a European patent cover the UK?
+A: Yes. The UK remains a member of the European Patent Convention, so a European patent can be validated in the UK.
+Q: Can I file in English?
+A: Yes, UK applications are filed in English.
+
+## Design Registration Services
+URL: https://leegtech.in/design/
+The appearance of a product often sells it. Design registration protects shape, configuration, pattern and ornamentation so that competitors cannot copy the look of your product. We also help protect technical inventions quickly in Germany through utility models.
+
+### Indian Design Registration
+URL: https://leegtech.in/design/design-registration/
+Design registration protects how a product looks: its shape, configuration, pattern, ornamentation or composition of lines and colours. It stops others copying the look of your product.
+
+Under the Designs Act, 2000, a design must be new or original and must not have been published anywhere in the world before the filing or priority date. The protection covers features that appeal to the eye in the finished article. It does not cover the method of construction, purely functional features, trademarks or artistic works as such.
+
+Registration lasts 10 years from the date of registration and can be extended once for another 5 years, giving a maximum of 15 years. The application is examined, and once registered, the design is published and the owner can take action against piracy of the registered design (Section 22). Filing before any public launch, exhibition or online listing is important, because prior publication can destroy novelty.
+
+Who needs it: Product manufacturers and D2C brands; Furniture, lighting, packaging, apparel and accessory designers; Consumer electronics and automotive part makers; Startups launching a distinctive product.
+What's included: Novelty and prior design check; Classification under the Locarno-based classification; Preparation of representation sheets (views) and statement of novelty; Filing of the application; Reply to examination objections and hearing; Registration certificate and renewal tracking.
+Process: 1) Design review: We check registrability and choose the right class. 2) Representations: Views of the article are prepared to the required standard. 3) Filing and examination: Application filed; objections answered. 4) Registration: Design registered and published; renewal date diarised.
+Documents: Images or CAD drawings of the product from all relevant views; Name of the article and its use; Applicant details; Startup / small entity proof (if applicable); Priority document if claiming foreign priority.
+Key facts:
+- Governing law: Designs Act, 2000 and Designs Rules, 2001
+- Term: 10 years, extendable once by 5 years (Section 11)
+- Novelty: Must not be published in India or elsewhere before the filing/priority date
+- Convention priority: 6 months from the first filing abroad
+- Remedy: Action against piracy of a registered design (Section 22)
+FAQs:
+Q: What is the difference between a design and a patent?
+A: A design protects appearance; a patent protects how something works. Many products benefit from both.
+Q: Can I register a design after I have started selling the product?
+A: Usually not, because the sale or publication makes the design non-new. File before any public disclosure.
+Q: Can a logo be registered as a design?
+A: No. Marks used as trademarks are excluded from the definition of design. Protect logos through trademark registration.
+
+### UK Design Registration
+URL: https://leegtech.in/design/uk-design-registration/
+If you sell or manufacture in the UK, a UK registered design protects the appearance of your product there, renewable for up to 25 years.
+
+UK registered designs are granted by the UK Intellectual Property Office under the Registered Designs Act 1949. Protection covers the appearance of the whole or part of a product resulting from features such as lines, contours, colours, shape, texture, materials or ornamentation.
+
+A registration can be renewed every five years up to a maximum of 25 years. The UK also gives a 12-month grace period for the designer's own disclosures, and priority can be claimed within six months of an earlier filing, such as an Indian design application. We prepare the illustrations, file and track renewals.
+
+Who needs it: Indian exporters to the UK; Brands selling through UK marketplaces; Designers licensing to UK companies.
+What's included: Registrability assessment; Preparation of design illustrations; Priority claim from an Indian application; Filing with the UKIPO; Renewal reminders.
+Process: 1) Assessment: Check novelty and the right filing date. 2) Illustrations: Prepare views meeting UKIPO requirements. 3) Filing: Application filed, with priority if available. 4) Registration: Certificate issued; renewals tracked.
+Documents: Images or drawings of the design; Priority application details; Applicant details.
+Key facts:
+- Office: UK Intellectual Property Office
+- Term: Up to 25 years, renewed every 5 years
+- Priority period: 6 months
+- Grace period: 12 months for the designer's own disclosure
+FAQs:
+Q: Can I rely on unregistered design rights in the UK?
+A: The UK has unregistered design rights, but they are shorter and require proof of copying. Registration gives stronger, easier-to-enforce rights.
+Q: Can one application cover several designs?
+A: Yes, UKIPO allows multiple designs in a single application within set limits.
+
+### Utility Model in Germany (Gebrauchsmuster)
+URL: https://leegtech.in/design/germany-utility-model/
+A German utility model is a fast, cost-effective way to protect technical inventions in Europe's largest economy, often registered within a few months.
+
+Utility models are registered by the German Patent and Trade Mark Office (DPMA) without substantive examination of novelty and inventive step. This makes them much faster to obtain than patents. The requirements still apply, and they are tested if the utility model is challenged in cancellation proceedings or enforced.
+
+Protection lasts up to 10 years from filing, maintained through renewal fees. Processes and methods cannot be protected by a utility model, and biotechnological inventions are excluded. The applicant's own disclosures within six months before filing do not destroy novelty. A utility model can also be branched off from a pending German or European patent application designating Germany.
+
+Who needs it: Engineering and manufacturing companies with German customers; Startups needing quick enforceable rights in Germany; Applicants with a pending EP application who want earlier protection.
+What's included: Suitability assessment (product vs. process); Claim and specification adaptation; Filing with the DPMA, including branch-off where possible; Renewal fee tracking.
+Process: 1) Suitability: Confirm the invention fits utility model protection. 2) Preparation: Adapt claims and translation requirements. 3) Filing: File with the DPMA. 4) Registration: Registration and renewal tracking.
+Documents: Specification and claims; Drawings; Priority details (if any).
+Key facts:
+- Office: German Patent and Trade Mark Office (DPMA)
+- Maximum term: 10 years from filing
+- Examination: Registered without substantive examination
+- Excluded: Processes/methods and biotechnological inventions
+- Grace period: 6 months for the applicant's own prior disclosure
+FAQs:
+Q: Is a utility model as strong as a patent?
+A: It gives similar exclusive rights for its shorter term, but because it is not examined, its validity is tested only when challenged or enforced.
+Q: Does India have utility models?
+A: No. India does not currently have a utility model system. Indian protection is through patents and designs.
+
+## Trademark & Copyright Services
+URL: https://leegtech.in/trademark-copyright/
+Your brand is one of your most valuable business assets. Leegtech helps you protect it, from trademark search and registration to examination, opposition, hearings, enforcement and international protection through the Madrid Protocol. We also register copyright in literary, artistic, musical and software works in India and Canada.
+
+### Trademark Search
+URL: https://leegtech.in/trademark-copyright/trademark-search/
+Before you print packaging, build a website or file an application, a trademark search tells you whether your brand name or logo is likely to clash with existing marks.
+
+The Trade Marks Registry can refuse a mark that is identical or similar to an earlier mark for similar goods or services (Section 11), or that is descriptive or non-distinctive (Section 9). Owners of earlier marks can also oppose your application or sue for infringement or passing off after launch.
+
+Our search goes beyond identical matches. We look for phonetically, visually and conceptually similar marks in the relevant classes and related classes, and check the status of the marks we find. You receive a clear report with a risk rating and recommendations on the strongest filing strategy.
+
+Who needs it: Founders choosing a company or product name; Brands launching a new product line; Businesses planning to expand to new goods or services.
+What's included: Class identification under the Nice Classification; Identical, phonetic and similar mark search; Device (logo) search where relevant; Status check of conflicting marks; Written risk assessment and recommendations.
+Process: 1) Brief: Share the mark and the goods or services. 2) Classification: We map your business to the correct classes. 3) Search: Database search and analysis of similar marks. 4) Report: Risk report and filing advice.
+Documents: Brand name and/or logo; Description of goods or services.
+Key facts:
+- Governing law: Trade Marks Act, 1999 and Trade Marks Rules, 2017
+- Classification: Nice Classification, 45 classes (34 goods, 11 services)
+- Refusal grounds: Absolute (Section 9) and relative (Section 11)
+FAQs:
+Q: Is the free public search on IP India enough?
+A: It is a useful start, but it only shows close matches and needs interpretation. A professional search considers similar-sounding marks, related classes and legal grounds.
+Q: Can I use a mark that is registered in a different class?
+A: Often yes, if the goods or services are unrelated. Well-known marks get wider protection across classes, so it needs to be assessed case by case.
+
+### Trademark Registration
+URL: https://leegtech.in/trademark-copyright/trademark-registration/
+A registered trademark gives you the exclusive right to use your brand for your goods or services across India, and the legal tools to stop copycats.
+
+A trademark can be a word, logo, slogan, shape, colour combination or other sign that distinguishes your goods or services. Filing is done with the Trade Marks Registry using Form TM-A. You can start using the ™ symbol once you file. The ® symbol may be used only after registration; falsely representing a mark as registered is an offence under the Act.
+
+After filing, the application is examined. If accepted, it is advertised in the Trade Marks Journal, and third parties have four months to oppose. If there is no opposition, or the opposition is decided in your favour, the mark is registered. Registration lasts 10 years from the application date and can be renewed every 10 years indefinitely.
+
+Who needs it: Startups and new businesses; D2C, e-commerce and marketplace sellers (brand registry programmes often require a filed or registered mark); Service businesses, consultants and creators; Franchisors and businesses planning to license their brand.
+What's included: Trademark search and class advice; Preparation and filing of Form TM-A; User affidavit where prior use is claimed; Status monitoring through examination and publication; Objection reply and hearing support (scope as agreed); Registration certificate and renewal reminder.
+Process: 1) Search and classes: We confirm availability and select classes. 2) Filing: Application filed; you receive the application number the same day. 3) Examination: Examination report issued; objections answered if any. 4) Journal and opposition: Mark advertised; four-month opposition window. 5) Registration: Certificate issued; renewal due in 10 years.
+Documents: Brand name and logo (JPG); Applicant name, address and entity type; Date of first use (if already in use) with evidence; MSME/Udyam or startup certificate for reduced fees (if applicable); Signed Form TM-48 (authorisation), which we prepare.
+Key facts:
+- Validity: 10 years from the application date, renewable every 10 years (Section 25)
+- Opposition window: 4 months from advertisement in the Trade Marks Journal (Section 21)
+- Use of ®: Only after registration (false representation is an offence, Section 107)
+- Reduced official fees: Available to individuals, startups and small enterprises
+FAQs:
+Q: How long does trademark registration take?
+A: If there are no objections or opposition, registration commonly takes several months to around a year or more, depending on Registry timelines. You get protection benefits from the filing date.
+Q: Do I need a separate application for my logo and name?
+A: Usually yes. A word mark protects the name in any style; a logo (device) mark protects the specific artwork. Many businesses file both.
+Q: Can an individual own a trademark?
+A: Yes. Individuals, proprietors, partnerships, LLPs, companies, trusts and societies can all apply.
+
+### Trademark Objection Reply
+URL: https://leegtech.in/trademark-copyright/trademark-objection-reply/
+An objection is not a refusal. With the right arguments and evidence, many objected marks proceed to registration.
+
+Examiners raise objections on absolute grounds under Section 9 (for example, descriptive, generic, non-distinctive or deceptive marks) or relative grounds under Section 11 (conflict with earlier similar marks). The examination report must be answered within one month of its communication, otherwise the application can be treated as abandoned.
+
+We draft a reply that addresses every objection with legal arguments, precedents and, where useful, evidence of use and acquired distinctiveness. If the Registry is not satisfied, a show-cause hearing is scheduled, which we can attend for you.
+
+Who needs it: Applicants whose status shows "Objected"; Applicants with a pending deadline to reply; Businesses with an earlier mark cited against them.
+What's included: Analysis of the examination report; Search of cited marks and their status; Drafted reply with arguments and case law; User affidavit and evidence where helpful; Filing and status tracking.
+Process: 1) Share the report: Send the application number or report. 2) Strategy: We explain the objections and the best approach. 3) Reply: Reply and evidence filed within the deadline. 4) Next step: Acceptance, or a show-cause hearing which we handle.
+Documents: Application number / examination report; Evidence of use (invoices, ads, website, sales figures) if available.
+Key facts:
+- Reply deadline: One month from communication of the examination report
+- Absolute grounds: Section 9, Trade Marks Act, 1999
+- Relative grounds: Section 11, Trade Marks Act, 1999
+FAQs:
+Q: What happens if I don't reply in time?
+A: The application may be treated as abandoned. Depending on the situation, review or a fresh filing may be possible, but it is better not to miss the deadline.
+Q: Can prior use help my case?
+A: Yes. Evidence of long and continuous use can help show distinctiveness and honest concurrent use.
+
+### Trademark Opposition
+URL: https://leegtech.in/trademark-copyright/trademark-opposition/
+When a similar mark is advertised in the Trade Marks Journal, you have four months to oppose it. If your mark is opposed, the counter-statement deadline is strict.
+
+Under Section 21 of the Trade Marks Act, 1999, any person can oppose an advertised application within four months of the date of advertisement or re-advertisement, using Form TM-O. The applicant must then file a counter-statement within two months of receiving the notice of opposition, failing which the application is treated as abandoned.
+
+The proceeding then moves through evidence stages by both sides, followed by a hearing before the Registrar. Strong evidence of earlier use, reputation and sales usually decides these cases. We act for both opponents and applicants.
+
+Who needs it: Brand owners who spot a similar mark in the Journal; Applicants who have received a notice of opposition; Businesses with a trademark watch programme.
+What's included: Journal watch and conflict review; Notice of opposition (TM-O) or counter-statement; Evidence affidavits; Settlement and coexistence negotiation where useful; Hearing representation.
+Process: 1) Assessment: Compare marks, goods and evidence of use. 2) Pleadings: Opposition notice or counter-statement filed on time. 3) Evidence: Evidence exchanged as per the Rules. 4) Hearing: Arguments before the Registrar and decision.
+Documents: Details of the conflicting mark or the notice received; Your registration/application details; Evidence of use and reputation.
+Key facts:
+- Opposition period: 4 months from advertisement (Section 21)
+- Counter-statement: 2 months from receipt of the notice of opposition
+- Decision: By the Registrar, appealable to the High Court
+FAQs:
+Q: Can the four-month opposition period be extended?
+A: No. Under the current Rules the four-month period is fixed.
+Q: Can an opposition be settled?
+A: Yes. Many oppositions end in withdrawal, limitation of goods, or a coexistence agreement.
+
+### Trademark Hearing
+URL: https://leegtech.in/trademark-copyright/trademark-hearing/
+A hearing is your chance to convince the Registrar. Preparation and clear arguments make the difference.
+
+If the Registry is not satisfied with an objection reply, it issues a show-cause hearing notice. Opposition proceedings also end in a hearing. Hearings are commonly conducted by video conference.
+
+We review the record, prepare arguments with supporting case law, appear for you and file any written submissions or additional documents the Registrar allows.
+
+Who needs it: Applicants with a show-cause hearing notice; Parties to opposition or rectification proceedings.
+What's included: File review and hearing strategy; Case law and evidence compilation; Appearance before the Registrar; Post-hearing follow-up.
+Process: 1) Notice: Share the hearing notice. 2) Preparation: Arguments and documents prepared. 3) Hearing: We appear and argue. 4) Outcome: Order tracked and next steps advised.
+Documents: Hearing notice; Examination report and earlier reply; Evidence of use.
+Key facts:
+- Mode: Commonly by video conference
+- Adjournment: Limited, on request as per the Rules
+FAQs:
+Q: What if I miss the hearing?
+A: The application can be treated as abandoned. Act quickly if you have missed a hearing; remedies may exist depending on the facts.
+
+### Trademark Renewal
+URL: https://leegtech.in/trademark-copyright/trademark-renewal/
+A trademark registration lasts 10 years and can be renewed indefinitely. Missing renewal can mean losing your brand rights.
+
+Renewal can be filed up to six months before expiry using Form TM-R. If the registration expires, it can still be renewed within six months after expiry on payment of a surcharge. After that the mark may be removed from the register, and restoration may be possible within one year from expiry, subject to conditions.
+
+We track your renewal dates, file on time, and use renewal as a moment to review whether your registration still matches how you use the brand.
+
+Who needs it: Owners of trademarks registered for nearly 10 years; Businesses with lapsed or expiring marks.
+What's included: Renewal date tracking; Form TM-R filing; Surcharge filing in the grace period; Restoration of removed marks; Portfolio review.
+Process: 1) Check: Confirm the expiry date and ownership details. 2) File: Renewal application filed. 3) Confirm: Renewal recorded and new expiry date diarised.
+Documents: Registration number; Changes in owner name or address (if any).
+Key facts:
+- Renewal period: Every 10 years (Section 25)
+- Early filing: Up to 6 months before expiry
+- Grace period: 6 months after expiry, with surcharge
+- Restoration: Within 1 year from expiry, subject to conditions
+FAQs:
+Q: Is renewal automatic?
+A: No. The owner must file for renewal and pay the official fee.
+Q: Can I change my logo while renewing?
+A: No. A materially different logo needs a new application.
+
+### International Trademark (Madrid Protocol)
+URL: https://leegtech.in/trademark-copyright/international-trademark-registration/
+With the Madrid Protocol, an Indian applicant can seek trademark protection in many countries through a single application filed through the Indian Trade Marks Registry.
+
+India has been a member of the Madrid Protocol since 2013. An international application is based on your Indian application or registration and is filed through the Indian Trade Marks Office as office of origin, then forwarded to WIPO. You designate the countries you need, and each country examines the mark under its own law.
+
+For five years from the international registration date, it depends on the base Indian mark. If the base mark is refused or cancelled in that period, the international registration is cancelled to the same extent, although it can be transformed into national applications. We advise on country selection, file, and manage provisional refusals with local counsel where needed.
+
+Who needs it: Exporters and D2C brands selling abroad; SaaS and app businesses with global users; Franchisors planning international expansion.
+What's included: Country and class strategy; Base mark check; International application filing through the Indian office; Tracking of WIPO and national office actions; Coordination of responses to provisional refusals; Subsequent designations to add countries later.
+Process: 1) Base mark: Confirm the Indian application/registration. 2) Designations: Choose countries and goods or services. 3) Filing: Application filed through the Indian office to WIPO. 4) National examination: Each designated office examines; refusals handled.
+Documents: Indian trademark application/registration details; List of target countries; Specification of goods/services.
+Key facts:
+- System: Madrid Protocol, administered by WIPO
+- India joined: 2013
+- Coverage: 130+ countries through the member jurisdictions
+- Dependency period: 5 years on the base mark
+FAQs:
+Q: Do I need an Indian application first?
+A: Yes. An Indian applicant must have a base application or registration in India.
+Q: Can I add more countries later?
+A: Yes, through a subsequent designation.
+
+### Indian Copyright Registration
+URL: https://leegtech.in/trademark-copyright/copyright-registration/
+Copyright exists automatically once an original work is created, but registration gives you strong, ready evidence of authorship and ownership.
+
+The Copyright Act, 1957 protects original literary, dramatic, musical and artistic works, cinematograph films and sound recordings. Computer programmes are protected as literary works. Registration is not mandatory, but under Section 48 the entries in the Register of Copyrights are prima facie evidence of the particulars recorded, which is valuable in disputes, licensing and investment.
+
+After filing, there is a mandatory 30-day waiting period for objections. The application is then examined, any discrepancies are answered, and the work is registered. For an artistic work used, or capable of being used, on goods (such as a logo), a search certificate from the Trade Marks Registry is also required.
+
+Who needs it: Authors, poets and publishers; Software developers and SaaS companies; Musicians, producers and filmmakers; Designers and artists, including logo creators.
+What's included: Work category assessment; Application drafting and filing; NOC and author/assignment documentation; Trade mark search certificate where needed; Reply to discrepancy letters; Registration certificate (extract of register).
+Process: 1) Review: Identify the work type, author and owner. 2) Filing: Application filed with the Copyright Office. 3) Waiting period: Mandatory 30-day period for objections. 4) Examination: Discrepancies answered, if any. 5) Registration: Work entered in the Register of Copyrights.
+Documents: Copy of the work (manuscript, code extracts, artwork, audio/video); Author and owner details; NOC from author/publisher where applicable; Assignment deed if the applicant is not the author.
+Key facts:
+- Governing law: Copyright Act, 1957 and Copyright Rules, 2013
+- Term (literary, artistic, musical works): Lifetime of the author plus 60 years
+- Term (films, sound recordings): 60 years from publication
+- Evidence value: Register entries are prima facie evidence (Section 48)
+FAQs:
+Q: Can I copyright an idea?
+A: No. Copyright protects the expression of an idea, not the idea itself. Technical ideas may be protectable by patent.
+Q: Should I register my logo as copyright or trademark?
+A: Both can help. Copyright protects the artwork; trademark protects its use as a brand. Trademark registration is the primary protection for a logo.
+Q: Can software be registered?
+A: Yes, as a literary work. Source or object code extracts are filed as per the Copyright Office requirements.
+
+### Canada Copyright Registration
+URL: https://leegtech.in/trademark-copyright/canada-copyright-registration/
+If your audience or business is in Canada, a Canadian copyright registration gives you a certificate that is evidence of your rights there.
+
+Copyright in Canada is governed by the Copyright Act and administered by the Canadian Intellectual Property Office (CIPO). As in India, copyright arises automatically on creation, and registration is optional. A registration certificate is evidence that copyright exists in the work and that the person registered is the owner.
+
+Since 30 December 2022, the general term of copyright in Canada is the life of the author plus 70 years. You do not need to be Canadian to register. Registration is handled online, and we prepare and file the application for you.
+
+Who needs it: Authors and publishers selling in Canada; Software and content companies with Canadian customers; Creators licensing works to Canadian partners.
+What's included: Eligibility and ownership review; Application preparation and filing with CIPO; Certificate delivery.
+Process: 1) Review: Confirm the work, author and owner. 2) Filing: Application filed online with CIPO. 3) Certificate: Registration certificate issued.
+Documents: Title and category of the work; Author and owner details; Date and place of first publication (if published).
+Key facts:
+- Office: Canadian Intellectual Property Office (CIPO)
+- General term: Life of the author plus 70 years
+- Registration: Optional, but the certificate is evidence of ownership
+FAQs:
+Q: Is my Indian copyright protected in Canada anyway?
+A: Generally yes, through the Berne Convention. Registration in Canada adds evidentiary benefits there.
+
+## Business Registration, Tax & Compliance
+URL: https://leegtech.in/business-tax/
+Complete support for business registration, tax, licensing, certification and compliance, all under one roof. From incorporating your company to DPIIT recognition, GST and annual filings, we keep your business on a solid legal foundation so you can focus on growth.
+
+### Private Limited Company Registration
+URL: https://leegtech.in/business-tax/private-limited-company-registration/
+A Private Limited Company is the preferred structure for startups that plan to raise investment, issue ESOPs or scale. We handle incorporation end to end.
+
+Companies are incorporated under the Companies Act, 2013 through the Ministry of Corporate Affairs (MCA) integrated web form SPICe+. It covers name reservation, incorporation, Director Identification Numbers, PAN and TAN, and linked registrations, together with the e-MoA and e-AoA.
+
+A private company needs at least two directors and two shareholders (the same persons can be both), and can have up to 200 members. At least one director must be resident in India. There is no minimum paid-up capital requirement. A Pvt Ltd gives limited liability, a separate legal identity and a structure investors understand.
+
+Who needs it: Startups planning to raise funds or apply for DPIIT recognition; Growing businesses converting from proprietorship or partnership; Foreign companies setting up an Indian subsidiary.
+What's included: Name availability check and reservation; Digital Signature Certificates (DSC) for directors; SPICe+ filing with e-MoA and e-AoA; DIN, PAN and TAN allotment; Certificate of Incorporation; Post-incorporation checklist (bank account, auditor appointment, commencement filing).
+Process: 1) Name: Name check and reservation with MCA. 2) Documents: DSC obtained and documents signed. 3) Filing: SPICe+ and linked forms filed. 4) Incorporation: Certificate of Incorporation with CIN, PAN and TAN.
+Documents: PAN and Aadhaar of all directors and shareholders; Address proof and photograph of each director; Registered office address proof and utility bill; NOC from the property owner; Passport and notarised/apostilled documents for foreign nationals.
+Key facts:
+- Governing law: Companies Act, 2013
+- Minimum directors / shareholders: 2 / 2 (maximum 200 members)
+- Resident director: At least one director must be resident in India
+- Minimum capital: No statutory minimum
+FAQs:
+Q: Can a salaried person be a director?
+A: Generally yes, subject to the employer's policy and employment terms. Check your employment contract.
+Q: What compliance applies after incorporation?
+A: Annual filings with MCA, board meetings, statutory audit, income tax returns, and GST/TDS filings where applicable. See our annual compliance service.
+
+### LLP Registration
+URL: https://leegtech.in/business-tax/llp-registration/
+An LLP combines limited liability with the flexibility of a partnership. It suits professional firms and businesses that do not plan equity fundraising.
+
+LLPs are registered under the Limited Liability Partnership Act, 2008 through MCA forms. An LLP needs at least two designated partners, at least one of whom must be resident in India. It is a separate legal entity, and partners' liability is limited to their agreed contribution.
+
+After incorporation, the LLP agreement must be filed with the Registrar within 30 days. LLPs have lighter compliance than companies. The main annual filings are the Annual Return (Form 11) and the Statement of Account & Solvency (Form 8).
+
+Who needs it: Professional firms and consultancies; Family businesses and small partnerships; Businesses wanting limited liability with lower compliance.
+What's included: Name reservation; DSC for designated partners; Incorporation filing; Drafting of the LLP agreement; Filing of the LLP agreement within 30 days; PAN and TAN.
+Process: 1) Name: Name reserved with MCA. 2) Incorporation: Incorporation form filed with documents. 3) Certificate: Certificate of Incorporation with LLPIN. 4) Agreement: LLP agreement drafted, stamped and filed.
+Documents: PAN, Aadhaar, photo and address proof of partners; Registered office proof and NOC; Capital contribution and profit-sharing details.
+Key facts:
+- Governing law: Limited Liability Partnership Act, 2008
+- Minimum partners: 2 designated partners, at least 1 resident in India
+- LLP agreement: To be filed within 30 days of incorporation
+- Annual filings: Form 11 (Annual Return) and Form 8 (Statement of Account & Solvency)
+FAQs:
+Q: LLP or Pvt Ltd: which is better?
+A: If you plan to raise equity investment or issue ESOPs, a Pvt Ltd is usually better. For professional or owner-run businesses, an LLP can be simpler.
+Q: Can an LLP be converted to a company later?
+A: Yes. An LLP can be converted into a company under the Companies Act, subject to conditions.
+
+### One Person Company (OPC) Registration
+URL: https://leegtech.in/business-tax/one-person-company-registration/
+An OPC lets a single founder run a company with limited liability and a corporate identity, without needing a second shareholder.
+
+The One Person Company is a form of private company under the Companies Act, 2013 with a single member. The member must be a natural person and an Indian citizen. Since 2021, Indian citizens who are not resident in India can also form an OPC, and the earlier paid-up capital and turnover limits for compulsory conversion have been removed.
+
+An OPC must name a nominee who becomes the member if the original member dies or is incapacitated. A person can be a member of only one OPC. An OPC can be converted into a private or public company when the business grows.
+
+Who needs it: Solo founders and freelancers who want a company structure; Consultants and small businesses seeking limited liability.
+What's included: Name reservation; DSC and incorporation filing; Nominee consent; MoA and AoA; Certificate of Incorporation, PAN and TAN.
+Process: 1) Name: Name reserved. 2) Documents: Member and nominee documents collected. 3) Filing: Incorporation filed through SPICe+. 4) Certificate: OPC incorporated.
+Documents: PAN, Aadhaar, photo and address proof of the member and nominee; Registered office proof and NOC.
+Key facts:
+- Members: 1 (a natural person and Indian citizen)
+- Nominee: Mandatory
+- Limit: A person can be a member of only one OPC
+FAQs:
+Q: Can an OPC raise investment?
+A: Not easily, since it has only one member. To bring in investors, it is converted into a private company.
+
+### Section 8 Company (Non-Profit) Registration
+URL: https://leegtech.in/business-tax/section-8-company-registration/
+A Section 8 company is the most credible non-profit structure in India, governed by the Companies Act, 2013 and recognised by donors, CSR funders and government bodies.
+
+Section 8 of the Companies Act, 2013 allows a company to be formed for objects such as commerce, art, science, sports, education, research, social welfare, religion, charity and environmental protection. It must apply its income to its objects and cannot pay dividends to members.
+
+A licence under Section 8 is issued along with incorporation. The name generally includes words such as Foundation, Association, Council, Forum or Federation. After incorporation, tax-exemption registrations for charitable entities (commonly referred to as 12A and 80G) and CSR registration can be obtained to receive donations and CSR funding.
+
+Who needs it: NGOs, foundations and social enterprises; Educational and research initiatives; Corporate groups setting up a CSR entity.
+What's included: Object clause drafting; Name reservation; Licence and incorporation filing; MoA and AoA; Guidance on tax-exemption and CSR registrations.
+Process: 1) Objects: Define charitable objects and governance. 2) Name: Name reserved. 3) Licence and incorporation: Application filed; licence and certificate issued. 4) Tax registrations: Apply for tax exemption and donor registrations.
+Documents: Director and member KYC; Registered office proof; Projected income and expenditure (as required).
+Key facts:
+- Governing law: Section 8, Companies Act, 2013
+- Profit distribution: Not allowed; income applied to objects
+- Minimum capital: No statutory minimum
+FAQs:
+Q: Section 8 company vs trust vs society?
+A: A Section 8 company is governed by central law, has a clear governance framework and is often preferred by large donors and CSR funders. Trusts and societies are governed by state laws.
+
+### Startup India (DPIIT) Recognition
+URL: https://leegtech.in/business-tax/startup-india-registration/
+DPIIT recognition makes your startup eligible for Startup India benefits, including reduced patent and trademark fees, faster patent examination and more.
+
+The Department for Promotion of Industry and Internal Trade (DPIIT) recognises an entity as a startup if it is a private limited company, LLP or registered partnership firm, is within 10 years of incorporation, has an annual turnover that has not exceeded ₹100 crore in any financial year, and is working towards innovation or improvement of products, processes or services, or is a scalable business model with high potential for employment or wealth creation. Entities formed by splitting up or reconstructing an existing business are not eligible.
+
+Recognised startups can access benefits such as rebates on patent and trademark fees and expedited patent examination, self-certification under certain labour and environmental laws, relaxations in public procurement, and eligibility to apply for an income-tax holiday subject to separate approval by the Inter-Ministerial Board. A clear, well-written innovation description is key to a successful application.
+
+Who needs it: Newly incorporated Pvt Ltd companies, LLPs and partnership firms; Founders planning patents or trademarks (fee benefits); Startups planning to apply for government schemes and tenders.
+What's included: Eligibility check; Drafting the innovation and scalability description; Application on the Startup India portal; Recognition certificate; Guidance on IP benefits and tax exemption application.
+Process: 1) Eligibility: Confirm entity type, age and turnover. 2) Write-up: Prepare a strong innovation description. 3) Application: Apply on the Startup India portal. 4) Certificate: DPIIT recognition certificate issued.
+Documents: Certificate of Incorporation / Registration; Entity PAN; Director/partner details; Brief about the business, website or pitch deck; Patent/trademark details (if any).
+Key facts:
+- Eligible entities: Private limited company, LLP or registered partnership firm
+- Age limit: Up to 10 years from incorporation/registration
+- Turnover limit: Not exceeding ₹100 crore in any financial year
+- Recognised by: DPIIT, Ministry of Commerce & Industry
+FAQs:
+Q: Is a sole proprietorship eligible?
+A: No. Only private limited companies, LLPs and registered partnership firms are eligible.
+Q: Does recognition automatically give tax exemption?
+A: No. The income-tax holiday needs a separate application and approval by the Inter-Ministerial Board.
+
+### MSME (Udyam) Registration
+URL: https://leegtech.in/business-tax/msme-udyam-registration/
+Udyam registration classifies your business as a micro, small or medium enterprise and opens access to MSME schemes, priority lending and payment protection.
+
+Udyam registration is done on the Government of India's Udyam portal using Aadhaar and PAN, based largely on self-declaration and linked to income-tax and GST data. There is no government fee for Udyam registration.
+
+Classification is based on investment in plant and machinery or equipment and on turnover. From 1 April 2025, the limits are: micro up to ₹2.5 crore investment and ₹10 crore turnover; small up to ₹25 crore and ₹100 crore; medium up to ₹125 crore and ₹500 crore. Registered MSMEs benefit from schemes such as delayed-payment protection under the MSMED Act and reduced trademark and patent fees.
+
+Who needs it: Manufacturers, traders and service providers; Startups and small businesses seeking scheme benefits; Businesses supplying to large buyers.
+What's included: Classification check; Udyam registration filing; Udyam certificate; Updates when investment or turnover changes.
+Process: 1) Details: Collect Aadhaar, PAN and business details. 2) Classification: Confirm micro/small/medium status. 3) Registration: File on the Udyam portal. 4) Certificate: Udyam Registration Certificate issued.
+Documents: Aadhaar of proprietor/partner/director; PAN of the entity; GSTIN (where applicable); Bank details and business activity (NIC code).
+Key facts:
+- Portal: Udyam Registration portal, Ministry of MSME
+- Government fee: None
+- Micro (from 1 Apr 2025): Investment up to ₹2.5 cr and turnover up to ₹10 cr
+- Small (from 1 Apr 2025): Investment up to ₹25 cr and turnover up to ₹100 cr
+- Medium (from 1 Apr 2025): Investment up to ₹125 cr and turnover up to ₹500 cr
+FAQs:
+Q: Is Udyam registration mandatory?
+A: It is not mandatory for every business, but it is required to claim most MSME benefits.
+Q: Does it help with trademarks and patents?
+A: Yes. MSMEs can claim reduced official fees for trademark applications, and small entities get reduced patent fees.
+
+### GST Registration
+URL: https://leegtech.in/business-tax/gst-registration/
+If your turnover crosses the threshold, or you sell inter-state or on e-commerce platforms, GST registration is required. We file it correctly the first time.
+
+Under GST law, registration is generally required when aggregate turnover exceeds ₹40 lakh for suppliers of goods or ₹20 lakh for suppliers of services in most states, with lower limits in certain special category states. Some businesses must register regardless of turnover, such as those making inter-state taxable supplies of goods, e-commerce sellers in most cases, and casual taxable persons.
+
+The application is filed on the GST portal with Aadhaar authentication and supporting documents. Once approved, a 15-character GSTIN is issued. Voluntary registration is also possible and can help businesses that sell to GST-registered customers claim input tax credit.
+
+Who needs it: New businesses crossing the threshold; E-commerce and marketplace sellers; Service providers billing GST-registered clients; Exporters.
+What's included: Eligibility and scheme advice (regular or composition); Application filing on the GST portal; Clarification responses; GSTIN and registration certificate; Guidance on invoicing and returns.
+Process: 1) Check: Confirm requirement and scheme. 2) Documents: Collect KYC and business proofs. 3) Application: File on the GST portal with Aadhaar authentication. 4) GSTIN: Registration certificate issued.
+Documents: PAN of the business/proprietor; Aadhaar of proprietor/partners/directors; Business address proof and NOC; Bank account proof; Incorporation documents for companies/LLPs.
+Key facts:
+- Threshold (goods, most states): ₹40 lakh aggregate turnover
+- Threshold (services, most states): ₹20 lakh aggregate turnover
+- Compulsory regardless of turnover: Including inter-state taxable supply of goods and most e-commerce sellers
+- GSTIN: 15-character, state-wise number
+FAQs:
+Q: Do I need separate GST registration in each state?
+A: Yes. GST registration is state-wise for each state from which you make supplies.
+Q: What returns will I need to file?
+A: Typically GSTR-1 and GSTR-3B (monthly or quarterly), plus an annual return where applicable.
+
+### Income Tax & TDS Return Filing
+URL: https://leegtech.in/business-tax/income-tax-tds-return/
+We prepare and file income tax returns and quarterly TDS statements accurately and on time, so you avoid interest, late fees and notices.
+
+Every company and LLP must file an income tax return every year, regardless of profit. Individuals and firms must file when their income exceeds the prescribed limits or other conditions apply. Due dates depend on the type of taxpayer and on whether a tax audit is required.
+
+Businesses that deduct tax at source must deposit it and file quarterly TDS/TCS statements, then issue certificates to deductees. Errors in TDS filings show up in the deductee's tax records and lead to mismatches. India's new Income-tax Act, 2025 applies from 1 April 2026, and we file under the applicable law and forms for each year.
+
+Who needs it: Salaried individuals with complex income; Professionals and freelancers; Startups, companies and LLPs; Employers and businesses deducting TDS.
+What's included: Income computation and tax planning within the law; ITR preparation and filing; Quarterly TDS/TCS statements; TDS certificates; Responses to routine notices and mismatch corrections.
+Process: 1) Data: Share financials, statements and deduction data. 2) Computation: Tax computed and reviewed with you. 3) Filing: Return or statement filed and verified. 4) Records: Acknowledgements and certificates shared.
+Documents: PAN and Aadhaar; Bank statements and Form 16/16A or equivalent; Financial statements (for businesses); Investment and deduction proofs; TDS deduction details by quarter.
+Key facts:
+- Companies and LLPs: Must file a return every year
+- TDS statements: Filed quarterly
+- Current law: Income-tax Act, 2025 applies from 1 April 2026
+FAQs:
+Q: What if I miss the due date?
+A: A belated or updated return may still be possible within the time limits, usually with late fees and interest. File as early as you can.
+
+### Shops & Establishment Registration
+URL: https://leegtech.in/business-tax/shop-and-establishment-registration/
+Most states require shops, offices and commercial establishments to register under their Shops and Establishments law, usually soon after starting operations.
+
+Shops and Establishments Acts are state laws that regulate working hours, holidays, wages and conditions of employment in shops and commercial establishments. Registration requirements, timelines and exemptions differ from state to state, and many states now offer online registration.
+
+The registration certificate is also commonly used as proof of business address when opening a current account or applying for other registrations. We check your state's requirements and handle the filing.
+
+Who needs it: Shops, offices, clinics and restaurants; Startups opening an office; Businesses opening a current bank account.
+What's included: State-specific requirement check; Application filing; Registration certificate; Renewal and amendment support where applicable.
+Process: 1) Check: Identify the state law and category. 2) Apply: File the application with documents. 3) Certificate: Registration certificate issued.
+Documents: Owner KYC; Establishment address proof; Number of employees; Photograph of the premises with signboard (where required).
+Key facts:
+- Governing law: The Shops and Establishments Act of the relevant state
+- Timeline and fees: Vary by state and number of employees
+FAQs:
+Q: Is it required for a home-based business?
+A: It depends on the state law and the nature of the business. We check this for your location.
+
+### FSSAI Registration & Licence
+URL: https://leegtech.in/business-tax/fssai-registration/
+Every food business in India must hold an FSSAI registration or licence. The right category depends on your turnover, activity and scale.
+
+Under the Food Safety and Standards Act, 2006, food business operators must register or obtain a licence through the FoSCoS portal. Petty food businesses with annual turnover up to ₹12 lakh take basic registration. Larger businesses need a state licence, generally for turnover up to ₹20 crore, or a central licence above that and for specified activities such as import and certain export-related operations.
+
+The 14-digit FSSAI number must be displayed on food packaging and at the premises. Registrations and licences are issued for one to five years and must be renewed before expiry. Licensed businesses also have annual return obligations.
+
+Who needs it: Food manufacturers and packers; Restaurants, cafés and cloud kitchens; Traders, distributors and retailers; Home bakers and e-commerce food sellers; Importers of food products.
+What's included: Category determination (basic, state or central); Application on FoSCoS; Reply to queries and inspection support; Certificate and renewal reminders; Annual return guidance.
+Process: 1) Category: Determine the correct registration or licence. 2) Documents: Prepare the documents and food category list. 3) Application: File on FoSCoS and respond to queries. 4) Certificate: Registration or licence issued.
+Documents: Photo ID and address proof of the proprietor/partners/directors; Premises proof; List of food products; Layout plan and equipment list (for licences); Water test report and FSMS plan (where applicable).
+Key facts:
+- Governing law: Food Safety and Standards Act, 2006
+- Basic registration: Turnover up to ₹12 lakh
+- State licence: Generally turnover above ₹12 lakh and up to ₹20 crore
+- Central licence: Turnover above ₹20 crore, importers and other specified activities
+- Validity: 1 to 5 years, renewable
+FAQs:
+Q: Do online food sellers need FSSAI?
+A: Yes. E-commerce food businesses need registration or a licence, and marketplaces usually require it before listing.
+
+### ISO Certification
+URL: https://leegtech.in/business-tax/iso-certification/
+ISO certification shows customers and tenders that your systems meet international standards. We help you choose the right standard and get certified properly.
+
+ISO (the International Organization for Standardization) publishes standards but does not certify companies itself. Certification is done by independent certification bodies. For credible certification, choose a body accredited by a recognised accreditation body, such as NABCB in India or another IAF member.
+
+Common standards include ISO 9001 (quality management), ISO 14001 (environmental management), ISO 45001 (occupational health and safety), ISO/IEC 27001 (information security) and ISO 22000 (food safety). Certificates are typically valid for three years, with annual surveillance audits.
+
+Who needs it: Manufacturers and exporters; IT, SaaS and service companies (ISO 27001); Businesses bidding for government and corporate tenders; Food businesses (ISO 22000).
+What's included: Standard selection advice; Gap analysis; Documentation and process support; Internal audit preparation; Coordination with an accredited certification body.
+Process: 1) Select: Choose the right standard and scope. 2) Prepare: Gap analysis and documentation. 3) Audit: Certification audit by an accredited body. 4) Maintain: Surveillance audits and recertification.
+Documents: Business profile and scope; Existing process documents (if any); Organisation chart.
+Key facts:
+- Who certifies: Independent certification bodies (not ISO itself)
+- Accreditation in India: NABCB (Quality Council of India)
+- Typical validity: 3 years with annual surveillance audits
+FAQs:
+Q: Can I get ISO certified in a day?
+A: Genuine accredited certification needs implementation and an audit. Be wary of offers of "instant" certificates from unaccredited bodies.
+
+### Pvt Ltd & LLP Annual Compliance
+URL: https://leegtech.in/business-tax/annual-compliance/
+Missing annual filings leads to heavy daily late fees and can disqualify directors. We keep your company or LLP compliant all year round.
+
+A private company must hold board meetings, hold its Annual General Meeting within six months from the end of the financial year (with the first AGM within nine months), have its accounts audited, and file financial statements (Form AOC-4) and the annual return (Form MGT-7 or MGT-7A for small companies and OPCs) with the Registrar of Companies. Directors must also complete their KYC as prescribed. Late filing attracts an additional fee for each day of delay.
+
+An LLP must file its Annual Return in Form 11 within 60 days of the end of the financial year (by 30 May) and its Statement of Account & Solvency in Form 8 by 30 October, along with its income tax return. We set up a compliance calendar and handle every filing.
+
+Who needs it: Private limited companies and OPCs; LLPs; Companies with pending or missed filings.
+What's included: Compliance calendar; Board meeting and AGM documentation; Auditor appointment filing; AOC-4 and MGT-7/7A filing; LLP Form 11 and Form 8 filing; Director KYC and event-based filings.
+Process: 1) Health check: Review past filings and pending items. 2) Calendar: Set up deadlines for the year. 3) Documents: Prepare minutes, reports and forms. 4) Filing: File on MCA and share acknowledgements.
+Documents: Audited financial statements; Shareholding and director details; Previous filings and minutes; DSC of directors/partners.
+Key facts:
+- Company AGM: Within 6 months from financial year end (first AGM within 9 months)
+- Company filings: AOC-4 (financial statements) and MGT-7/MGT-7A (annual return)
+- LLP Form 11: By 30 May each year
+- LLP Form 8: By 30 October each year
+- Late filing: Additional fee for each day of delay
+FAQs:
+Q: Does a company with no business still need to file?
+A: Yes. Annual filings are required even if there was no activity, unless the company is closed or obtains dormant status.
+Q: Can you fix past missed filings?
+A: Yes. We can file pending forms and advise on any condonation or compounding needed.
+
+## Legal Agreements & Drafting Services
+URL: https://leegtech.in/legal/
+From NDAs and contracts to licensing, franchise, merger, acquisition and employment agreements, our legal documents are professionally drafted and tailored to your business and IP needs. Clear contracts prevent disputes and protect the value you create.
+
+### Non-Disclosure Agreement (NDA)
+URL: https://leegtech.in/legal/non-disclosure-agreement/
+An NDA sets clear rules on what is confidential, how it may be used and what happens if it leaks. It matters most before you share an invention, code or business plan.
+
+In India, NDAs are contracts governed by the Indian Contract Act, 1872. A good NDA defines confidential information precisely, limits its use to a stated purpose, sets exclusions (such as information already public), fixes the duration of obligations and provides remedies including injunctions.
+
+For inventors, an NDA is especially important because disclosure without confidentiality can affect patent novelty. NDAs must be stamped according to the stamp law of the relevant state, and electronic execution is generally valid under the Information Technology Act, 2000.
+
+Who needs it: Inventors and startups pitching to partners; Companies sharing information with vendors; Employers and consultants; Parties in M&A and investment talks.
+What's included: One-way or mutual NDA drafted for your situation; Purpose, scope and exclusions defined; Term, return/destruction and remedies clauses; Stamping and execution guidance; One round of revisions.
+Process: 1) Brief: Tell us who is sharing what, and why. 2) Draft: Tailored NDA drafted. 3) Review: Revisions after your feedback. 4) Execute: Stamping and signing guidance.
+Documents: Party names and addresses; Nature of information and purpose of sharing; Desired confidentiality period.
+Key facts:
+- Governing law: Indian Contract Act, 1872
+- Stamp duty: As per the stamp law of the relevant state
+- E-signatures: Generally valid under the IT Act, 2000
+FAQs:
+Q: Is an NDA enough to protect my invention?
+A: It helps, but it is not a substitute for a patent. File at least a provisional application before wider disclosure where possible.
+Q: Are online templates enough?
+A: Templates often miss key points such as clear definitions, remedies and jurisdiction. A tailored NDA is far easier to enforce.
+
+### Employment Agreement
+URL: https://leegtech.in/legal/employment-agreement/
+A well-drafted employment agreement sets expectations clearly and makes sure the IP your team creates belongs to your company.
+
+Employment agreements in India must work within the Indian Contract Act, 1872 and applicable labour laws. Key clauses cover role, compensation, probation, notice, confidentiality, IP assignment, data protection, non-solicitation and termination.
+
+One important point: under Section 27 of the Contract Act, agreements in restraint of trade are generally void. Post-employment non-compete clauses are therefore usually unenforceable, while restrictions during employment and well-drafted confidentiality and non-solicitation clauses are more likely to be upheld. Clear IP assignment wording is essential for startups, especially for code, designs and inventions created by employees.
+
+Who needs it: Startups hiring their first employees; Companies updating outdated templates; Businesses hiring R&D and tech staff.
+What's included: Employment agreement or appointment letter; IP assignment and confidentiality clauses; Notice, termination and garden-leave provisions; Consultant and intern variants on request.
+Process: 1) Brief: Share the role, terms and policies. 2) Draft: Agreement drafted for your context. 3) Review: Revisions and finalisation.
+Documents: Role details and compensation structure; Existing HR policies (if any).
+Key facts:
+- Restraint of trade: Generally void under Section 27, Indian Contract Act, 1872
+- IP ownership: Should be expressly assigned to the employer in writing
+FAQs:
+Q: Can I stop an employee from joining a competitor?
+A: Post-employment non-competes are generally unenforceable in India. Focus on confidentiality, non-solicitation and IP clauses instead.
+
+### IP Licensing Agreement
+URL: https://leegtech.in/legal/licensing-agreement/
+A licence lets others use your IP while you keep ownership and earn royalties. The terms decide how much value you capture and how well you stay protected.
+
+Licensing agreements set scope (what is licensed), exclusivity, territory, field of use, duration, royalty structure, quality control, improvements, audit rights and termination. Each type of IP has its own rules.
+
+Under the Patents Act, 1970, patent licences must be in writing and should be registered with the Patent Office (Section 69). Copyright licences must be in writing under the Copyright Act, 1957. For trademarks, quality control by the owner is essential to protect the brand, and permitted use can be recorded with the Registry. We draft licences that are commercially sensible and legally sound.
+
+Who needs it: Patent owners and universities licensing technology; Brand owners licensing trademarks; Software and content owners; Companies taking a licence and needing protective terms.
+What's included: Deal structure and term sheet support; Licence agreement drafting; Royalty and audit mechanisms; Registration of the licence where required.
+Process: 1) Structure: Agree key commercial terms. 2) Draft: Agreement prepared and negotiated. 3) Record: Registration with the IP office where required.
+Documents: IP registration details; Commercial terms agreed so far; Party details.
+Key facts:
+- Patent licences: In writing and registrable with the Patent Office (Section 69, Patents Act)
+- Copyright licences: Must be in writing (Copyright Act, 1957)
+- Trademark licences: Quality control is important to maintain distinctiveness
+FAQs:
+Q: Exclusive or non-exclusive licence?
+A: Exclusive licences usually earn higher royalties but limit you to one licensee in the defined field and territory. The right choice depends on your market strategy.
+
+### Franchise Agreement
+URL: https://leegtech.in/legal/franchise-agreement/
+A franchise agreement protects your brand and systems while giving franchisees a clear, workable business relationship.
+
+India has no single franchise statute. Franchise relationships are governed mainly by the Indian Contract Act, 1872, the Trade Marks Act, 1999 (for the brand licence), the Copyright Act, 1957 (for manuals and materials), competition law and, for foreign franchisors, foreign exchange regulations.
+
+The agreement should cover territory and exclusivity, fees and royalties, brand use and quality standards, training and support, supply arrangements, data and confidentiality, audits, renewal, termination and post-termination obligations. A registered trademark is the foundation of any franchise model.
+
+Who needs it: Brands planning to franchise; Franchisees reviewing an agreement before signing; Master franchise arrangements.
+What's included: Franchise structure advice; Franchise agreement drafting or review; Brand licence and confidentiality schedules; Supporting documents (LOI, disclosure note).
+Process: 1) Model: Understand your franchise model. 2) Draft: Agreement and schedules drafted. 3) Finalise: Negotiation support and execution.
+Documents: Trademark details; Fee and royalty structure; Operations manual outline.
+Key facts:
+- Specific franchise law: None; governed by general contract and IP law
+- Brand protection: Registered trademark strongly recommended before franchising
+FAQs:
+Q: Should I register my trademark before franchising?
+A: Yes. Franchising an unregistered brand is risky for both franchisor and franchisees.
+
+### Vendor Agreement
+URL: https://leegtech.in/legal/vendor-agreement/
+A vendor agreement turns a purchase order relationship into clear obligations on quality, delivery, payment, liability and IP.
+
+Disputes with vendors usually come from unclear scope, missed timelines, quality issues or payment disagreements. A written agreement sets measurable obligations, acceptance criteria, warranties, liability limits, indemnities, confidentiality and dispute resolution.
+
+Where vendors create deliverables such as software, designs or content, the agreement must state who owns the IP. Without a written assignment, the vendor may own it by default.
+
+Who needs it: Businesses engaging suppliers or service providers; Startups outsourcing development or design; Vendors wanting fair terms.
+What's included: Master service or supply agreement; Statement of work templates; IP and confidentiality clauses; Liability, indemnity and dispute resolution.
+Process: 1) Brief: Share the commercial terms. 2) Draft: Agreement drafted. 3) Finalise: Revisions and execution.
+Documents: Party details; Scope, pricing and timelines.
+Key facts:
+- Governing law: Indian Contract Act, 1872
+- IP in deliverables: Should be expressly assigned in writing
+FAQs:
+Q: Do I need an agreement for every order?
+A: No. A master agreement with short work orders or purchase orders for each job is usually more efficient.
+
+### Contract Drafting & Review
+URL: https://leegtech.in/legal/contract-drafting/
+Good contracts prevent disputes. We draft and review agreements in plain, precise language that protects your interests.
+
+A valid contract under the Indian Contract Act, 1872 needs free consent, lawful consideration and a lawful object between competent parties. Enforceability also depends on stamping: under stamp law, an inadequately stamped instrument cannot be admitted in evidence until the duty and penalty are paid.
+
+We draft new agreements and review agreements received from others, highlighting risks, missing protections and negotiation points. Typical documents include service agreements, consultancy agreements, partnership deeds, shareholder and founder agreements, and terms of service.
+
+Who needs it: Startups and SMEs; Freelancers and consultants; Businesses reviewing counterparty drafts.
+What's included: Drafting or review with risk notes; Negotiation points summary; Stamping and execution guidance.
+Process: 1) Brief: Share your requirement or the draft. 2) Draft or review: Agreement drafted or marked up. 3) Finalise: Revisions and execution guidance.
+Documents: Party details; Commercial terms or existing draft.
+Key facts:
+- Governing law: Indian Contract Act, 1872
+- Stamping: Inadequately stamped instruments are inadmissible in evidence until duty and penalty are paid
+FAQs:
+Q: Can contracts be signed electronically?
+A: Most commercial contracts can be signed electronically under the IT Act, 2000. Some documents, such as wills and certain property documents, are excluded.
+
+### Merger Agreement
+URL: https://leegtech.in/legal/merger-agreement/
+Mergers involve corporate, tax, IP and regulatory steps. We prepare the documentation and make sure IP and contracts move cleanly to the merged entity.
+
+Mergers and amalgamations of companies in India generally take place through a scheme of arrangement approved by the National Company Law Tribunal under Sections 230 to 232 of the Companies Act, 2013. Section 233 provides a fast-track route for eligible cases, such as mergers between small companies or between a holding company and its wholly-owned subsidiary.
+
+Combinations above the thresholds in the Competition Act, 2002 need approval from the Competition Commission of India. We support the legal documentation, including the scheme, related agreements and the transfer and recording of IP such as trademarks and patents in the name of the merged entity.
+
+Who needs it: Group companies restructuring; Businesses combining with a partner company; Startups consolidating entities.
+What's included: Structure and route assessment; Scheme and agreement drafting; IP due diligence and transfer recordal; Coordination with valuers and tax advisors.
+Process: 1) Assess: Choose the route: NCLT or fast-track. 2) Document: Draft the scheme and agreements. 3) Approvals: Filings and approvals. 4) Post-merger: IP and licence recordals.
+Documents: Financial statements of both companies; Shareholding patterns; IP and material contracts list.
+Key facts:
+- Route: Sections 230–232, Companies Act, 2013 (NCLT)
+- Fast-track: Section 233 for eligible companies
+- Competition approval: Required above Competition Act thresholds
+FAQs:
+Q: Do trademarks transfer automatically on merger?
+A: The rights pass under the scheme, but you should record the change of ownership with the Trade Marks Registry and the Patent Office.
+
+### Acquisition Agreement
+URL: https://leegtech.in/legal/acquisition-agreement/
+Whether you are buying a company, a brand or a business unit, the agreement and due diligence decide what you really get.
+
+Acquisitions are typically structured as a share purchase (buying the shares of the company) or an asset or business transfer (buying specific assets or a business undertaking). Each has different tax, stamp duty, liability and approval implications. Cross-border deals also need to follow foreign exchange rules.
+
+For technology and consumer businesses, IP is often the main asset. We review ownership chains, registrations, licences, employee and contractor assignments, and pending disputes, then build the right representations, warranties, indemnities and conditions into the agreement.
+
+Who needs it: Buyers of companies, brands or businesses; Sellers preparing for a sale; Investors acquiring significant stakes.
+What's included: Deal structuring support; Legal and IP due diligence; SPA / BTA / asset purchase agreement drafting; Closing documents and IP assignments.
+Process: 1) Structure: Share or asset deal. 2) Diligence: Legal and IP due diligence. 3) Agreement: Drafting and negotiation. 4) Closing: Closing documents and recordals.
+Documents: Target information and financials; IP portfolio list; Key contracts.
+Key facts:
+- Common structures: Share purchase or business/asset transfer
+- Cross-border deals: Subject to foreign exchange regulations
+- Competition approval: Required above Competition Act thresholds
+FAQs:
+Q: What is IP due diligence?
+A: A review that confirms the target owns or validly licenses the IP it relies on, and that the IP is registered, enforceable and free of disputes.
+
+### Trademark Coexistence Agreement
+URL: https://leegtech.in/legal/trademark-coexistence-agreement/
+When two businesses use similar marks, a coexistence agreement can avoid costly opposition or litigation by setting clear boundaries.
+
+A coexistence agreement records how each party will use its mark: the goods or services, territory, styling, channels and steps to avoid confusion. It can resolve oppositions, rectification actions and infringement disputes.
+
+The Trade Marks Registry may consider consent or coexistence when examining applications, but it is not bound by private agreements, because public confusion is also a consideration. Careful drafting improves the chance that the agreement is respected by the Registry and works in practice.
+
+Who needs it: Parties to a trademark opposition or dispute; Businesses with similar names in different sectors; Companies entering new markets.
+What's included: Conflict assessment; Negotiation support; Coexistence agreement drafting; Filing of consent with the Registry where useful.
+Process: 1) Assess: Review the marks and use. 2) Negotiate: Agree boundaries. 3) Draft: Agreement drafted and executed.
+Documents: Both marks and their registrations; Details of actual use.
+Key facts:
+- Effect on Registry: Persuasive, but not binding on the Trade Marks Registry
+FAQs:
+Q: Is coexistence better than opposition?
+A: Often, when both parties have genuine use and a clear way to differentiate. It saves time and cost.
+
+### Legal Notice Drafting
+URL: https://leegtech.in/legal/legal-notice/
+A well-drafted legal notice often settles a dispute without going to court. Where it doesn't, it builds the record for the next step.
+
+Some notices are mandatory before legal action. For a dishonoured cheque under Section 138 of the Negotiable Instruments Act, 1881, the payee must send a demand notice within 30 days of receiving information of dishonour, and the drawer then has 15 days to pay. Before suing the Government, two months' notice is generally required under Section 80 of the Code of Civil Procedure, 1908.
+
+For IP matters, a cease-and-desist notice sets out your rights and the infringing acts and demands that the infringement stop. We draft notices that are precise, legally grounded and proportionate, and we prepare careful replies when you receive a notice.
+
+Who needs it: Businesses recovering unpaid dues; Cheque bounce cases; Brand owners facing infringement; Anyone who has received a legal notice.
+What's included: Fact review and legal basis; Notice or reply drafting; Dispatch guidance (registered post, email); Advice on next steps.
+Process: 1) Facts: Share documents and timeline. 2) Draft: Notice or reply drafted. 3) Send: Dispatched with proof of delivery. 4) Next steps: Follow-up strategy.
+Documents: Agreements, invoices or correspondence; Cheque and return memo (for Section 138); Proof of your IP rights (for infringement).
+Key facts:
+- Cheque bounce notice: Within 30 days of information of dishonour; 15 days to pay (Section 138, NI Act)
+- Suits against Government: 2 months' notice under Section 80, CPC
+- IP infringement: Cease-and-desist notice before action is common practice
+FAQs:
+Q: Should I reply to a legal notice I received?
+A: Usually yes. A careful reply puts your position on record. Ignoring a notice can be used against you later.
+
+## General FAQs
+Q: What services does Leegtech provide?
+A: Leegtech provides IP, business registration, compliance and legal documentation services: patents, trademarks, copyright and design registration, international filings (PCT, Madrid, US, UK), company and LLP registration, Startup India, MSME, GST, FSSAI, ISO, income tax and annual compliance, and drafting of agreements and legal notices.
+Q: What is the difference between a patent, trademark, copyright and design?
+A: A patent protects an invention or technical innovation, a trademark protects your brand identity, copyright protects original creative works, and design registration protects the visual appearance of a product. One product can be protected by more than one of them.
+Q: Does Leegtech guarantee that my patent, trademark or registration will be granted?
+A: No. No one can guarantee a grant, registration or approval. Decisions are made by the relevant government authorities, such as the Indian Patent Office, the Trade Marks Registry or the Ministry of Corporate Affairs, based on the law and the facts of each case. We prepare and file your matter carefully and keep you informed at every stage, but the outcome and timelines are not in our control.
+Q: Is Leegtech a government office or affiliated with IP India or MCA?
+A: No. Leegtech is a private company and is not affiliated with, or endorsed by, any government office. You can file most applications directly on the official government portals yourself. Our professional fees are for our assistance and are separate from official government fees, which are charged at actuals.
+Q: Is this website an advertisement for legal services?
+A: No. This website provides general information about our services and is not a solicitation or advertisement of legal services. Using the website or submitting an enquiry does not create a lawyer–client relationship. Where the law requires a step to be handled by an advocate or a registered patent or trademark agent, it is handled only by a person who is so qualified.
+Q: Are government fees included in your fees?
+A: No. Official government fees are charged at actuals and are shown separately from our professional fees in your quote. Reduced official fees apply to many startups, small entities, MSMEs and individuals, and we check your eligibility.
+Q: Can Leegtech help with international IP protection?
+A: Yes. We assist with PCT patent applications, USA and UK patent applications, UK design registration, German utility models, Madrid Protocol trademark applications and copyright registration in Canada.
+Q: When should I file a patent or design application?
+A: File before you publicly disclose, launch, exhibit or sell the invention or design. A public disclosure before filing can destroy novelty, and early filing secures your priority date.
+Q: Can you help me reply to a patent or trademark objection?
+A: Yes. We prepare replies to patent examination reports (FER) and trademark examination reports, and support hearings, amendments and opposition proceedings. Deadlines are strict: one month for a trademark examination report and six months (extendable by three) for a patent FER.
+Q: Can you register my company or startup?
+A: Yes. We assist with Private Limited Company, LLP, OPC and Section 8 company registration, DPIIT Startup India recognition and MSME Udyam registration.
+Q: Can I protect several aspects of the same product?
+A: Yes. A patent can protect the technology, design registration the appearance, a trademark the brand, and copyright the creative content such as software code and artwork.
+Q: How do I get started with Leegtech?
+A: Book a free consultation online, call or WhatsApp us. We review your requirement, explain the options, process and indicative timelines, and send a written fee quote before any work begins.

@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 420" role="img" aria-labelledby="t"><title id="t">Product design drawing with dimensions, colour swatches and a pen tool</title>
+<style>
+.draw{stroke-dasharray:900;stroke-dashoffset:900;animation:draw 7s ease-in-out infinite}
+.fill{animation:fill 7s ease-in-out infinite}
+.sw{animation:float 4.5s ease-in-out infinite}.sw2{animation-delay:-1.5s}.sw3{animation-delay:-3s}
+.pen{animation:pen 7s ease-in-out infinite}
+@keyframes draw{0%{stroke-dashoffset:900}40%,85%{stroke-dashoffset:0}100%{stroke-dashoffset:0}}
+@keyframes fill{0%,40%{fill-opacity:0}55%,90%{fill-opacity:1}100%{fill-opacity:0}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes pen{0%{transform:translate(0,0)}20%{transform:translate(-60px,70px)}40%{transform:translate(-10px,140px)}60%,100%{transform:translate(0,0)}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}.draw{stroke-dashoffset:0}.fill{fill-opacity:1}}
+</style>
+<circle cx="520" cy="60" r="120" fill="#EFF8F3"/><circle cx="60" cy="400" r="130" fill="#FEF3EB"/>
+<rect x="70" y="40" width="340" height="340" rx="20" fill="#fff" stroke="#e8e5e0" stroke-width="2"/>
+<path d="M90 70h300M90 100h300M90 130h300M90 160h300M90 190h300M90 220h300M90 250h300M90 280h300M90 310h300M90 340h300" stroke="#f2efea"/>
+<path class="fill" d="M190 110c0-14 12-24 50-24s50 10 50 24l6 40c4 30 14 50 14 90v60c0 22-18 36-70 36s-70-14-70-36v-60c0-40 10-60 14-90z" fill="#FEF3EB"/>
+<path class="draw" d="M190 110c0-14 12-24 50-24s50 10 50 24l6 40c4 30 14 50 14 90v60c0 22-18 36-70 36s-70-14-70-36v-60c0-40 10-60 14-90z" fill="none" stroke="#121212" stroke-width="4" stroke-linejoin="round"/>
+<path class="draw" d="M176 230h128M178 262h124" fill="none" stroke="#E86A1E" stroke-width="4" stroke-linecap="round"/>
+<path d="M330 86v250M322 86h16M322 336h16" stroke="#3D9B68" stroke-width="2"/><text x="342" y="216" font-family="Nunito,Arial,sans-serif" font-size="14" font-weight="800" fill="#3D9B68">250</text>
+<path d="M170 356h140M170 348v16M310 348v16" stroke="#3D9B68" stroke-width="2"/><text x="226" y="374" font-family="Nunito,Arial,sans-serif" font-size="14" font-weight="800" fill="#3D9B68">140</text>
+<g class="pen"><path d="M300 92l26-26 14 14-26 26-18 4z" fill="#121212"/><path d="M300 92l-4 18 18-4" fill="#E86A1E"/></g>
+<g class="sw"><rect x="440" y="110" width="110" height="64" rx="14" fill="#fff" stroke="#e8e5e0" stroke-width="2"/><rect x="452" y="122" width="40" height="40" rx="10" fill="#E86A1E"/><path d="M504 134h34M504 150h22" stroke="#d9d4cc" stroke-width="6" stroke-linecap="round"/></g>
+<g class="sw sw2"><rect x="460" y="194" width="110" height="64" rx="14" fill="#fff" stroke="#e8e5e0" stroke-width="2"/><rect x="472" y="206" width="40" height="40" rx="10" fill="#4CAF7A"/><path d="M524 218h34M524 234h22" stroke="#d9d4cc" stroke-width="6" stroke-linecap="round"/></g>
+<g class="sw sw3"><rect x="440" y="278" width="110" height="64" rx="14" fill="#fff" stroke="#e8e5e0" stroke-width="2"/><rect x="452" y="290" width="40" height="40" rx="10" fill="#121212"/><path d="M504 302h34M504 318h22" stroke="#d9d4cc" stroke-width="6" stroke-linecap="round"/></g>
+</svg>

@@ -1,0 +1,28 @@
+# Leegtech robots.txt
+User-agent: *
+Allow: /
+Disallow: /thank-you/
+Disallow: /admin/
+Disallow: /portal/
+
+# AI assistants and search engines are welcome to read and cite this site.
+User-agent: GPTBot
+Allow: /
+User-agent: OAI-SearchBot
+Allow: /
+User-agent: ChatGPT-User
+Allow: /
+User-agent: ClaudeBot
+Allow: /
+User-agent: Claude-SearchBot
+Allow: /
+User-agent: Claude-User
+Allow: /
+User-agent: PerplexityBot
+Allow: /
+User-agent: Google-Extended
+Allow: /
+User-agent: Applebot-Extended
+Allow: /
+
+Sitemap: https://leegtech.in/sitemap.xml

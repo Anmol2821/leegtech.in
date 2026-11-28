@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 420" role="img" aria-labelledby="t"><title id="t">Brand card protected by a shield with trademark and copyright symbols</title>
+<style>
+.b1{animation:float 5s ease-in-out infinite}.b2{animation:float 5s ease-in-out infinite;animation-delay:-1.6s}.b3{animation:float 5s ease-in-out infinite;animation-delay:-3.2s}
+.shield{transform-origin:300px 220px;animation:breathe 4s ease-in-out infinite}
+.ring{transform-origin:300px 220px;animation:ring 4s ease-out infinite}
+.tick{stroke-dasharray:80;stroke-dashoffset:80;animation:tick 4s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+@keyframes breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.03)}}
+@keyframes ring{0%{transform:scale(.8);opacity:.6}100%{transform:scale(1.5);opacity:0}}
+@keyframes tick{0%,20%{stroke-dashoffset:80}45%,100%{stroke-dashoffset:0}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}.tick{stroke-dashoffset:0}.ring{opacity:0}}
+</style>
+<circle cx="80" cy="80" r="120" fill="#FEF3EB"/><circle cx="530" cy="370" r="130" fill="#EFF8F3"/>
+<circle class="ring" cx="300" cy="220" r="110" fill="none" stroke="#E86A1E" stroke-width="3"/>
+<g class="shield"><path d="M300 90l110 40v80c0 70-50 112-110 136-60-24-110-66-110-136v-80z" fill="#fff" stroke="#121212" stroke-width="5" stroke-linejoin="round"/>
+<path d="M300 112l88 32v66c0 56-40 90-88 110-48-20-88-54-88-110v-66z" fill="#FEF3EB"/>
+<path class="tick" d="M258 222l28 28 56-60" fill="none" stroke="#E86A1E" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/></g>
+<g class="b1"><circle cx="120" cy="210" r="46" fill="#121212"/><text x="120" y="227" text-anchor="middle" font-family="Nunito,Arial,sans-serif" font-weight="900" font-size="46" fill="#fff">®</text></g>
+<g class="b2"><circle cx="486" cy="150" r="42" fill="#4CAF7A"/><text x="486" y="166" text-anchor="middle" font-family="Nunito,Arial,sans-serif" font-weight="900" font-size="44" fill="#fff">©</text></g>
+<g class="b3"><rect x="430" y="250" width="96" height="62" rx="31" fill="#E86A1E"/><text x="478" y="292" text-anchor="middle" font-family="Nunito,Arial,sans-serif" font-weight="900" font-size="32" fill="#fff">TM</text></g>
+<g class="b2"><rect x="70" y="300" width="150" height="70" rx="14" fill="#fff" stroke="#e8e5e0" stroke-width="2"/><circle cx="102" cy="335" r="16" fill="#E86A1E"/><path d="M128 326h70M128 344h46" stroke="#d9d4cc" stroke-width="7" stroke-linecap="round"/></g>
+</svg>

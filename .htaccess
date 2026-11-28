@@ -1,0 +1,49 @@
+# leegtech.in: Hostinger (LiteSpeed/Apache) configuration for the static site
+DirectoryIndex index.html
+ErrorDocument 404 /404.html
+Options -Indexes
+AddDefaultCharset UTF-8
+AddType application/manifest+json .webmanifest
+AddType text/plain .txt
+
+<IfModule mod_rewrite.c>
+RewriteEngine On
+
+# www -> apex (HTTPS redirect itself is handled by Hostinger's "Force HTTPS" setting)
+RewriteCond %{HTTP_HOST} ^www\.leegtech\.in$ [NC]
+RewriteRule ^(.*)$ https://leegtech.in/$1 [R=301,L]
+
+# Old or alternative URLs
+RewriteRule ^index\.html$ / [R=301,L]
+RewriteRule ^services$ /services/ [R=301,L]
+RewriteRule ^privacy/?$ /privacy-policy/ [R=301,L]
+RewriteRule ^terms/?$ /terms-and-conditions/ [R=301,L]
+RewriteRule ^refund/?$ /refund-policy/ [R=301,L]
+RewriteRule ^trademark/(.*)$ /trademark-copyright/$1 [R=301,L]
+RewriteRule ^copyright/(.*)$ /trademark-copyright/$1 [R=301,L]
+RewriteRule ^business/(.*)$ /business-tax/$1 [R=301,L]
+
+# Old WordPress paths no longer exist
+RewriteRule ^(wp-admin|wp-login\.php|wp-content|wp-includes|xmlrpc\.php)(/.*)?$ - [R=410,L]
+</IfModule>
+
+<IfModule mod_headers.c>
+Header always set X-Content-Type-Options "nosniff"
+Header always set X-Frame-Options "SAMEORIGIN"
+Header always set Referrer-Policy "strict-origin-when-cross-origin"
+Header always set Permissions-Policy "camera=(), microphone=(), geolocation=()"
+Header always set Strict-Transport-Security "max-age=31536000"
+
+# Fingerprinted CSS/JS and fonts never change: cache for a year
+<FilesMatch "\.[0-9a-f]{10}\.(css|js)$|\.woff2$">
+Header set Cache-Control "public, max-age=31536000, immutable"
+</FilesMatch>
+# Images: cache for 30 days
+<FilesMatch "\.(webp|svg|png|jpg|jpeg|ico)$">
+Header set Cache-Control "public, max-age=2592000"
+</FilesMatch>
+# HTML, sitemap, feeds: always revalidate so new posts appear quickly
+<FilesMatch "\.(html|xml|txt|webmanifest)$">
+Header set Cache-Control "public, max-age=0, must-revalidate"
+</FilesMatch>
+</IfModule>
