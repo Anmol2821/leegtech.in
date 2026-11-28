@@ -124,3 +124,6 @@ fieldset.perms legend { font-weight: 600; font-size: .92rem; padding: 0 4px; }
 fieldset.perms p { margin: 0; }
 fieldset.perms label.check { align-items: flex-start; }
 fieldset.perms input[type=checkbox] { margin-top: 2px; flex: none; }
+.task { flex-wrap: wrap; }
+.task details.tedit { flex-basis: 100%; }
+.task details.tedit summary { color: var(--muted); }

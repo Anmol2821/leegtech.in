@@ -27,7 +27,7 @@ function ppage(string $title, string $body, ?array $client = null): void {
     $msg = flash();
     echo '<!doctype html><html lang="en-IN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow"><title>' . h($title) . ' · Leegtech client portal</title>
-<link rel="stylesheet" href="/admin/admin.css?v=9"><link rel="icon" href="/favicon.ico"></head><body class="portal">'
+<link rel="stylesheet" href="/admin/admin.css?v=10"><link rel="icon" href="/favicon.ico"></head><body class="portal">'
     . ($client ? '<header class="bar"><span class="brand">Leegtech · ' . h(mb_strimwidth((string)$client['name'], 0, 30, '…')) . '</span>
         <form method="post"><input type="hidden" name="csrf" value="' . h($client['csrf']) . '"><button class="linkbtn" name="action" value="logout">Sign out</button></form></header>' : '')
     . '<main>' . ($msg ? '<p class="flash" role="status">' . h($msg) . '</p>' : '') . $body . '

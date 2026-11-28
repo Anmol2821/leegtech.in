@@ -519,7 +519,7 @@ function page(string $title, string $body, bool $nav = true): void {
     $tab = fn($k, $label, $also = []) => '<a href="?p=' . $k . '"' . ($p === $k || in_array($p, $also, true) ? ' aria-current="page"' : '') . '>' . $label . '</a>';
     echo '<!doctype html><html lang="en-IN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow"><title>' . h($title) . ' · Leegtech leads</title>
-<link rel="stylesheet" href="/admin/admin.css?v=9"><link rel="icon" href="/favicon.ico"></head><body>'
+<link rel="stylesheet" href="/admin/admin.css?v=10"><link rel="icon" href="/favicon.ico"></head><body>'
     . ($nav ? '<header class="bar">' . ($p !== 'home' ? '<a href="' . h(back_href()) . '" class="back" id="backbtn" aria-label="Back" title="Back">←</a>' : '')
         . '<a href="?p=home" class="brand">Leegtech leads</a><a href="?p=settings" class="small">' . (me() && !is_owner() ? h(me()['name']) . ' · ' : '') . 'Settings</a></header>' : '')
     . '<main>' . ($msg ? '<p class="flash" role="status">' . h($msg) . '</p>' : '') . $body . '</main>'

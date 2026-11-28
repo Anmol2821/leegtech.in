@@ -236,8 +236,19 @@ function task_card(array $t, bool $showWhere = true): string {
       <div class="meta small">' . ($t['due_on'] ? '<span class="' . ($done ? 'muted' : due_class($t['due_on'])) . '">⏰ ' . h(nice_date($t['due_on'])) . '</span>' : '')
         . ($t['assigned_to'] && (sees_all_any() || (int)$t['assigned_to'] !== my_id()) ? '<span>👤 ' . h(person_name((int)$t['assigned_to'])) . '</span>' : (is_owner() && !$t['assigned_to'] ? '<span>👤 you</span>' : ''))
         . ($where ? '<span>' . $where . '</span>' : '') . ($t['note'] ? '<span>' . h($t['note']) . '</span>' : '') . '</div></div>
-      <form method="post">' . $f . '<button class="btn sm' . ($done ? '' : ' primary') . '" name="action" value="' . ($done ? 't_undo' : 't_done') . '">' . ($done ? 'Undo' : 'Done') . '</button></form></div>';
+      <form method="post">' . $f . '<button class="btn sm' . ($done ? '' : ' primary') . '" name="action" value="' . ($done ? 't_undo' : 't_done') . '">' . ($done ? 'Undo' : 'Done') . '</button></form>'
+      . (can_edit_tasks() ? '<details class="tedit"><summary class="small">Edit</summary>
+        <form method="post" class="stack mt">' . $f . '<input type="hidden" name="action" value="t_edit">
+          <label>Task<input name="title" required maxlength="200" value="' . h($t['title']) . '"></label>
+          <div class="row2"><label>Due on<input type="date" name="due_on" value="' . h((string)$t['due_on']) . '"></label>'
+          . (team_names() || $t['assigned_to'] ? '<label>For' . person_select('assigned_to', $t['assigned_to'] ? (int)$t['assigned_to'] : null, is_owner() ? 'Me (not assigned)' : 'Not assigned') . '</label>' : '') . '</div>
+          <label>Note<input name="note" maxlength="300" value="' . h((string)$t['note']) . '"></label>
+          <button class="btn primary">Save task</button></form>'
+        . (can('delete') ? '<form method="post" class="mt">' . $f . '<button class="linkbtn" name="action" value="t_delete">Delete this task</button></form>' : '') . '</details>' : '') . '</div>';
 }
+
+/** Owner, and members allowed to assign work, can change any task they can see. */
+function can_edit_tasks(): bool { return is_owner() || can('assign'); }
 
 /** Open tasks the signed-in person may see. */
 function open_tasks(string $extraWhere = '1=1', array $args = [], int $limit = 200): array {
@@ -292,6 +303,35 @@ function task_action(string $a): void {
     if (!$t) redirect($back, 'Task not found.');
     $mayTouch = (int)$t['assigned_to'] === my_id() || (can('leads') && can('clients')) || ($t['lead_id'] && can('leads')) || ($t['matter_id'] && can('clients'));
     if (!$mayTouch) redirect('/admin/', 'That task is not yours.');
+    if ($a === 't_edit') {
+        if (!can_edit_tasks()) redirect($back, 'You do not have permission to edit tasks.');
+        $title = post('title', 200);
+        if ($title === '') redirect($back, 'Enter the task.');
+        $due = valid_date(post('due_on', 10)) ? post('due_on', 10) : null;
+        $who = posted_person();
+        $old = $t['assigned_to'] === null ? null : (int)$t['assigned_to'];
+        if ($who === null && $old !== null && !isset(team_names()[$old]) && post('assigned_to', 12) === (string)$old) $who = $old; // keep a switched-off assignee
+        $db->prepare('UPDATE tasks SET title = ?, due_on = ?, note = ?, assigned_to = ? WHERE id = ?')->execute([$title, $due, post('note', 300), $who, $t['id']]);
+        $changes = [];
+        if ($title !== $t['title']) $changes[] = 'renamed to "' . $title . '"';
+        if ($due !== ($t['due_on'] ?: null)) $changes[] = $due ? 'due ' . nice_date($due) : 'no due date';
+        if ($who !== $old) $changes[] = $who ? 'for ' . person_name($who) : 'unassigned';
+        if ($changes) {
+            $txt = 'Task "' . $t['title'] . '": ' . implode(', ', $changes);
+            if ($t['lead_id']) log_activity((int)$t['lead_id'], 'note', $txt);
+            if ($t['matter_id']) mlog((int)$t['matter_id'], $txt);
+        }
+        if ($who !== $old) notify_assigned($who, $title, $t['matter_id'] ? '?p=matter&id=' . $t['matter_id'] : ($t['lead_id'] ? '?p=lead&id=' . $t['lead_id'] : '?p=tasks'), $due ? 'Due ' . nice_date($due) : '');
+        redirect($back, 'Task saved.');
+    }
+    if ($a === 't_delete') {
+        if (!can('delete')) redirect($back, 'You do not have permission to delete tasks.');
+        $db->prepare('DELETE FROM tasks WHERE id = ?')->execute([$t['id']]);
+        $txt = 'Task deleted: ' . $t['title'];
+        if ($t['lead_id']) log_activity((int)$t['lead_id'], 'note', $txt);
+        if ($t['matter_id']) mlog((int)$t['matter_id'], $txt);
+        redirect($back, 'Task deleted.');
+    }
     $done = $a === 't_done';
     $db->prepare('UPDATE tasks SET done_at = ? WHERE id = ?')->execute([$done ? now_utc() : null, $t['id']]);
     $txt = ($done ? 'Task done: ' : 'Task reopened: ') . $t['title'];
