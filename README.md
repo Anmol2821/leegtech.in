@@ -79,7 +79,8 @@ Add an object to the right `src/data/services-*.mjs` file. A page is generated a
   tick extra powers per member (`PERMS` in team.php, checked with `can()` on every action): all leads, all clients &
   applications, fees &
   payments, assign work, import & download, client portal, delete. Team and settings stay owner-only. A deadline without
-  its own assignee belongs to whoever handles its matter. Notes record who wrote them. Switching a member off signs them out.
+  its own assignee belongs to whoever handles its matter. The owner and members with Assign work can edit a task (title, due date, person, note); the Delete power removes it.
+  Notes record who wrote them. Switching a member off signs them out.
 - **Client portal** (`src/static/portal/`, shared code `admin/_inc/portal_lib.php`): the owner switches it on per client
   (client page → Give portal access; a one-time password is shown with WhatsApp/email share buttons). Clients sign in at
   `/portal/` with mobile or email + password and see only their own matters: status, office status, upcoming deadline
