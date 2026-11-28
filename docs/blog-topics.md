@@ -18,11 +18,11 @@ Mark a topic `[x]` when published and add it to the log below. Add new topics wi
 - [x] Statement of working of patents (Form 27) explained
 ### Design
 - [x] Design registration in India: process, term and documents
-- [ ] Design vs patent vs trademark for product companies
-- [ ] What is a utility model? German utility models for Indian businesses
+- [x] Design vs patent vs trademark for product companies (merged into /blog/patent-vs-trademark-vs-copyright-vs-design/)
+- [ ] What is a utility model? German utility models for Indian businesses (blocked: dpma.de and gesetze-im-internet.de not reachable from the cloud environment; needs a primary source)
 ### Trademark & copyright
-- [ ] Trademark objection reply: Section 9 vs Section 11 objections
-- [ ] Trademark opposition in India: timeline and process
+- [x] Trademark objection reply: Section 9 vs Section 11 objections
+- [x] Trademark opposition in India: timeline and process
 - [ ] What happens at a trademark show-cause hearing?
 - [ ] Trademark renewal in India: deadlines and restoration
 - [ ] ™ vs ® symbols: when and how to use them in India
@@ -73,3 +73,5 @@ Mark a topic `[x]` when published and add it to the log below. Add new topics wi
 | 2026-11-26 | Patent Search: How to Check If Your Invention Is New | /blog/patent-search-india/ |
 | 2026-11-27 | Statement of Working of Patents (Form 27) Explained | /blog/form-27-statement-of-working-india/ |
 | 2026-11-27 | Design Registration in India: Process, Term and Documents | /blog/design-registration-india/ |
+| 2026-11-28 | Trademark Objection Reply: Section 9 vs Section 11 Objections | /blog/trademark-objection-section-9-vs-11/ |
+| 2026-11-28 | Trademark Opposition in India: Timeline and Process | /blog/trademark-opposition-india/ |
